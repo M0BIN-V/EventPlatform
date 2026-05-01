@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Solution items/">
+    <File Path=".gitignore" />
+  </Folder>
+  <Folder Name="/Src/">
+    <Project Path="Src/WebApp/WebApp.csproj" />
+  </Folder>
+  <Folder Name="/Src/Services/">
+    <Project Path="Src/Services/Api/Api.csproj" />
+  </Folder>
+  <Project Path="AppHost/AppHost.csproj" />
+  <Project Path="ServiceDefaults/ServiceDefaults.csproj" />
+</Solution>
