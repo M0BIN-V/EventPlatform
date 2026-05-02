@@ -16,7 +16,7 @@ var postgres = builder
 var database = postgres.AddDatabase("event-platform-database");
 
 var api = builder
-    .AddProject<Api>("event-platform-api")
+    .AddProject<WebApi>("event-platform-api")
     .WithReference(database)
     .WaitFor(database);
 
