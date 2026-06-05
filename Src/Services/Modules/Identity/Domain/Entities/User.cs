@@ -1,11 +1,10 @@
 ﻿using BuildingBlocks.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Entities;
 
-public class User : EntityBase
+public class User : IdentityUser
 {
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
-    public required string Email { get; set; }
-    public required string PasswordHash { get; set; }
 }
