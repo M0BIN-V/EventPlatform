@@ -13,7 +13,7 @@ var postgres = builder
         .WithLifetime(ContainerLifetime.Persistent)
         .WithVolume("event-platform-pgadmin-volume"));
 
-var database = postgres.AddDatabase("event-platform-database");
+var database = postgres.AddDatabase("event-platform-db");
 
 var api = builder
     .AddProject<WebApi>("event-platform-api")
