@@ -26,6 +26,8 @@ public static class DependencyInjection
         
         var jwt = builder.Configuration.GetSection("Jwt");
 
+        builder.Services.AddAuthorization();
+
         builder.Services
             .AddAuthentication(options =>
             {

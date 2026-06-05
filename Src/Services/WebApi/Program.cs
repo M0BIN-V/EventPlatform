@@ -1,9 +1,12 @@
+using Infrastructure;
 using Presentation;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
+
+builder.AddIdentityServices();
 
 var app = builder.Build();
 
