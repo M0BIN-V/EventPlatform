@@ -12,40 +12,58 @@ namespace Endpoints;
 
 public static class DependencyInjectionExtensions
 {
-    public static WebApplicationBuilder InstallIdentityModule(this WebApplicationBuilder builder)
+    extension(WebApplicationBuilder builder)
     {
-        builder.AddNpgsqlDbContext<EfIdentityDbContext>("event-platform-db");
+        WebApplicationBuilder SetupIdentityServices()
+        {
+            builder.Services.AddIdentity<User, IdentityRole>(options => { options.User.RequireUniqueEmail = true; })
+                .AddEntityFrameworkStores<EfIdentityDbContext>()
+                .AddDefaultTokenProviders();
 
-        builder.Services.AddIdentity<User, IdentityRole>()
-            .AddEntityFrameworkStores<EfIdentityDbContext>()
-            .AddDefaultTokenProviders();
+            return builder;
+        }
 
-        var jwt = builder.Configuration.GetSection("Jwt");
+        WebApplicationBuilder SetupJwt()
+        {
+            var jwt = builder.Configuration.GetSection("Jwt");
 
-        builder.Services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
+            builder.Services.AddAuthentication(options =>
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
 
-                    ValidIssuer = jwt["Issuer"],
-                    ValidAudience = jwt["Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(jwt["Key"] ??
-                                               throw new NullReferenceException("Jwt:Key configuration is missing")))
-                };
-            });
+                        ValidIssuer = jwt["Issuer"],
+                        ValidAudience = jwt["Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(jwt["Key"] ??
+                                                   throw new NullReferenceException(
+                                                       "Jwt:Key configuration is missing")))
+                    };
+                });
 
-        builder.Services.AddAuthorization();
+            return builder;
+        }
 
-        return builder;
+        public WebApplicationBuilder InstallIdentityModule()
+        {
+            builder.AddNpgsqlDbContext<EfIdentityDbContext>("event-platform-db");
+
+            builder.SetupIdentityServices();
+
+            builder.SetupJwt();
+
+            builder.Services.AddAuthorization();
+
+            return builder;
+        }
     }
 }
