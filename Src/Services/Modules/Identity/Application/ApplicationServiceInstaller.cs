@@ -1,4 +1,5 @@
 using Application.Features.Register;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -11,6 +12,8 @@ public static class ApplicationServiceInstaller
         // add application handlers 
         builder.Services.AddScoped<RegisterHandler>();
         
+        builder.Services.AddValidatorsFromAssembly(typeof(ApplicationServiceInstaller).Assembly);
+
         return builder;
     }
 }
