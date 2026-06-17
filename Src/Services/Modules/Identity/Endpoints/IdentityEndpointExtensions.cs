@@ -1,12 +1,10 @@
-using Endpoints.Domain.Entities;
-using Endpoints.Application.Dtos;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Endpoints.Presentation;
+namespace Endpoints;
 
 public static class IdentityEndpointExtensions
 {
