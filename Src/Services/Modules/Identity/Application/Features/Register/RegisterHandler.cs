@@ -25,12 +25,14 @@ public class RegisterHandler(
             FirstName = request.FirstName,
             LastName = request.LastName,
             Email = request.Email,
-            UserName = request.Email
+            UserName = Guid.CreateVersion7().ToString()
         };
 
         var result = await manager.CreateAsync(newUser, request.Password);
         if (result.Succeeded) return newUser.Id;
 
-        return result.Errors.Select(e => new ValidationFailure(e.Code, e.Description)).ToList();
+        // Map IdentityError to FluentValidation.ValidationFailure and set ErrorCode so callers can inspect it
+        return result.Errors.Select(e => new ValidationFailure(e.Code, e.Description) { ErrorCode = e.Code }).ToList();
     }
 }
+

@@ -17,6 +17,15 @@
     <Project Path="Src/Services/Modules/Identity/Endpoints/Endpoints.csproj" />
     <Project Path="Src/Services/Modules/Identity/Infrastructure/Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Tests/Shared/Shared.csproj" />
+  </Folder>
+  <Folder Name="/Tests/Services/" />
+  <Folder Name="/Tests/Services/Modules/" />
+  <Folder Name="/Tests/Services/Modules/Identity/" />
+  <Folder Name="/Tests/Services/Modules/Identity/UnitTests/">
+    <Project Path="Tests/Services/Modules/UnitTests/Application.UnitTests/Application.UnitTests.csproj" />
+  </Folder>
   <Project Path="AppHost/AppHost.csproj" />
   <Project Path="ServiceDefaults/ServiceDefaults.csproj" />
 </Solution>
