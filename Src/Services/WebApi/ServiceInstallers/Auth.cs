@@ -5,12 +5,14 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace WebApi.ServiceInstallers;
 
-public class JwtInstaller : IServiceInstaller
+public class AuthInstaller : IServiceInstaller
 {
     public void Install(IHostApplicationBuilder builder)
     {
         var jwt = builder.Configuration.GetSection("Jwt");
 
+        builder.Services.AddAuthorization();
+        
         builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

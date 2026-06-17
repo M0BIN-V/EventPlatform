@@ -19,9 +19,9 @@ var api = builder
     .WithReference(database)
     .WaitFor(database);
 
-var webapp = builder
-    .AddProject<WebApp>("event-platform-webapp")
-    .WithReference(api)
-    .WaitFor(api);
+// var webapp = builder
+//     .AddProject<WebApp>("event-platform-webapp")
+//     .WithReference(api)
+//     .WaitFor(api);
 
 builder.Build().Run();

@@ -12,7 +12,10 @@ public static class ApplicationServiceInstaller
     {
         builder.AddNpgsqlDbContext<EfIdentityDbContext>("event-platform-db");
         
-        builder.Services.AddIdentity<User, IdentityRole>(options => { options.User.RequireUniqueEmail = true; })
+        builder.Services.AddIdentity<User, IdentityRole>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+            })
             .AddEntityFrameworkStores<EfIdentityDbContext>()
             .AddDefaultTokenProviders();
 
