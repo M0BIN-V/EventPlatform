@@ -1,11 +1,12 @@
-using Endpoints.Data.Entities;
+using Endpoints.Domain.Entities;
+using Endpoints.Application.Dtos;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Endpoints;
+namespace Endpoints.Presentation;
 
 public static class IdentityEndpointExtensions
 {
@@ -42,6 +43,4 @@ public static class IdentityEndpointExtensions
 
         return app;
     }
-
-    public record RegisterUserDto(string? FirstName, string? LastName, string Email, string Password);
 }

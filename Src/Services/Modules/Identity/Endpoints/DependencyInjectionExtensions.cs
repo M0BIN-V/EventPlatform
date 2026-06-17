@@ -1,6 +1,6 @@
 using System.Text;
-using Endpoints.Data;
-using Endpoints.Data.Entities;
+using Endpoints.Infrastructure.Data;
+using Endpoints.Domain.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Endpoints;
+namespace Endpoints.Infrastructure;
 
 public static class DependencyInjectionExtensions
 {

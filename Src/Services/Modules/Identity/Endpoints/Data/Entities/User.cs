@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿// This file has been moved to Endpoints/Domain/Entities/User.cs
+// Kept as a placeholder to avoid breaking changes during refactor. Remove when callers are updated.
 
 namespace Endpoints.Data.Entities;
 
-public class User : IdentityUser
-{
-    public required string? FirstName { get; set; }
-    public required string? LastName { get; set; }
-}
+// No types are defined here anymore.
