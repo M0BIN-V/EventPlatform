@@ -1,36 +1,28 @@
+using Application.Features.Register;
+using BuildingBlocks.Presentation.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Endpoints;
 
 public static class IdentityEndpointExtensions
 {
-    static async Task<Results<Created, Conflict<string>, BadRequest<IEnumerable<IdentityError>>>> Register(
-        [FromServices] UserManager<User> manager,
-        RegisterUserDto request)
+    static async Task<Results<Created, Conflict<string>, ValidationProblem>> Register(
+        [FromServices] RegisterHandler handler,
+        RegisterRequest request)
     {
-        var existingUser = await manager.FindByEmailAsync(request.Email);
+        var result = await handler.HandleAsync(request);
 
-        if (existingUser is not null) return Conflict("A user with the provided email already exists.");
-
-        var newUser = new User
-        {
-            FirstName = request.FirstName,
-            LastName = request.LastName,
-            Email = request.Email
-        };
-
-        var result = await manager.CreateAsync(newUser, request.Password);
-
-        if (result.Succeeded) return Created();
-
-        return BadRequest(result.Errors);
+        return result.Match<Results<Created, Conflict<string>, ValidationProblem>>(
+            userId => Created(),
+            validationErrors => validationErrors.ToValidationProblem(),
+            userAlreadyExistsError => Conflict(userAlreadyExistsError.Message)
+        );
     }
 
-    public static WebApplication MapIdentityEndpoints(this WebApplication app)
+    public static WebApplication MapIdentityModuleEndpoints(this WebApplication app)
     {
         var identityGroup = app.MapGroup("/identity").WithTags("Identity");
 

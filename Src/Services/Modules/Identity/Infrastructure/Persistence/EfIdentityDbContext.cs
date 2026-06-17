@@ -1,9 +1,9 @@
-using Endpoints.Domain.Entities;
+using Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Endpoints.Infrastructure.Data;
+namespace Infrastructure.Persistence;
 
 public class EfIdentityDbContext(DbContextOptions<EfIdentityDbContext> options, ILogger<EfIdentityDbContext> logger)
     : IdentityDbContext<User>(options)

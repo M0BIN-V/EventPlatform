@@ -1,8 +1,10 @@
+using DiServiceInstaller;
+using Endpoints;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOpenApi();
+builder.InstallServices(typeof(Program).Assembly);
 
 var app = builder.Build();
 
@@ -16,5 +18,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapIdentityModuleEndpoints();
 
 app.Run();

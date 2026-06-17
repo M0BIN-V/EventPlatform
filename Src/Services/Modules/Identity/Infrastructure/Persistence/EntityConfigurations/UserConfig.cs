@@ -1,8 +1,8 @@
-using Endpoints.Domain.Entities;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Endpoints.Infrastructure.Data.EntityConfigurations;
+namespace Infrastructure.Persistence.EntityConfigurations;
 
 public class UserConfig : IEntityTypeConfiguration<User>
 {

@@ -12,7 +12,10 @@
     <Project Path="Src/Services/Modules/BuildingBlocks/BuildingBlocks.csproj" />
   </Folder>
   <Folder Name="/Src/Services/Modules/Identity/">
+    <Project Path="Src/Services/Modules/Identity/Application/Application.csproj" />
+    <Project Path="Src/Services/Modules/Identity/Domain/Domain.csproj" />
     <Project Path="Src/Services/Modules/Identity/Endpoints/Endpoints.csproj" />
+    <Project Path="Src/Services/Modules/Identity/Infrastructure/Infrastructure.csproj" />
   </Folder>
   <Project Path="AppHost/AppHost.csproj" />
   <Project Path="ServiceDefaults/ServiceDefaults.csproj" />
