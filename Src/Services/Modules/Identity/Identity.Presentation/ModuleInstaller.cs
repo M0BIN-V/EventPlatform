@@ -1,8 +1,8 @@
 using Identity.Application;
-using Infrastructure;
+using Identity.Infrastructure;
 using Microsoft.Extensions.Hosting;
 
-namespace Endpoints;
+namespace Identity.Presentation;
 
 public static class ModuleInstaller
 {

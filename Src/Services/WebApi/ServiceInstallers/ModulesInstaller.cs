@@ -1,5 +1,5 @@
 using DiServiceInstaller;
-using Endpoints;
+using Identity.Presentation;
 
 namespace WebApi.ServiceInstallers;
 

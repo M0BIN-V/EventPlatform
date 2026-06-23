@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Domain.Entities;
+namespace Identity.Domain.Entities;
 
 public class User : IdentityUser
 {

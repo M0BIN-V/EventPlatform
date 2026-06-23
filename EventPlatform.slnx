@@ -12,10 +12,10 @@
     <Project Path="Src/Services/Modules/BuildingBlocks/BuildingBlocks.csproj" />
   </Folder>
   <Folder Name="/Src/Services/Modules/Identity/">
-    <Project Path="Src/Services/Modules/Identity/Domain/Domain.csproj" />
-    <Project Path="Src/Services/Modules/Identity/Endpoints/Endpoints.csproj" />
     <Project Path="Src/Services/Modules/Identity/Identity.Application/Identity.Application.csproj" />
-    <Project Path="Src/Services/Modules/Identity/Infrastructure/Infrastructure.csproj" />
+    <Project Path="Src/Services/Modules/Identity/Identity.Domain/Identity.Domain.csproj" />
+    <Project Path="Src/Services/Modules/Identity/Identity.Infrastructure/Identity.Infrastructure.csproj" />
+    <Project Path="Src/Services/Modules/Identity/Identity.Presentation/Identity.Presentation.csproj" />
   </Folder>
   <Folder Name="/Src/Services/Modules/Notification/">
     <Project Path="Src/Services/Modules/Notification/Application/Application.csproj" />

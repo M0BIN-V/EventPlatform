@@ -2,7 +2,7 @@ using System.Text;
 using BuildingBlocks.Application;
 using BuildingBlocks.Application.Contracts;
 using BuildingBlocks.Application.Events;
-using Domain.Entities;
+using Identity.Domain.Entities;
 using FluentValidation;
 using FluentValidation.Results;
 using Identity.Application.Errors;

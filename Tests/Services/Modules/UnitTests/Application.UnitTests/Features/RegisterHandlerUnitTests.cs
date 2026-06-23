@@ -1,6 +1,6 @@
 using Identity.Application.Features.Register;
 using BuildingBlocks.Application.Contracts;
-using Domain.Entities;
+using Identity.Domain.Entities;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity;

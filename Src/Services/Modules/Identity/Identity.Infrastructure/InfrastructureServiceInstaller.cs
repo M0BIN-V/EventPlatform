@@ -1,10 +1,10 @@
-using Domain.Entities;
-using Infrastructure.Persistence;
+using Identity.Domain.Entities;
+using Identity.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Infrastructure;
+namespace Identity.Infrastructure;
 
 public static class ApplicationServiceInstaller
 {

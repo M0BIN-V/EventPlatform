@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Endpoints;
+namespace Identity.Presentation;
 
 public static class IdentityEndpointExtensions
 {

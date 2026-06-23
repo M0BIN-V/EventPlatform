@@ -1,5 +1,5 @@
 using DiServiceInstaller;
-using Endpoints;
+using Identity.Presentation;
 using Infrastructure.Persistence;
 using Scalar.AspNetCore;
 using WebApi.Extensions;
