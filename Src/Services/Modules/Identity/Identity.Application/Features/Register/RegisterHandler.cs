@@ -1,16 +1,16 @@
 using System.Text;
-using Application.Errors;
 using BuildingBlocks.Application;
 using BuildingBlocks.Application.Contracts;
 using BuildingBlocks.Application.Events;
 using Domain.Entities;
 using FluentValidation;
 using FluentValidation.Results;
+using Identity.Application.Errors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 
-namespace Application.Features.Register;
+namespace Identity.Application.Features.Register;
 
 public record EmailConfirmationOptions(string FrontendConfirmationUrl);
 

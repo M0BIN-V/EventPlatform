@@ -3,8 +3,15 @@ using Endpoints;
 using Infrastructure.Persistence;
 using Scalar.AspNetCore;
 using WebApi.Extensions;
+using Wolverine;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseWolverine(opt =>
+{
+    opt.Discovery.IncludeAssembly(typeof(BuildingBlocks.Application.Events.ConfirmEmailRequestedEvent).Assembly);
+    opt.Discovery.IncludeAssembly(typeof(application))
+});
 
 builder.InstallServices(typeof(Program).Assembly);
 

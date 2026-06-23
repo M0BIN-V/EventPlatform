@@ -1,4 +1,4 @@
-using Application;
+using Identity.Application;
 using Infrastructure;
 using Microsoft.Extensions.Hosting;
 

@@ -1,8 +1,8 @@
-using Application.Errors;
 using FluentValidation.Results;
+using Identity.Application.Errors;
 using OneOf;
 
-namespace Application.Features.Register;
+namespace Identity.Application.Features.Register;
 
 [GenerateOneOf]
 public partial class RegisterResponse : OneOfBase<

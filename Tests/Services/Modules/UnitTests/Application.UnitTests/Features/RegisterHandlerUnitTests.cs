@@ -1,4 +1,4 @@
-using Application.Features.Register;
+using Identity.Application.Features.Register;
 using BuildingBlocks.Application.Contracts;
 using Domain.Entities;
 using FluentValidation;

@@ -28,7 +28,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\..\..\Src\Services\Modules\Identity\Domain\Domain.csproj" />
       <ProjectReference Include="..\..\..\..\Shared\Shared.csproj" />
-      <ProjectReference Include="..\..\..\..\..\Src\Services\Modules\Identity\Application\Application.csproj" />
+      <ProjectReference Include="..\..\..\..\..\Src\Services\Modules\Identity\Identity.Application\Identity.Application.csproj" />
       <ProjectReference Include="..\..\..\..\..\Src\Services\Modules\Identity\Domain\Domain.csproj" />
     </ItemGroup>
 

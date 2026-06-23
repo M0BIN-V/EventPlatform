@@ -1,9 +1,9 @@
-using Application.Features.Register;
 using FluentValidation;
+using Identity.Application.Features.Register;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Application;
+namespace Identity.Application;
 
 public static class ApplicationServiceInstaller
 {

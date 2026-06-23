@@ -1,7 +1,7 @@
-using Application.Common.Validations;
+using Identity.Application.Common.Validations;
 using FluentValidation;
 
-namespace Application.Features.Register;
+namespace Identity.Application.Features.Register;
 
 public record RegisterRequest(string? FirstName, string? LastName, string Email, string Password);
 

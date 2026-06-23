@@ -1,4 +1,4 @@
-using Application.Features.Register;
+using Identity.Application.Features.Register;
 using BuildingBlocks.Presentation.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;

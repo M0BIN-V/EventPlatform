@@ -1,6 +1,6 @@
 using BuildingBlocks.Application;
 
-namespace Application.Errors;
+namespace Identity.Application.Errors;
 
 public record UserAlreadyExistsError(string Email)
     : Error(nameof(UserAlreadyExistsError), $"User with email '{Email}' already exists.");
