@@ -1,6 +1,10 @@
+using BuildingBlocks.Application.Events;
 using DiServiceInstaller;
+using Identity.Application.Features.Register;
+using Identity.Infrastructure.Persistence;
 using Identity.Presentation;
-using Infrastructure.Persistence;
+using JasperFx;
+using Notification.Application.Features;
 using Scalar.AspNetCore;
 using WebApi.Extensions;
 using Wolverine;
@@ -9,8 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseWolverine(opt =>
 {
-    opt.Discovery.IncludeAssembly(typeof(BuildingBlocks.Application.Events.ConfirmEmailRequestedEvent).Assembly);
-    opt.Discovery.IncludeAssembly(typeof(application))
+    opt.Discovery.IncludeAssembly(typeof(ConfirmEmailRequestedEvent).Assembly);
+    opt.Discovery.IncludeAssembly(typeof(RegisterHandler).Assembly);
+    opt.Discovery.IncludeAssembly(typeof(ConfirmEmailRequestedEventHandler).Assembly);
 });
 
 builder.InstallServices(typeof(Program).Assembly);
@@ -32,4 +37,4 @@ app.UseAuthorization();
 
 app.MapIdentityModuleEndpoints();
 
-app.Run();
+return await app.RunJasperFxCommands(args);

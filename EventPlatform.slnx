@@ -18,7 +18,7 @@
     <Project Path="Src/Services/Modules/Identity/Identity.Presentation/Identity.Presentation.csproj" />
   </Folder>
   <Folder Name="/Src/Services/Modules/Notification/">
-    <Project Path="Src/Services/Modules/Notification/Application/Application.csproj" />
+    <Project Path="Src/Services/Modules/Notification/Notification.Application/Notification.Application.csproj" />
   </Folder>
   <Folder Name="/Tests/">
     <Project Path="Tests/Shared/Shared.csproj" />

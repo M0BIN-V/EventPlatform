@@ -2,10 +2,10 @@ using System.Text;
 using BuildingBlocks.Application;
 using BuildingBlocks.Application.Contracts;
 using BuildingBlocks.Application.Events;
-using Identity.Domain.Entities;
 using FluentValidation;
 using FluentValidation.Results;
 using Identity.Application.Errors;
+using Identity.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
@@ -53,7 +53,7 @@ public class RegisterHandler(
             .ToList();
     }
 
-    async Task<string> GenerateConfirmationUrl(User user)
+    private async Task<string> GenerateConfirmationUrl(User user)
     {
         var emailConfirmationToken = await manager.GenerateEmailConfirmationTokenAsync(user);
 

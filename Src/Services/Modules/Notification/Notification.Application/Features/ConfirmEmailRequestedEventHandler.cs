@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Logging;
 
-namespace Application.Features;
+namespace Notification.Application.Features;
 
 public class ConfirmEmailRequestedEventHandler(ILogger<ConfirmEmailRequestedEventHandler> logger)
 {
