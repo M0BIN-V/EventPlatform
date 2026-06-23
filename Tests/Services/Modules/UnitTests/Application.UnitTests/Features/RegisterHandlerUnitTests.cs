@@ -1,16 +1,25 @@
 using Application.Features.Register;
+using BuildingBlocks.Application.Contracts;
 using Domain.Entities;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 
 namespace Application.UnitTests.Features;
 
 public class RegisterHandlerUnitTests
 {
-    static UserManager<User> CreateUserManager(IUserStore<User>? store = null)
+    private static IMessagePublisher CreatePublisher()
+    {
+        var publisher = For<IMessagePublisher>();
+        publisher.PublishAsync(Any<Message>()).Returns(Task.CompletedTask);
+        return publisher;
+    }
+
+    private static UserManager<User> CreateUserManager(IUserStore<User>? store = null)
     {
         store ??= For<IUserStore<User>>();
         var identityOptions = For<IOptions<IdentityOptions>>();
@@ -28,21 +37,29 @@ public class RegisterHandlerUnitTests
             describer, services, logger);
     }
 
+    private static IOptions<EmailConfirmationOptions> CreateOptions()
+    {
+        var options = For<IOptions<EmailConfirmationOptions>>();
+        options.Value.Returns(new EmailConfirmationOptions("frontend-url"));
+
+        return options;
+    }
+
     [Fact]
     public async Task Register_Succeeds_ReturnsUserId()
     {
         // Arrange
         var validator = For<IValidator<RegisterRequest>>();
-        validator.ValidateAsync(Arg.Any<RegisterRequest>(), Arg.Any<CancellationToken>())
+        validator.ValidateAsync(Any<RegisterRequest>(), Any<CancellationToken>())
             .Returns(Task.FromResult(new ValidationResult()));
 
         var userManager = CreateUserManager();
 
-        userManager.FindByEmailAsync(Arg.Any<string>()).Returns(Task.FromResult<User?>(null));
-        userManager.CreateAsync(Arg.Any<User>(), Arg.Any<string>())
+        userManager.FindByEmailAsync(Any<string>()).Returns(Task.FromResult<User?>(null));
+        userManager.CreateAsync(Any<User>(), Any<string>())
             .Returns(Task.FromResult(IdentityResult.Success));
 
-        var handler = new RegisterHandler(validator, userManager);
+        var handler = new RegisterHandler(CreatePublisher(), validator, CreateOptions(), userManager);
         var request = new RegisterRequest("John", "Doe", "john@example.com", "Password123");
 
         // Act
@@ -61,11 +78,10 @@ public class RegisterHandlerUnitTests
         var failures = new List<ValidationFailure> { new("Email", "Invalid") };
         var validationResult = new ValidationResult(failures);
         var validator = For<IValidator<RegisterRequest>>();
-        validator.ValidateAsync(Arg.Any<RegisterRequest>(), Arg.Any<CancellationToken>())
+        validator.ValidateAsync(Any<RegisterRequest>(), Any<CancellationToken>())
             .Returns(Task.FromResult(validationResult));
 
-        var userManager = CreateUserManager();
-        var handler = new RegisterHandler(validator, userManager);
+        var handler = new RegisterHandler(CreatePublisher(), validator, CreateOptions(), CreateUserManager());
         var request = new RegisterRequest(null, null, "bad", "123");
 
         // Act
@@ -83,15 +99,15 @@ public class RegisterHandlerUnitTests
     {
         // Arrange
         var validator = For<IValidator<RegisterRequest>>();
-        validator.ValidateAsync(Arg.Any<RegisterRequest>(), Arg.Any<CancellationToken>())
+        validator.ValidateAsync(Any<RegisterRequest>(), Any<CancellationToken>())
             .Returns(Task.FromResult(new ValidationResult()));
 
         var existing = new User { Id = "existing-id", Email = "john@example.com" };
         var userStore = For<IUserStore<User>>();
         var userManager = CreateUserManager(userStore);
-        userManager.FindByEmailAsync(Arg.Any<string>()).Returns(Task.FromResult<User?>(existing));
+        userManager.FindByEmailAsync(Any<string>()).Returns(Task.FromResult<User?>(existing));
 
-        var handler = new RegisterHandler(validator, userManager);
+        var handler = new RegisterHandler(CreatePublisher(), validator, CreateOptions(), userManager);
         var request = new RegisterRequest("John", "Doe", "john@example.com", "Password123");
 
         // Act
@@ -108,18 +124,18 @@ public class RegisterHandlerUnitTests
     {
         // Arrange
         var validator = For<IValidator<RegisterRequest>>();
-        validator.ValidateAsync(Arg.Any<RegisterRequest>(), Arg.Any<CancellationToken>())
+        validator.ValidateAsync(Any<RegisterRequest>(), Any<CancellationToken>())
             .Returns(Task.FromResult(new ValidationResult()));
 
         var userStore = For<IUserStore<User>>();
         var userManager = CreateUserManager(userStore);
-        userManager.FindByEmailAsync(Arg.Any<string>()).Returns(Task.FromResult<User?>(null));
+        userManager.FindByEmailAsync(Any<string>()).Returns(Task.FromResult<User?>(null));
 
         var idErrors = new[] { new IdentityError { Code = "Pwd", Description = "Weak" } };
         var failed = IdentityResult.Failed(idErrors);
-        userManager.CreateAsync(Arg.Any<User>(), Arg.Any<string>()).Returns(Task.FromResult(failed));
+        userManager.CreateAsync(Any<User>(), Any<string>()).Returns(Task.FromResult(failed));
 
-        var handler = new RegisterHandler(validator, userManager);
+        var handler = new RegisterHandler(CreatePublisher(), validator, CreateOptions(), userManager);
         var request = new RegisterRequest("John", "Doe", "john@example.com", "123");
 
         // Act

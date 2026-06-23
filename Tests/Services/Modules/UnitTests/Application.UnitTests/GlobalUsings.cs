@@ -2,4 +2,5 @@
 
 global using NSubstitute;
 global using Shouldly;
+global using static NSubstitute.Arg;
 global using static NSubstitute.Substitute;
