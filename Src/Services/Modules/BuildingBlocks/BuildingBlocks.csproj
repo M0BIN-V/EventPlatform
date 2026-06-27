@@ -7,18 +7,23 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="DiServiceInstaller" Version="2.1.0" />
-      <PackageReference Include="FluentValidation" Version="12.1.1" />
-      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.9" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.9">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.9" />
-      <PackageReference Include="OneOf" Version="3.0.271" />
-      <PackageReference Include="OneOf.SourceGenerator" Version="3.0.271" />
-      <PackageReference Include="WolverineFx" Version="6.14.0" />
+        <PackageReference Include="DiServiceInstaller" Version="2.1.0"/>
+        <PackageReference Include="FluentValidation" Version="12.1.1"/>
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.9"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.9">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.9"/>
+        <PackageReference Include="OneOf" Version="3.0.271"/>
+        <PackageReference Include="OneOf.SourceGenerator" Version="3.0.271"/>
+        <PackageReference Include="WolverineFx" Version="6.14.0"/>
+    </ItemGroup>
+
+    <!-- including debug packages -->
+    <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+        <PackageReference Include="WolverineFx.RuntimeCompilation" Version="6.0.0"/>
     </ItemGroup>
 
     <ItemGroup>

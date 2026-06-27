@@ -3,7 +3,7 @@ using BuildingBlocks.Application;
 using BuildingBlocks.Application.Contracts;
 using BuildingBlocks.Application.Events;
 using FluentValidation;
-using FluentValidation.Results;
+using Identity.Application.Common.Mappers;
 using Identity.Application.Errors;
 using Identity.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -12,7 +12,10 @@ using Microsoft.Extensions.Options;
 
 namespace Identity.Application.Features.Register;
 
-public record EmailConfirmationOptions(string FrontendConfirmationUrl);
+public class EmailConfirmationOptions
+{
+    public required string ConfirmationUrl { get; init; }
+}
 
 public class RegisterHandler(
     IMessagePublisher publisher,
@@ -38,19 +41,15 @@ public class RegisterHandler(
         };
 
         var result = await manager.CreateAsync(newUser, request.Password);
-        if (result.Succeeded) return newUser.Id;
+
+        if (!result.Succeeded)
+            // Map IdentityError to FluentValidation.ValidationFailure and set ErrorCode so callers can inspect it
+            return result.Errors.ToValidationFailure();
 
         var message = new ConfirmEmailRequestedEvent(newUser.Email, await GenerateConfirmationUrl(newUser));
         await publisher.PublishAsync(message);
 
-        // Map IdentityError to FluentValidation.ValidationFailure and set ErrorCode so callers can inspect it
-        return result.Errors
-            .Select(e =>
-                new ValidationFailure(e.Code, e.Description)
-                {
-                    ErrorCode = e.Code
-                })
-            .ToList();
+        return newUser.Id;
     }
 
     private async Task<string> GenerateConfirmationUrl(User user)
@@ -59,7 +58,7 @@ public class RegisterHandler(
 
         var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(emailConfirmationToken));
 
-        var confirmationUrl = $"{options.Value.FrontendConfirmationUrl} ?userId={user.Id}&token={encodedToken}";
+        var confirmationUrl = $"{options.Value.ConfirmationUrl} ?userId={user.Id}&token={encodedToken}";
 
         return confirmationUrl;
     }

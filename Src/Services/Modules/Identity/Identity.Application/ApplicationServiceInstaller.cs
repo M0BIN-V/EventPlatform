@@ -14,6 +14,8 @@ public static class ApplicationServiceInstaller
         
         builder.Services.AddValidatorsFromAssembly(typeof(ApplicationServiceInstaller).Assembly);
 
+        builder.Services.Configure<EmailConfirmationOptions>(builder.Configuration.GetSection("EmailConfirmationOptions"));
+
         return builder;
     }
 }

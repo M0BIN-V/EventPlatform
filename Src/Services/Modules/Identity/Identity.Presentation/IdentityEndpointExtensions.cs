@@ -1,5 +1,5 @@
-using Identity.Application.Features.Register;
 using BuildingBlocks.Presentation.Extensions;
+using Identity.Application.Features.Register;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -9,9 +9,9 @@ namespace Identity.Presentation;
 
 public static class IdentityEndpointExtensions
 {
-    static async Task<Results<Created, Conflict<string>, ValidationProblem>> Register(
+     static async Task<Results<Created, Conflict<string>, ValidationProblem>> Register(
         [FromServices] RegisterHandler handler,
-        RegisterRequest request)
+        [FromBody] RegisterRequest request)
     {
         var result = await handler.HandleAsync(request);
 

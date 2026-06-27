@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Identity.Infrastructure.Persistence;
 
-public class EfIdentityDbContext(DbContextOptions<EfIdentityDbContext> options, ILogger<EfIdentityDbContext> logger)
+public class EfIdentityDbContext(DbContextOptions<EfIdentityDbContext> options)
     : IdentityDbContext<User>(options)
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
