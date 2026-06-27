@@ -4,6 +4,7 @@ using BuildingBlocks.Infrastructure;
 using DiServiceInstaller;
 using Identity.Application.Features.Register;
 using JasperFx.CodeGeneration;
+using JasperFx.CodeGeneration.Model;
 using Notification.Application.Features;
 using Wolverine;
 
@@ -17,6 +18,11 @@ public class WolverineInstaller : IServiceInstaller
 
         webAppBuilder.Host.UseWolverine(opts =>
         {
+            opts.CodeGeneration.GeneratedCodeOutputPath =
+                Path.Combine(webAppBuilder.Environment.ContentRootPath, "obj", "Wolverine");
+
+            opts.ServiceLocationPolicy = ServiceLocationPolicy.AllowedButWarn;
+
             opts.Discovery.IncludeAssembly(typeof(ConfirmEmailRequestedEvent).Assembly);
             opts.Discovery.IncludeAssembly(typeof(RegisterHandler).Assembly);
             opts.Discovery.IncludeAssembly(typeof(ConfirmEmailRequestedEventHandler).Assembly);
