@@ -7,6 +7,8 @@ using JasperFx.CodeGeneration;
 using JasperFx.CodeGeneration.Model;
 using Notification.Application.Features;
 using Wolverine;
+using Wolverine.EntityFrameworkCore;
+using Wolverine.Postgresql;
 
 namespace WebApi.ServiceInstallers;
 
@@ -18,6 +20,16 @@ public class WolverineInstaller : IServiceInstaller
 
         webAppBuilder.Host.UseWolverine(opts =>
         {
+            
+            // Transactions config
+            opts.PersistMessagesWithPostgresql(
+                builder.Configuration.GetConnectionString("event-platform-db") ??
+                throw new NullReferenceException("Connection string 'event-platform-db' is not configured"),
+                "wolverine");
+            opts.UseEntityFrameworkCoreTransactions();
+            opts.Policies.UseDurableLocalQueues();
+            opts.Policies.AutoApplyTransactions();
+
             opts.ServiceLocationPolicy = ServiceLocationPolicy.AllowedButWarn;
 
             opts.Discovery.IncludeAssembly(typeof(ConfirmEmailRequestedEvent).Assembly);

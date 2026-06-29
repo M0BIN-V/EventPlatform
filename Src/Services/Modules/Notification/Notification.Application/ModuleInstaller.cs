@@ -1,5 +1,4 @@
-using System.Net;
-using System.Net.Mail;
+using FluentEmail.MailKitSmtp;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -16,18 +15,17 @@ public static class ModuleInstaller
             .Get<EmailSettings>() ?? throw new InvalidOperationException(
             "EmailSettings section is missing in the configuration.");
 
-        var smtpClient = new SmtpClient(emailSettings.SmtpServer)
+        var smtpClientOptions = new SmtpClientOptions
         {
+            Server = emailSettings.SmtpServer,
             Port = emailSettings.Port,
-            Credentials = string.IsNullOrEmpty(emailSettings.Username)
-                ? null
-                : new NetworkCredential(emailSettings.Username, emailSettings.Password),
-            EnableSsl = emailSettings.EnableSsl
+            Password = emailSettings.Password,
+            User = emailSettings.Username
         };
 
         builder.Services
             .AddFluentEmail(emailSettings.DefaultFromEmail, emailSettings.DefaultFromName)
-            .AddSmtpSender(smtpClient);
+            .AddMailKitSender(smtpClientOptions);
 
         return builder;
     }
