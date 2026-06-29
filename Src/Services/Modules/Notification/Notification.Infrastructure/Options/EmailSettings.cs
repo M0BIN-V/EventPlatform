@@ -1,4 +1,4 @@
-namespace Notification.Application.Options;
+namespace Notification.Infrastructure.Options;
 
 public class EmailSettings
 {
@@ -9,4 +9,7 @@ public class EmailSettings
     public string Username { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
     public bool EnableSsl { get; set; }
+
+    public int RetryCount { get; set; } = 3;
+    public int BackoffBaseSeconds { get; set; } = 2;
 }

@@ -1,14 +1,15 @@
+using DiServiceInstaller;
 using FluentEmail.MailKitSmtp;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Notification.Application.Options;
+using Notification.Infrastructure.Options;
 
-namespace Notification.Application;
+namespace Notification.Infrastructure.ServiceInstallers;
 
-public static class ModuleInstaller
+public class FluentEmailInstaller : IServiceInstaller
 {
-    public static IHostApplicationBuilder AddNotificationModule(this IHostApplicationBuilder builder)
+    public void Install(IHostApplicationBuilder builder)
     {
         var emailSettings = builder.Configuration
             .GetSection("EmailSettings")
@@ -26,7 +27,5 @@ public static class ModuleInstaller
         builder.Services
             .AddFluentEmail(emailSettings.DefaultFromEmail, emailSettings.DefaultFromName)
             .AddMailKitSender(smtpClientOptions);
-
-        return builder;
     }
 }

@@ -1,6 +1,6 @@
 using DiServiceInstaller;
 using Identity.Presentation;
-using Notification.Application;
+using Notification.Infrastructure;
 
 namespace WebApi.ServiceInstallers;
 

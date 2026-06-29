@@ -19,6 +19,7 @@
   </Folder>
   <Folder Name="/Src/Services/Modules/Notification/">
     <Project Path="Src/Services/Modules/Notification/Notification.Application/Notification.Application.csproj" />
+    <Project Path="Src/Services/Modules/Notification/Notification.Infrastructure/Notification.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/Tests/">
     <Project Path="Tests/Shared/Shared.csproj" />

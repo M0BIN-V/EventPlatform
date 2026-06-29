@@ -1,8 +1,8 @@
-using Identity.Application.Features.Register;
 using BuildingBlocks.Application.Contracts;
-using Identity.Domain.Entities;
 using FluentValidation;
 using FluentValidation.Results;
+using Identity.Application.Features.Register;
+using Identity.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -40,7 +40,7 @@ public class RegisterHandlerUnitTests
     private static IOptions<EmailConfirmationOptions> CreateOptions()
     {
         var options = For<IOptions<EmailConfirmationOptions>>();
-        options.Value.Returns(new EmailConfirmationOptions("frontend-url"));
+        options.Value.Returns(new EmailConfirmationOptions { ConfirmationUrl = "frontend-url" });
 
         return options;
     }
