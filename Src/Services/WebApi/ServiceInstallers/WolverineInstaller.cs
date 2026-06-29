@@ -18,9 +18,6 @@ public class WolverineInstaller : IServiceInstaller
 
         webAppBuilder.Host.UseWolverine(opts =>
         {
-            opts.CodeGeneration.GeneratedCodeOutputPath =
-                Path.Combine(webAppBuilder.Environment.ContentRootPath, "obj", "Wolverine");
-
             opts.ServiceLocationPolicy = ServiceLocationPolicy.AllowedButWarn;
 
             opts.Discovery.IncludeAssembly(typeof(ConfirmEmailRequestedEvent).Assembly);
@@ -29,6 +26,8 @@ public class WolverineInstaller : IServiceInstaller
 
             if (builder.Environment.IsDevelopment())
             {
+                opts.CodeGeneration.GeneratedCodeOutputPath =
+                    Path.Combine(webAppBuilder.Environment.ContentRootPath, "obj", "Wolverine");
                 opts.CodeGeneration.TypeLoadMode = TypeLoadMode.Auto;
                 opts.UseRuntimeCompilation();
             }
