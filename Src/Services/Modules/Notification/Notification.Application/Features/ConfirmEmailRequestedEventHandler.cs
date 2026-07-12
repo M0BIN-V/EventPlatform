@@ -1,12 +1,10 @@
 using BuildingBlocks.Application.Events;
-using Microsoft.Extensions.Logging;
 using Notification.Application.Contracts.Services;
 
 namespace Notification.Application.Features;
 
 public class ConfirmEmailRequestedEventHandler(
-    IEmailService emailService,
-    ILogger<ConfirmEmailRequestedEventHandler> logger)
+    IEmailService emailService)
 {
     public async Task Handle(ConfirmEmailRequestedEvent @event)
     {

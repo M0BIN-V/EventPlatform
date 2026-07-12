@@ -43,7 +43,6 @@ public class RegisterHandler(
         var result = await manager.CreateAsync(newUser, request.Password);
 
         if (!result.Succeeded)
-            // Map IdentityError to FluentValidation.ValidationFailure and set ErrorCode so callers can inspect it
             return result.Errors.ToValidationFailure();
 
         var message = new ConfirmEmailRequestedEvent(newUser.Email, await GenerateConfirmationUrl(newUser));

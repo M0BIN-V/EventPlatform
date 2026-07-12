@@ -20,7 +20,6 @@ public class WolverineInstaller : IServiceInstaller
 
         webAppBuilder.Host.UseWolverine(opts =>
         {
-            
             // Transactions config
             opts.PersistMessagesWithPostgresql(
                 builder.Configuration.GetConnectionString("event-platform-db") ??
@@ -39,7 +38,7 @@ public class WolverineInstaller : IServiceInstaller
             if (builder.Environment.IsDevelopment())
             {
                 opts.CodeGeneration.GeneratedCodeOutputPath =
-                    Path.Combine(webAppBuilder.Environment.ContentRootPath, "obj", "Wolverine");
+                    Path.Combine(builder.Environment.ContentRootPath, "obj", "Wolverine");
                 opts.CodeGeneration.TypeLoadMode = TypeLoadMode.Auto;
                 opts.UseRuntimeCompilation();
             }
