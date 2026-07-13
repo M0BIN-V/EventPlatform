@@ -37,6 +37,8 @@ public class MailkitEmailService(
             using var smtp = new SmtpClient();
             try
             {
+                //TODO : improve security configurations
+                
                 await smtp.ConnectAsync(emailOptions.SmtpServer, emailOptions.Port, SecureSocketOptions.Auto, ct);
 
                 if (emailOptions.Username.IsNotEmpty() && emailOptions.Password.IsNotEmpty())
