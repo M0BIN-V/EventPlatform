@@ -21,11 +21,11 @@ public class EmailResiliencePipeLinesInstaller : IServiceInstaller
             (pipelineBuilder, context) =>
             {
                 var options = context.ServiceProvider
-                    .GetRequiredService<IOptions<EmailSettings>>()
+                    .GetRequiredService<IOptions<EmailOptions>>()
                     .Value;
 
                 var logger = context.ServiceProvider
-                    .GetRequiredService<ILogger<FluentEmailService>>();
+                    .GetRequiredService<ILogger<MailkitEmailService>>();
 
                 pipelineBuilder
                     .AddTimeout(TimeSpan.FromSeconds(10))

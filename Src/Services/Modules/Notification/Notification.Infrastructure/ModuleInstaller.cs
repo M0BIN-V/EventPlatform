@@ -12,7 +12,7 @@ public static class ModuleInstaller
     {
         builder.InstallServices(typeof(ModuleInstaller).Assembly);
         
-        builder.Services.AddTransient<IEmailService, FluentEmailService>();
+        builder.Services.AddTransient<IEmailService, MailkitEmailService>();
 
         return builder;
     }

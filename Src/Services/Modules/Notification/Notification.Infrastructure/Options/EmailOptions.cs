@@ -1,6 +1,6 @@
 namespace Notification.Infrastructure.Options;
 
-public class EmailSettings
+public class EmailOptions
 {
     public string DefaultFromEmail { get; set; } = string.Empty;
     public string DefaultFromName { get; set; } = string.Empty;
