@@ -11,7 +11,7 @@ public static class ModuleInstaller
     public static IHostApplicationBuilder AddNotificationModule(this IHostApplicationBuilder builder)
     {
         builder.InstallServices(typeof(ModuleInstaller).Assembly);
-        
+
         builder.Services.AddTransient<IEmailService, MailkitEmailService>();
 
         return builder;

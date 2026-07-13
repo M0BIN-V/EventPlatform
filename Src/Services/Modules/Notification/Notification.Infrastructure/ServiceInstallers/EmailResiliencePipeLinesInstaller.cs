@@ -1,4 +1,7 @@
+using System.Net.Sockets;
 using DiServiceInstaller;
+using JasperFx.Core;
+using MailKit.Net.Smtp;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -9,6 +12,7 @@ using Notification.Infrastructure.Services;
 using Polly;
 using Polly.CircuitBreaker;
 using Polly.Retry;
+using Polly.Timeout;
 
 namespace Notification.Infrastructure.ServiceInstallers;
 
@@ -24,36 +28,29 @@ public class EmailResiliencePipeLinesInstaller : IServiceInstaller
                     .GetRequiredService<IOptions<EmailOptions>>()
                     .Value;
 
-                var logger = context.ServiceProvider
-                    .GetRequiredService<ILogger<MailkitEmailService>>();
-
                 pipelineBuilder
-                    .AddTimeout(TimeSpan.FromSeconds(10))
+                    .AddTimeout(options.TimeoutSeconds.Seconds())
                     .AddRetry(new RetryStrategyOptions
                     {
-                        ShouldHandle = new PredicateBuilder().Handle<Exception>(),
-                        MaxRetryAttempts = options.RetryCount,
+                        MaxRetryAttempts = 3,
+                        Delay = 2.Seconds(),
                         BackoffType = DelayBackoffType.Exponential,
                         UseJitter = true,
-                        Delay = TimeSpan.FromSeconds(options.BackoffBaseSeconds),
-                        OnRetry = args =>
-                        {
-                            logger.LogWarning(
-                                args.Outcome.Exception,
-                                "Failed to send email. Retry attempt {AttemptCount}. Error: {ErrorMessage}",
-                                args.AttemptNumber + 1,
-                                args.Outcome.Exception?.Message);
-
-                            return ValueTask.CompletedTask;
-                        }
+                        ShouldHandle = new PredicateBuilder()
+                            .Handle<TimeoutRejectedException>()
+                            .Handle<SocketException>()
+                            .Handle<SmtpProtocolException>()
                     })
                     .AddCircuitBreaker(new CircuitBreakerStrategyOptions
                     {
+                        ShouldHandle = new PredicateBuilder()
+                            .Handle<TimeoutRejectedException>()
+                            .Handle<SocketException>()
+                            .Handle<SmtpProtocolException>(),
                         FailureRatio = 0.5,
-                        MinimumThroughput = 10,
-                        SamplingDuration = TimeSpan.FromSeconds(30),
-                        BreakDuration = TimeSpan.FromMinutes(1),
-                        BreakDurationGenerator = null
+                        MinimumThroughput = 5,
+                        SamplingDuration = 30.Seconds(),
+                        BreakDuration = 1.Minutes()
                     });
             });
     }
