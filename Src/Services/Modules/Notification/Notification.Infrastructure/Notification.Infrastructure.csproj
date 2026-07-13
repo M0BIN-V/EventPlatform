@@ -11,8 +11,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="MailKit" Version="2.10.1" />
-        <PackageReference Include="MimeKit" Version="2.10.1" />
+        <PackageReference Include="MailKit" Version="4.17.0" />
+        <PackageReference Include="MimeKit" Version="4.17.0" />
         <PackageReference Include="Polly" Version="8.7.0"/>
         <PackageReference Include="Polly.Extensions" Version="8.7.0"/>
     </ItemGroup>
