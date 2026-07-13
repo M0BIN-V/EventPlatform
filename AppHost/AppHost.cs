@@ -7,7 +7,6 @@ var postgres = builder
     .AddPostgres("event-platform-postgres")
     .WithImage("postgis/postgis", "latest")
     .WithLifetime(ContainerLifetime.Persistent)
-    .WithDataVolume()
     .WithPgAdmin(config => config
         .WithContainerName("event-platform-pgadmin")
         .WithImage("dpage/pgadmin4", "9.9.0")

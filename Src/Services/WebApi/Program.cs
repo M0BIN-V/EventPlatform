@@ -1,5 +1,6 @@
 using DiServiceInstaller;
 using Identity.Infrastructure.Persistence;
+using Identity.Infrastructure.Persistence.DbContext;
 using Identity.Presentation;
 using JasperFx;
 using Scalar.AspNetCore;
