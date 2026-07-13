@@ -33,8 +33,9 @@ var api = builder
         context.EnvironmentVariables["EmailSettings__Username"] = "";
         context.EnvironmentVariables["EmailSettings__Password"] = "";
         context.EnvironmentVariables["EmailSettings__EnableSsl"] = "false";
-        context.EnvironmentVariables["EmailSettings__DefaultFromEmail"] = "noreply@eventplatform.local" ;
-        context.EnvironmentVariables["EmailSettings__DefaultFromName"] = "Event Platform" ;
+        context.EnvironmentVariables["EmailSettings__DefaultFromEmail"] = "noreply@eventplatform.local";
+        context.EnvironmentVariables["EmailSettings__DefaultFromName"] = "Event Platform";
+        context.EnvironmentVariables["EmailSettings__Security"] = "Auto";
     });
 
 // var webapp = builder

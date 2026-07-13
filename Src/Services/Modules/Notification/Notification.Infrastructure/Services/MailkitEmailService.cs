@@ -1,6 +1,5 @@
 using JasperFx.Core;
 using MailKit.Net.Smtp;
-using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using Notification.Application.Contracts.Services;
@@ -18,7 +17,11 @@ public class MailkitEmailService(
 {
     private readonly ResiliencePipeline _pipeline = pipelineProvider.GetPipeline(ResiliencePipeLineNames.EmailPipeline);
 
-    public async Task SendAsync(string emailAddress, string subject, string message,
+    public async Task SendAsync(
+        string emailAddress,
+        string subject,
+        string? textBody = null,
+        string? htmlBody = null,
         CancellationToken cancellationToken = default)
     {
         var emailOptions = options.Value;
@@ -31,15 +34,17 @@ public class MailkitEmailService(
             email.To.Add(MailboxAddress.Parse(emailAddress));
             email.Subject = subject;
 
-            var bodyBuilder = new BodyBuilder { TextBody = message };
+            var bodyBuilder = new BodyBuilder
+            {
+                HtmlBody = htmlBody,
+                TextBody = textBody
+            };
             email.Body = bodyBuilder.ToMessageBody();
 
             using var smtp = new SmtpClient();
             try
             {
-                //TODO : improve security configurations
-                
-                await smtp.ConnectAsync(emailOptions.SmtpServer, emailOptions.Port, SecureSocketOptions.Auto, ct);
+                await smtp.ConnectAsync(emailOptions.SmtpServer, emailOptions.Port, emailOptions.Security, ct);
 
                 if (emailOptions.Username.IsNotEmpty() && emailOptions.Password.IsNotEmpty())
                     await smtp.AuthenticateAsync(emailOptions.Username, emailOptions.Password, ct);

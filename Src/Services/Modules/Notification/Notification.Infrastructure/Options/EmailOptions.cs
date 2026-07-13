@@ -1,3 +1,5 @@
+using MailKit.Security;
+
 namespace Notification.Infrastructure.Options;
 
 public class EmailOptions
@@ -12,4 +14,6 @@ public class EmailOptions
 
     public int RetryCount { get; set; } = 3;
     public int BackoffBaseSeconds { get; set; } = 2;
+
+    public SecureSocketOptions Security { get; set; }
 }

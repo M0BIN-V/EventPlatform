@@ -5,6 +5,7 @@ public interface IEmailService
     public Task SendAsync(
         string emailAddress,
         string subject,
-        string message,
+        string? textBody = null,
+        string? htmlBody = null,
         CancellationToken cancellationToken = default);
 }
