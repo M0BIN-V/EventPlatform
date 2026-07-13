@@ -11,7 +11,7 @@ public class EmailServiceInstaller : IServiceInstaller
 {
     public void Install(IHostApplicationBuilder builder)
     {
-        builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection("EmailOptions"));
+        builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection("EmailSettings"));
 
         builder.Services.AddTransient<IEmailService, MailkitEmailService>();
     }

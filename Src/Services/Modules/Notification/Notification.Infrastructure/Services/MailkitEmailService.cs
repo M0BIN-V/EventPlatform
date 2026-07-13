@@ -1,3 +1,4 @@
+using JasperFx.Core;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
@@ -36,14 +37,17 @@ public class MailkitEmailService(
             using var smtp = new SmtpClient();
             try
             {
-                await smtp.ConnectAsync(emailOptions.SmtpServer, emailOptions.Port, SecureSocketOptions.StartTls, ct);
-                await smtp.AuthenticateAsync(emailOptions.Username, emailOptions.Password, ct);
+                await smtp.ConnectAsync(emailOptions.SmtpServer, emailOptions.Port, SecureSocketOptions.Auto, ct);
+
+                if (emailOptions.Username.IsNotEmpty() && emailOptions.Password.IsNotEmpty())
+                    await smtp.AuthenticateAsync(emailOptions.Username, emailOptions.Password, ct);
 
                 await smtp.SendAsync(email, ct);
             }
             finally
             {
-                await smtp.DisconnectAsync(true, ct);
+                if (smtp.IsConnected)
+                    await smtp.DisconnectAsync(true, CancellationToken.None);
             }
         }, cancellationToken);
     }
