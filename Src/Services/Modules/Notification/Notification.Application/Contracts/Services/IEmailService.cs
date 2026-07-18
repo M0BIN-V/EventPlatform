@@ -7,5 +7,5 @@ public interface IEmailService
         string subject,
         string? textBody = null,
         string? htmlBody = null,
-        CancellationToken cancellationToken = default);
+        CancellationToken ct = default);
 }

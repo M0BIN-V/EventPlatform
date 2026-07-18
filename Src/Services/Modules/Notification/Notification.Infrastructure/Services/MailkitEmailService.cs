@@ -22,11 +22,11 @@ public class MailkitEmailService(
         string subject,
         string? textBody = null,
         string? htmlBody = null,
-        CancellationToken cancellationToken = default)
+        CancellationToken ct = default)
     {
         var emailOptions = options.Value;
 
-        await _pipeline.ExecuteAsync(async ct =>
+        await _pipeline.ExecuteAsync(async ect =>
         {
             var email = new MimeMessage();
 
@@ -44,18 +44,18 @@ public class MailkitEmailService(
             using var smtp = new SmtpClient();
             try
             {
-                await smtp.ConnectAsync(emailOptions.SmtpServer, emailOptions.Port, emailOptions.Security, ct);
+                await smtp.ConnectAsync(emailOptions.SmtpServer, emailOptions.Port, emailOptions.Security, ect);
 
                 if (emailOptions.Username.IsNotEmpty() && emailOptions.Password.IsNotEmpty())
-                    await smtp.AuthenticateAsync(emailOptions.Username, emailOptions.Password, ct);
+                    await smtp.AuthenticateAsync(emailOptions.Username, emailOptions.Password, ect);
 
-                await smtp.SendAsync(email, ct);
+                await smtp.SendAsync(email, ect);
             }
             finally
             {
                 if (smtp.IsConnected)
                     await smtp.DisconnectAsync(true, CancellationToken.None);
             }
-        }, cancellationToken);
+        }, ct);
     }
 }
