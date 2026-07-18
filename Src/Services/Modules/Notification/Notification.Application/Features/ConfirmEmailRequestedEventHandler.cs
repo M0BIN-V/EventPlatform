@@ -8,9 +8,23 @@ public class ConfirmEmailRequestedEventHandler(
 {
     public async Task Handle(ConfirmEmailRequestedEvent @event)
     {
+        var htmlBody =
+            $"""
+                 <h1>Hello {@event.FullName}</h1>
+
+                 <p>
+                     Please confirm your email.
+                 </p>
+
+                 <a href="{@event.ConfirmationUrl}">
+                     Confirm Email
+                 </a>
+             """;
+
+
         await emailService.SendAsync(
             @event.Email,
             "Confirm your email",
-            $"Please confirm your email by clicking the following link: {@event.ConfirmationUrl}");
+            htmlBody: htmlBody);
     }
 }
