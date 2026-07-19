@@ -14,9 +14,9 @@ public static class IdentityEndpointExtensions
     private static async Task<Results<Ok<string>, ValidationProblem, NotFound<string>, BadRequest<string>>>
         ConfirmEmail(
             [FromServices] ConfirmEmailHandler handler,
-            [FromQuery] string userId, [FromQuery] string confirmationToken)
+            [FromQuery] string email, [FromQuery] string token)
     {
-        var request = new ConfirmEmailRequest(userId, confirmationToken);
+        var request = new ConfirmEmailRequest(email, token);
 
         var result = await handler.HandleAsync(request);
 

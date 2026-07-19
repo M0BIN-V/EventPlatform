@@ -1,4 +1,5 @@
 using FluentValidation;
+using Identity.Application.Features.ConfirmEmail;
 using Identity.Application.Features.Register;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -11,10 +12,12 @@ public static class ApplicationServiceInstaller
     {
         // add application handlers 
         builder.Services.AddScoped<RegisterHandler>();
-        
+        builder.Services.AddScoped<ConfirmEmailHandler>();
+
         builder.Services.AddValidatorsFromAssembly(typeof(ApplicationServiceInstaller).Assembly);
 
-        builder.Services.Configure<EmailConfirmationOptions>(builder.Configuration.GetSection("EmailConfirmationOptions"));
+        builder.Services.Configure<EmailConfirmationOptions>(
+            builder.Configuration.GetSection("EmailConfirmationOptions"));
 
         return builder;
     }

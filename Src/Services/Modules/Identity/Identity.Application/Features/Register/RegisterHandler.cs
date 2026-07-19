@@ -57,10 +57,10 @@ public class RegisterHandler(
     private async Task<string> GenerateConfirmationUrl(User user)
     {
         var emailConfirmationToken = await manager.GenerateEmailConfirmationTokenAsync(user);
-
+        
         var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(emailConfirmationToken));
 
-        var confirmationUrl = $"{options.Value.ConfirmationUrl}?userId={user.Id}&token={encodedToken}";
+        var confirmationUrl = $"{options.Value.ConfirmationUrl}?email={user.Email}&token={encodedToken}";
 
         return confirmationUrl;
     }

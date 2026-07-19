@@ -1,9 +1,10 @@
-using System.Net;
+using System.Text;
 using BuildingBlocks.Application;
 using FluentValidation;
 using Identity.Application.Errors;
 using Identity.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Identity.Application.Features.ConfirmEmail;
 
@@ -22,12 +23,13 @@ public class ConfirmEmailHandler(
 
         if (user is null) return new UserNotFoundError(request.Email);
 
-        var decodedToken = WebUtility.UrlDecode(request.Token);
+        var decodedToken = Encoding.UTF8.GetString(
+            WebEncoders.Base64UrlDecode(request.Token));
 
         var confirmationResult = await manager.ConfirmEmailAsync(user, decodedToken);
 
         if (!confirmationResult.Succeeded) return new EmailConfirmationFailedError(confirmationResult.Errors);
-        
+
         return "Email Confirmed";
     }
 }
