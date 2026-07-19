@@ -9,7 +9,7 @@ namespace Identity.Presentation;
 
 public static class IdentityEndpointExtensions
 {
-     static async Task<Results<Created, Conflict<string>, ValidationProblem>> Register(
+    private static async Task<Results<Created, Conflict<string>, ValidationProblem>> Register(
         [FromServices] RegisterHandler handler,
         [FromBody] RegisterRequest request)
     {

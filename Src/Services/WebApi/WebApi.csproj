@@ -14,13 +14,16 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Scalar.AspNetCore" Version="2.16.4"/>
+        <PackageReference Include="Scalar.AspNetCore" Version="2.16.11" />
+        <PackageReference Include="WolverineFx.EntityFrameworkCore" Version="6.17.2" />
+        <PackageReference Include="WolverineFx.Postgresql" Version="6.17.2" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\..\..\ServiceDefaults\ServiceDefaults.csproj" />
         <ProjectReference Include="..\Modules\Identity\Identity.Presentation\Identity.Presentation.csproj"/>
         <ProjectReference Include="..\Modules\Notification\Notification.Application\Notification.Application.csproj"/>
+        <ProjectReference Include="..\Modules\Notification\Notification.Infrastructure\Notification.Infrastructure.csproj" />
     </ItemGroup>
 
     <!-- Generate Wolverine Handlers -->

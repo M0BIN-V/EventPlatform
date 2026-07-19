@@ -1,17 +1,18 @@
 using Identity.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
-namespace Identity.Infrastructure.Persistence;
+namespace Identity.Infrastructure.Persistence.DbContext;
 
 public class EfIdentityDbContext(DbContextOptions<EfIdentityDbContext> options)
     : IdentityDbContext<User>(options)
 {
+    public const string Schema = "identity";
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
-        modelBuilder.HasDefaultSchema("Identity");
+        modelBuilder.HasDefaultSchema(Schema);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(EfIdentityDbContext).Assembly);
+        base.OnModelCreating(modelBuilder);
     }
 }

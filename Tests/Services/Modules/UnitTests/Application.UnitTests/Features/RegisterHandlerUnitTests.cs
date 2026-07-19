@@ -40,10 +40,8 @@ public class RegisterHandlerUnitTests
     private static IOptions<EmailConfirmationOptions> CreateOptions()
     {
         var options = For<IOptions<EmailConfirmationOptions>>();
-        options.Value.Returns(new EmailConfirmationOptions
-        {
-            ConfirmationUrl = "frontend-url"
-        });
+        options.Value.Returns(new EmailConfirmationOptions { ConfirmationUrl = "frontend-url" });
+
         return options;
     }
 

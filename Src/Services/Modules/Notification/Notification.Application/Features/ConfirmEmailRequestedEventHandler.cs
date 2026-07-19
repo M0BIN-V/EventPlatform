@@ -1,14 +1,30 @@
 using BuildingBlocks.Application.Events;
-using Microsoft.Extensions.Logging;
+using Notification.Application.Contracts.Services;
 
 namespace Notification.Application.Features;
 
-public class ConfirmEmailRequestedEventHandler(ILogger<ConfirmEmailRequestedEventHandler> logger)
+public class ConfirmEmailRequestedEventHandler(
+    IEmailService emailService)
 {
     public async Task Handle(ConfirmEmailRequestedEvent @event)
     {
-        logger.LogInformation($"Received ConfirmEmailRequested event '{@event.Email}'");
-        await Task.Delay(4000);
-        logger.LogInformation($"Completed ConfirmEmailRequested event '{@event.Email}'");
+        var htmlBody =
+            $"""
+                 <h1>Hello {@event.FullName}</h1>
+
+                 <p>
+                     Please confirm your email.
+                 </p>
+
+                 <a href="{@event.ConfirmationUrl}">
+                     Confirm Email
+                 </a>
+             """;
+
+
+        await emailService.SendAsync(
+            @event.Email,
+            "Confirm your email",
+            htmlBody: htmlBody);
     }
 }

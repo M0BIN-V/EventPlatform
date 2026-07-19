@@ -43,10 +43,12 @@ public class RegisterHandler(
         var result = await manager.CreateAsync(newUser, request.Password);
 
         if (!result.Succeeded)
-            // Map IdentityError to FluentValidation.ValidationFailure and set ErrorCode so callers can inspect it
             return result.Errors.ToValidationFailure();
 
-        var message = new ConfirmEmailRequestedEvent(newUser.Email, await GenerateConfirmationUrl(newUser));
+        var fullName = newUser.FirstName + " " + newUser.LastName;
+        var confirmationUrl = await GenerateConfirmationUrl(newUser);
+        var message = new ConfirmEmailRequestedEvent(fullName, newUser.Email, confirmationUrl);
+        
         await publisher.PublishAsync(message);
 
         return newUser.Id;
@@ -58,7 +60,7 @@ public class RegisterHandler(
 
         var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(emailConfirmationToken));
 
-        var confirmationUrl = $"{options.Value.ConfirmationUrl} ?userId={user.Id}&token={encodedToken}";
+        var confirmationUrl = $"{options.Value.ConfirmationUrl}?userId={user.Id}&token={encodedToken}";
 
         return confirmationUrl;
     }

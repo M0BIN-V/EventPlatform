@@ -1,5 +1,5 @@
 using DiServiceInstaller;
-using Identity.Infrastructure.Persistence;
+using Identity.Infrastructure.Persistence.DbContext;
 using Identity.Presentation;
 using JasperFx;
 using Scalar.AspNetCore;
@@ -16,7 +16,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.MapScalarApiReference();
+    app.MapScalarApiReference(options => options.Theme = ScalarTheme.BluePlanet);
 
     await app.EnsureMigrationsApplied<EfIdentityDbContext>();
 }
