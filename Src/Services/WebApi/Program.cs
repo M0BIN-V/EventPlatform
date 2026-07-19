@@ -22,12 +22,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.MapIdentityModuleEndpoints();
-
 app.MapDefaultEndpoints();
+
+var apiGroup = app.MapGroup("api");
+apiGroup.MapIdentityModuleEndpoints();
 
 return await app.RunJasperFxCommands(args);
