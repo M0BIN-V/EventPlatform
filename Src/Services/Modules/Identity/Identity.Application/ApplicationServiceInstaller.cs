@@ -1,5 +1,5 @@
+using BuildingBlocks.Application.Extensions;
 using FluentValidation;
-using Identity.Application.Features.ConfirmEmail;
 using Identity.Application.Features.Register;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,11 +10,11 @@ public static class ApplicationServiceInstaller
 {
     public static IHostApplicationBuilder AddIdentityModuleApplication(this IHostApplicationBuilder builder)
     {
-        // add application handlers 
-        builder.Services.AddScoped<RegisterHandler>();
-        builder.Services.AddScoped<ConfirmEmailHandler>();
+        var assembly = typeof(ApplicationServiceInstaller).Assembly;
 
-        builder.Services.AddValidatorsFromAssembly(typeof(ApplicationServiceInstaller).Assembly);
+        builder.Services.RegisterHandlers(assembly);
+
+        builder.Services.AddValidatorsFromAssembly(assembly);
 
         builder.Services.Configure<EmailConfirmationOptions>(
             builder.Configuration.GetSection("EmailConfirmationOptions"));
