@@ -1,5 +1,7 @@
+using Identity.Application.Common.Contracts.Services;
 using Identity.Domain.Entities;
 using Identity.Infrastructure.Persistence.DbContext;
+using Identity.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +26,11 @@ public static class ApplicationServiceInstaller
             })
             .AddEntityFrameworkStores<EfIdentityDbContext>()
             .AddDefaultTokenProviders();
+
+        // Register token and refresh token services
+        builder.Services.AddScoped<ITokenService, TokenService>();
+        builder.Services.AddScoped<IRefreshTokenHasher, RefreshTokenHasher>();
+        builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
 
         return builder;
     }

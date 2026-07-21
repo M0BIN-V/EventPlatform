@@ -1,5 +1,8 @@
 using BuildingBlocks.Presentation.Extensions;
 using Identity.Application.Features.ConfirmEmail;
+using Identity.Application.Features.Login;
+using Identity.Application.Features.Logout;
+using Identity.Application.Features.Refresh;
 using Identity.Application.Features.Register;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -40,6 +43,45 @@ public static class IdentityEndpointExtensions
         );
     }
 
+    private static async Task<Results<Ok<LoginTokenResponse>, BadRequest<string>, NotFound<string>, ValidationProblem>> Login(
+        [FromServices] LoginHandler handler,
+        [FromBody] LoginRequest request)
+    {
+        var result = await handler.HandleAsync(request);
+
+        return result.Match<Results<Ok<LoginTokenResponse>, BadRequest<string>, NotFound<string>, ValidationProblem>>(
+            tokens => Ok(tokens),
+            validationErrors => validationErrors.ToValidationProblem(),
+            userNotFoundError => NotFound(userNotFoundError.Message),
+            invalidPasswordError => BadRequest(invalidPasswordError.Message)
+        );
+    }
+
+    private static async Task<Results<Ok<RefreshTokenResponse>, BadRequest<string>, ValidationProblem>> Refresh(
+        [FromServices] RefreshHandler handler,
+        [FromBody] RefreshRequest request)
+    {
+        var result = await handler.HandleAsync(request);
+
+        return result.Match<Results<Ok<RefreshTokenResponse>, BadRequest<string>, ValidationProblem>>(
+            tokens => Ok(tokens),
+            validationErrors => validationErrors.ToValidationProblem(),
+            invalidTokenError => BadRequest("Invalid refresh token")
+        );
+    }
+
+    private static async Task<Results<Ok<LogoutSuccessResponse>, ValidationProblem>> Logout(
+        [FromServices] LogoutHandler handler,
+        [FromBody] LogoutRequest request)
+    {
+        var result = await handler.HandleAsync(request);
+
+        return result.Match<Results<Ok<LogoutSuccessResponse>, ValidationProblem>>(
+            success => Ok(success),
+            validationErrors => validationErrors.ToValidationProblem()
+        );
+    }
+
     public static IEndpointRouteBuilder MapIdentityModuleEndpoints(this IEndpointRouteBuilder app)
     {
         var identityGroup = app.MapGroup("/identity").WithTags("Identity");
@@ -48,6 +90,21 @@ public static class IdentityEndpointExtensions
             .WithName("RegisterUser")
             .WithSummary("Registers a new user.")
             .WithDescription("Creates a new user account with the provided details.");
+        
+        identityGroup.MapPost("/login", Login)
+            .WithName("LoginUser")
+            .WithSummary("Logs in a user.")
+            .WithDescription("Authenticates a user and returns JWT and refresh tokens.");
+
+        identityGroup.MapPost("/refresh", Refresh)
+            .WithName("RefreshToken")
+            .WithSummary("Refreshes authentication tokens.")
+            .WithDescription("Uses a refresh token to obtain a new access token and refresh token.");
+
+        identityGroup.MapPost("/logout", Logout)
+            .WithName("LogoutUser")
+            .WithSummary("Logs out a user.")
+            .WithDescription("Revokes the current refresh token.");
         
         identityGroup.MapGet("confirm-email", ConfirmEmail)
             .WithName("ConfirmEmail")

@@ -7,3 +7,6 @@ public record UserAlreadyExistsError(string Email)
 
 public record UserNotFoundError(string Email)
     : Error(nameof(UserNotFoundError), $"User with email '{Email}' does not exist.");
+
+public record InvalidPasswordError()
+    : Error(nameof(InvalidPasswordError), "Email or password is incorrect.");
