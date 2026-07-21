@@ -1,33 +1,28 @@
+using BuildingBlocks.Domain.Entities;
+
 namespace Identity.Domain.Entities;
 
-/// <summary>
-/// Represents a refresh token used for obtaining new access tokens.
-/// </summary>
-public class RefreshToken
+public class RefreshToken : EntityBase
 {
-    public string Id { get; set; } = Guid.NewGuid().ToString();
+    public required string UserId { get; init; } = null!;
 
-    public string UserId { get; set; } = null!;
+    public User User { get; init; } = null!;
 
-    public User User { get; set; } = null!;
-    
-    public string TokenHash { get; set; } = null!;
+    public required string TokenHash { get; init; }
 
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
 
-    public DateTime ExpiresAt { get; set; }
-    
-    public DateTime? RevokedAt { get; set; }
+    public required DateTime ExpiresAt { get; init; }
 
-    public string? ReplacedByTokenId { get; set; }
+    public DateTime? RevokedAt { get; private set; }
 
-    public RefreshToken? ReplacedByToken { get; set; }
+    public Guid? ReplacedByTokenId { get; private set; }
+    public RefreshToken? ReplacedByToken { get; private set; }
+    public bool IsRotated => ReplacedByToken is not null;
 
+    public string? IpAddress { get; init; }
 
-    public string? IpAddress { get; set; }
-
-
-    public string? UserAgent { get; set; }
+    public string? UserAgent { get; init; }
 
 
     public bool IsActive => !IsExpired && !IsRevoked;
@@ -35,4 +30,24 @@ public class RefreshToken
     public bool IsExpired => DateTime.UtcNow >= ExpiresAt;
 
     public bool IsRevoked => RevokedAt.HasValue;
+
+    public bool Validate(string refreshTokenHash)
+    {
+        return refreshTokenHash == TokenHash && IsActive;
+    }
+
+    public void Revoke()
+    {
+        RevokedAt = DateTime.UtcNow;
+    }
+
+    public void Rotate(RefreshToken newRefreshToken)
+    {
+        if (IsRotated)
+            throw new InvalidOperationException("Token has already been rotated.");
+
+        ReplacedByTokenId = newRefreshToken.Id;
+        ReplacedByToken = newRefreshToken;
+        Revoke();
+    }
 }

@@ -26,6 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\..\..\Src\Services\Modules\Identity\Identity.Infrastructure\Identity.Infrastructure.csproj" />
       <ProjectReference Include="..\..\..\..\Shared\Shared.csproj" />
       <ProjectReference Include="..\..\..\..\..\Src\Services\Modules\Identity\Identity.Application\Identity.Application.csproj" />
     </ItemGroup>

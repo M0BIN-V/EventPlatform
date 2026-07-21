@@ -57,27 +57,28 @@ public static class IdentityEndpointExtensions
         );
     }
 
-    private static async Task<Results<Ok<RefreshTokenResponse>, BadRequest<string>, ValidationProblem>> Refresh(
+    private static async Task<Results<Ok<RefreshTokenResponse>,  UnauthorizedHttpResult, ValidationProblem>> Refresh(
         [FromServices] RefreshHandler handler,
         [FromBody] RefreshRequest request)
     {
         var result = await handler.HandleAsync(request);
 
-        return result.Match<Results<Ok<RefreshTokenResponse>, BadRequest<string>, ValidationProblem>>(
+        return result.Match<Results<Ok<RefreshTokenResponse>,  UnauthorizedHttpResult, ValidationProblem>>(
             tokens => Ok(tokens),
             validationErrors => validationErrors.ToValidationProblem(),
-            invalidTokenError => BadRequest("Invalid refresh token")
+            invalidTokenError => Unauthorized()
         );
     }
 
-    private static async Task<Results<Ok<LogoutSuccessResponse>, ValidationProblem>> Logout(
+    private static async Task<Results<Ok<LogoutSuccessResponse>, UnauthorizedHttpResult, ValidationProblem>> Logout(
         [FromServices] LogoutHandler handler,
         [FromBody] LogoutRequest request)
     {
         var result = await handler.HandleAsync(request);
 
-        return result.Match<Results<Ok<LogoutSuccessResponse>, ValidationProblem>>(
+        return result.Match<Results<Ok<LogoutSuccessResponse>, UnauthorizedHttpResult, ValidationProblem>>(
             success => Ok(success),
+            invalidRefreshTokenError => Unauthorized(),
             validationErrors => validationErrors.ToValidationProblem()
         );
     }

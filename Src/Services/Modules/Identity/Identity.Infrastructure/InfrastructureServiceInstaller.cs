@@ -28,9 +28,13 @@ public static class ApplicationServiceInstaller
             .AddDefaultTokenProviders();
 
         // Register token and refresh token services
-        builder.Services.AddScoped<ITokenService, TokenService>();
+        builder.Services.AddScoped<IAccessTokenService, AccessTokenService>();
         builder.Services.AddScoped<IRefreshTokenHasher, RefreshTokenHasher>();
-        builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
+        builder.Services.AddScoped<ISecureTokenGenerator, SecureTokenGenerator>();
+
+
+        builder.Services.Configure<JwtOptions>(
+            builder.Configuration.GetSection("Jwt"));
 
         return builder;
     }

@@ -1,12 +1,16 @@
 using BuildingBlocks.Application;
 using FluentValidation;
+using Identity.Application.Common.Contracts.Persistence;
 using Identity.Application.Common.Contracts.Services;
+using Identity.Application.Errors;
 
 namespace Identity.Application.Features.Logout;
 
 public class LogoutHandler(
+    IRefreshTokenHasher hasher,
     IValidator<LogoutRequest> validator,
-    IRefreshTokenService refreshTokenService) :
+    IRefreshTokenRepository repository,
+    IIdentityUnitOfWork uow) :
     Handler<LogoutRequest, LogoutResponse>
 {
     public override async Task<LogoutResponse> HandleAsync(
@@ -17,19 +21,17 @@ public class LogoutHandler(
         if (!validationResult.IsValid)
             return validationResult.Errors;
 
-        // Validate the refresh token to get the token entity
-        var validateResult = await refreshTokenService.ValidateAsync(request.RefreshToken, ct);
+        var tokenHash = hasher.HashToken(request.RefreshToken);
 
-        if (validateResult.IsT1)
-        {
-            // Even if token is invalid, return success (don't expose whether token exists)
-            return new LogoutSuccessResponse("Logged out successfully.");
-        }
+        var storedRefreshToken = await repository.GetByTokenHashAsync(tokenHash, ct);
 
-        var (_, token) = validateResult.AsT0;
+        if (storedRefreshToken is null || !storedRefreshToken.Validate(tokenHash))
+            return new InvalidRefreshTokenError();
 
-        // Revoke the refresh token
-        await refreshTokenService.RevokeAsync(token, ct);
+        storedRefreshToken.Revoke();
+        
+        repository.Update(storedRefreshToken);
+        await uow.SaveChangesAsync(ct);
 
         return new LogoutSuccessResponse("Logged out successfully.");
     }

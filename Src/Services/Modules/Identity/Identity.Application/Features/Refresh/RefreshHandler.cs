@@ -1,13 +1,24 @@
 using BuildingBlocks.Application;
 using FluentValidation;
+using Identity.Application.Common.Contracts.Persistence;
 using Identity.Application.Common.Contracts.Services;
+using Identity.Application.Common.Options;
+using Identity.Application.Errors;
+using Identity.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 
 namespace Identity.Application.Features.Refresh;
 
 public class RefreshHandler(
     IValidator<RefreshRequest> validator,
-    ITokenService tokenService,
-    IRefreshTokenService refreshTokenService) :
+    UserManager<User> userManager,
+    IOptions<RefreshTokenOptions> options,
+    ISecureTokenGenerator secureTokenGenerator,
+    IAccessTokenService accessTokenService,
+    IRefreshTokenRepository repository,
+    IIdentityUnitOfWork uow,
+    IRefreshTokenHasher hasher) :
     Handler<RefreshRequest, RefreshResponse>
 {
     public override async Task<RefreshResponse> HandleAsync(
@@ -17,25 +28,51 @@ public class RefreshHandler(
         var validationResult = await validator.ValidateAsync(request, ct);
         if (!validationResult.IsValid) return validationResult.Errors;
 
-        // Validate the refresh token
-        var validateResult = await refreshTokenService.ValidateAsync(request.RefreshToken, ct);
+        var tokenHash = hasher.HashToken(request.RefreshToken);
 
-        if (validateResult.IsT1)
-            return validateResult.AsT1;
+        var storedRefreshToken = await repository.GetByTokenHashAsync(tokenHash, ct);
 
-        var (user, oldToken) = validateResult.AsT0;
+        if (storedRefreshToken is null) return new InvalidRefreshTokenError();
 
-        // Rotate the refresh token
-        var (newRefreshToken, _) = await refreshTokenService.RotateAsync(
-            oldToken,
-            7, // This should be configurable
-            null,
-            null,
-            ct);
+        // handle the case where the refresh token has been rotated to protect against token reuse attacks
+        if (storedRefreshToken.IsRotated)
+        {
+            var activeTokens = await repository.GetActiveTokensAsync(storedRefreshToken.UserId, ct);
 
-        // Generate new access token
-        var newAccessToken = await tokenService.GenerateAccessTokenAsync(user);
+            activeTokens.ForEach(r => r.Revoke());
 
-        return new RefreshTokenResponse(newAccessToken, newRefreshToken);
+            repository.Update(activeTokens);
+
+            await uow.SaveChangesAsync(ct);
+
+            return new InvalidRefreshTokenError();
+        }
+
+        if (!storedRefreshToken.Validate(tokenHash))
+            return new InvalidRefreshTokenError();
+
+        var user = await userManager.FindByIdAsync(storedRefreshToken.UserId);
+        if (user is null) return new InvalidRefreshTokenError();
+
+        var rawRefreshToken = secureTokenGenerator.Generate();
+        var userRoles = await userManager.GetRolesAsync(user);
+
+        var newRefreshToken = new RefreshToken
+        {
+            TokenHash = hasher.HashToken(rawRefreshToken),
+            UserId = user.Id,
+            ExpiresAt = DateTime.UtcNow.AddDays(options.Value.ExpirationDays)
+        };
+
+        storedRefreshToken.Rotate(newRefreshToken);
+
+        repository.Add(newRefreshToken);
+        repository.Update(storedRefreshToken);
+
+        await uow.SaveChangesAsync(ct);
+
+        var newAccessToken = accessTokenService.GenerateAccessToken(user, userRoles.ToList());
+
+        return new RefreshTokenResponse(newAccessToken, rawRefreshToken);
     }
 }

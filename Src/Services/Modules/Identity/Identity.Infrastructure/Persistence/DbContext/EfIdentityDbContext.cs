@@ -9,8 +9,8 @@ public class EfIdentityDbContext(DbContextOptions<EfIdentityDbContext> options)
 {
     public const string Schema = "identity";
 
-    public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
-    
+    public DbSet<RefreshToken> RefreshTokens { get; init; } = null!;
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema(Schema);

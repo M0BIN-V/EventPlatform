@@ -11,9 +11,7 @@ public class AuthInstaller : IServiceInstaller
     public void Install(IHostApplicationBuilder builder)
     {
         var jwt = builder.Configuration.GetSection("Jwt");
-
-        builder.Services.Configure<JwtOptions>(jwt);
-        
+       
         builder.Services.AddAuthorization();
         
         builder.Services.AddAuthentication(options =>

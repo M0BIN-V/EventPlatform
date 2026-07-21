@@ -4,20 +4,19 @@ using System.Text;
 using Identity.Application;
 using Identity.Application.Common.Contracts.Services;
 using Identity.Domain.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Identity.Infrastructure.Services;
 
-public class TokenService(IOptions<JwtOptions> jwtOptions, UserManager<User> userManager)
-    : ITokenService
+
+public class AccessTokenService(IOptions<JwtOptions> jwtOptions) : IAccessTokenService
 {
     private readonly JwtOptions _jwtOptions = jwtOptions.Value;
 
-    public async Task<string> GenerateAccessTokenAsync(User user)
+    public string GenerateAccessToken(User user, List<string> roles)
     {
-        var claims = await CreateClaims(user);
+        var claims = CreateClaims(user, roles);
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -33,7 +32,7 @@ public class TokenService(IOptions<JwtOptions> jwtOptions, UserManager<User> use
         return tokenHandler.WriteToken(token);
     }
 
-    private async Task<List<Claim>> CreateClaims(User user)
+    private static List<Claim> CreateClaims(User user, List<string> roles)
     {
         var claims = new List<Claim>
         {
@@ -44,10 +43,16 @@ public class TokenService(IOptions<JwtOptions> jwtOptions, UserManager<User> use
             new(ClaimTypes.Name, $"{user.FirstName} {user.LastName}".Trim())
         };
 
-        var roles = await userManager.GetRolesAsync(user);
-
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
         return claims;
     }
+}
+
+public class JwtOptions
+{
+    public required string Key { get; init; }
+    public required string Issuer { get; init; }
+    public required string Audience { get; init; }
+    public int AccessTokenExpirationMinutes { get; init; } = 15;
 }
