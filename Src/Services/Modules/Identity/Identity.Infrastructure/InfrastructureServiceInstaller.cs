@@ -1,6 +1,9 @@
+using Identity.Application.Common.Contracts.Persistence;
 using Identity.Application.Common.Contracts.Services;
 using Identity.Domain.Entities;
+using Identity.Infrastructure.Persistence;
 using Identity.Infrastructure.Persistence.DbContext;
+using Identity.Infrastructure.Persistence.Repositories;
 using Identity.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +35,9 @@ public static class ApplicationServiceInstaller
         builder.Services.AddScoped<IRefreshTokenHasher, RefreshTokenHasher>();
         builder.Services.AddScoped<ISecureTokenGenerator, SecureTokenGenerator>();
 
+        // Register repositories 
+        builder.Services.AddScoped<IIdentityUnitOfWork, IdentityUnitOfWork>();
+        builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
         builder.Services.Configure<JwtOptions>(
             builder.Configuration.GetSection("Jwt"));
