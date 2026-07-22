@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/Solution items/">
     <File Path=".gitignore" />
+    <File Path="opencode.json" />
   </Folder>
   <Folder Name="/Src/">
     <Project Path="Src/WebApp/WebApp.csproj" />
