@@ -20,6 +20,7 @@
   </Folder>
   <Folder Name="/Backend/Modules/Shared/">
     <Project Path="Backend/Modules/Shared/BuildingBlocks/BuildingBlocks.csproj" />
+    <Project Path="Backend/Modules/Shared/Messaging/Messaging.csproj" />
   </Folder>
   <Folder Name="/Backend/Modules/Shared/Tests/">
     <Project Path="Backend/Modules/Shared/Tests/Shared.UnitTests/Shared.UnitTests.csproj" />

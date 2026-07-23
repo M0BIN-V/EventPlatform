@@ -1,10 +1,10 @@
 using BuildingBlocks.Application.Contracts;
-using BuildingBlocks.Application.Events;
 using BuildingBlocks.Infrastructure;
 using DiServiceInstaller;
 using Identity.Application.Features.Register;
 using JasperFx.CodeGeneration;
 using JasperFx.CodeGeneration.Model;
+using Messaging;
 using Notification.Application.Features;
 using Polly.CircuitBreaker;
 using Wolverine;

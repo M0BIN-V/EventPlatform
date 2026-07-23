@@ -1,4 +1,4 @@
-using BuildingBlocks.Application.Events;
+using Messaging;
 using Notification.Application.Contracts.Services;
 
 namespace Notification.Application.Features;

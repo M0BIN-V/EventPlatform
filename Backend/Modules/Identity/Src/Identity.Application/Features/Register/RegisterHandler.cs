@@ -1,11 +1,11 @@
 using System.Text;
 using BuildingBlocks.Application;
 using BuildingBlocks.Application.Contracts;
-using BuildingBlocks.Application.Events;
 using FluentValidation;
 using Identity.Application.Common.Mappers;
 using Identity.Application.Errors;
 using Identity.Domain.Entities;
+using Messaging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
@@ -48,7 +48,7 @@ public class RegisterHandler(
         var fullName = newUser.FirstName + " " + newUser.LastName;
         var confirmationUrl = await GenerateConfirmationUrl(newUser);
         var message = new ConfirmEmailRequestedEvent(fullName, newUser.Email, confirmationUrl);
-        
+
         await publisher.PublishAsync(message);
 
         return newUser.Id;
@@ -57,7 +57,7 @@ public class RegisterHandler(
     private async Task<string> GenerateConfirmationUrl(User user)
     {
         var emailConfirmationToken = await manager.GenerateEmailConfirmationTokenAsync(user);
-        
+
         var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(emailConfirmationToken));
 
         var confirmationUrl = $"{options.Value.ConfirmationUrl}?email={user.Email}&token={encodedToken}";
