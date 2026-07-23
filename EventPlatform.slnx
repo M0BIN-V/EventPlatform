@@ -1,35 +1,39 @@
 <Solution>
-  <Folder Name="/Solution items/">
-    <File Path=".gitignore" />
-    <File Path="opencode.json" />
-  </Folder>
-  <Folder Name="/Src/">
-    <Project Path="Src/WebApp/WebApp.csproj" />
-  </Folder>
-  <Folder Name="/Src/Services/">
+  <Folder Name="/Backend/">
     <Project Path="Src/Services/WebApi/WebApi.csproj" />
   </Folder>
-  <Folder Name="/Src/Services/Modules/">
-    <Project Path="Src/Services/Modules/BuildingBlocks/BuildingBlocks.csproj" />
-  </Folder>
-  <Folder Name="/Src/Services/Modules/Identity/">
+  <Folder Name="/Backend/Modules/" />
+  <Folder Name="/Backend/Modules/Identity/" />
+  <Folder Name="/Backend/Modules/Identity/Src/">
     <Project Path="Src/Services/Modules/Identity/Identity.Application/Identity.Application.csproj" />
     <Project Path="Src/Services/Modules/Identity/Identity.Domain/Identity.Domain.csproj" />
     <Project Path="Src/Services/Modules/Identity/Identity.Infrastructure/Identity.Infrastructure.csproj" />
     <Project Path="Src/Services/Modules/Identity/Identity.Presentation/Identity.Presentation.csproj" />
   </Folder>
-  <Folder Name="/Src/Services/Modules/Notification/">
+  <Folder Name="/Backend/Modules/Identity/Tests/">
+    <Project Path="Identity.IntegrationTests/Identity.IntegrationTests.csproj" />
+    <Project Path="Tests/Services/Modules/UnitTests/Identity.UnitTests/Identity.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/Backend/Modules/Notification/" />
+  <Folder Name="/Backend/Modules/Notification/Src/">
     <Project Path="Src/Services/Modules/Notification/Notification.Application/Notification.Application.csproj" />
     <Project Path="Src/Services/Modules/Notification/Notification.Infrastructure/Notification.Infrastructure.csproj" />
   </Folder>
-  <Folder Name="/Tests/">
-    <Project Path="Tests/Shared/Shared.csproj" />
+  <Folder Name="/Backend/Modules/Shared/">
+    <Project Path="Src/Services/Modules/BuildingBlocks/BuildingBlocks.csproj" />
   </Folder>
-  <Folder Name="/Tests/Services/" />
-  <Folder Name="/Tests/Services/Modules/" />
-  <Folder Name="/Tests/Services/Modules/Identity/" />
-  <Folder Name="/Tests/Services/Modules/Identity/UnitTests/">
-    <Project Path="Tests/Services/Modules/UnitTests/Application.UnitTests/Application.UnitTests.csproj" />
+  <Folder Name="/Backend/Modules/Shared/Shared.Contracts/" />
+  <Folder Name="/Backend/Modules/Shared/Shared.IntegrationTests/" />
+  <Folder Name="/Backend/Modules/Shared/Shared.UnitTests/" />
+  <Folder Name="/Backend/Modules/Shared/Tests/">
+    <Project Path="Tests/Shared.UnitTests/Shared.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/Client/">
+    <Project Path="Src/WebApp/WebApp.csproj" />
+  </Folder>
+  <Folder Name="/Solution items/">
+    <File Path=".gitignore" />
+    <File Path="opencode.json" />
   </Folder>
   <Project Path="AppHost/AppHost.csproj" />
   <Project Path="ServiceDefaults/ServiceDefaults.csproj" />

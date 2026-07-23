@@ -5,6 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
+        <RootNamespace>Application.UnitTests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -27,7 +28,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\..\..\Src\Services\Modules\Identity\Identity.Infrastructure\Identity.Infrastructure.csproj" />
-      <ProjectReference Include="..\..\..\..\Shared\Shared.csproj" />
+      <ProjectReference Include="..\..\..\..\Shared.UnitTests\Shared.UnitTests.csproj" />
       <ProjectReference Include="..\..\..\..\..\Src\Services\Modules\Identity\Identity.Application\Identity.Application.csproj" />
     </ItemGroup>
 
