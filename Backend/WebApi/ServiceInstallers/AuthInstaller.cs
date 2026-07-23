@@ -1,6 +1,5 @@
 using System.Text;
 using DiServiceInstaller;
-using Identity.Application;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -11,9 +10,9 @@ public class AuthInstaller : IServiceInstaller
     public void Install(IHostApplicationBuilder builder)
     {
         var jwt = builder.Configuration.GetSection("Jwt");
-       
+
         builder.Services.AddAuthorization();
-        
+
         builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

@@ -7,13 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\BuildingBlocks\BuildingBlocks.csproj" />
-      <ProjectReference Include="..\Identity.Domain\Identity.Domain.csproj" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.6.0"/>
+        <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.6.0"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.6.0" />
-        <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.6.0" />
+      <ProjectReference Include="..\Identity.Domain\Identity.Domain.csproj" />
     </ItemGroup>
 
 </Project>
