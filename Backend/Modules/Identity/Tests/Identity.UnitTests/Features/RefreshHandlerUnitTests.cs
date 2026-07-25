@@ -1,86 +1,47 @@
-using FluentValidation.Results;
 using Identity.Application.Common.Contracts.ApplicationServices;
 using Identity.Application.Common.Contracts.Persistence;
-using Identity.Application.Common.Errors;
-using Identity.Application.Features.Logout;
-using Identity.Domain.Constants;
+using Identity.Application.Common.Contracts.Services;
+using Identity.Application.Features.Refresh;
+using Identity.Domain.Entities;
+using Identity.Infrastructure.Services;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 
 namespace Application.UnitTests.Features;
 
 public class RefreshHandlerUnitTests
 {
-    private readonly LogoutHandler _handler;
-    private readonly IRefreshTokenManager _refreshTokenManager;
-    private readonly LogoutRequestValidator _validator = new();
+    private readonly IAccessTokenService _accessTokenService = For<IAccessTokenService>();
+    private readonly RefreshHandler _handler;
+    private readonly IRefreshTokenHasher _hasher = For<IRefreshTokenHasher>();
+    private readonly IRefreshTokenManager _refreshTokenManager = For<IRefreshTokenManager>();
+    private readonly UserManager<User> _userManager ;
+    private readonly RefreshRequestValidator _validator = new();
+
 
     public RefreshHandlerUnitTests()
     {
-        _refreshTokenManager = For<IRefreshTokenManager>();
-        var uow = For<IIdentityUnitOfWork>();
-
-        _handler = new LogoutHandler(
+        _userManager = new UserManager<User>()
+        
+        _handler = new RefreshHandler(
             _refreshTokenManager,
             _validator,
-            uow);
-    }
-
-
-    [Fact]
-    public async Task HandleAsync_ShouldRevokeTokenAndReturnSuccess_WhenRequestIsValid()
-    {
-        // Arrange
-        var request = new LogoutRequest("refresh-token");
-
-        _refreshTokenManager
-            .RevokeAsync(
-                request.RefreshToken,
-                RevocationReason.Logout,
-                Any<CancellationToken>())
-            .Returns((InvalidRefreshTokenError?)null);
-
-
-        // Act
-        var result = await _handler.HandleAsync(request);
-
-
-        // Assert
-        result.Value.ShouldBeOfType<LogoutSuccessResponse>();
-    }
-
-
-    [Fact]
-    public async Task HandleAsync_Should_Return_Validation_Error_When_Request_Is_Invalid()
-    {
-        // Arrange
-        var request = new LogoutRequest("");
-
-        // Act
-        var result = await _handler.HandleAsync(request);
-
-
-        // Assert
-        result.Value.ShouldBeOfType<List<ValidationFailure>>();
+            _userManager,
+            _accessTokenService,
+            For<IIdentityUnitOfWork>(),
+            _hasher);
     }
 
     [Fact]
-    public async Task HandleAsync_Should_Return_Error_When_RefreshToken_Is_Invalid()
+    public async Task EmptyRefreshToken_ShouldReturnValidationError()
     {
-        // Arrange
-        var request = new LogoutRequest("invalid-token");
-        
-        _refreshTokenManager
-            .RevokeAsync(
-                request.RefreshToken,
-                RevocationReason.Logout,
-                Any<CancellationToken>())
-            .Returns(new InvalidRefreshTokenError());
+        //Arrange 
+        var request = new RefreshRequest("");
 
-
-        // Act
+        //Act
         var result = await _handler.HandleAsync(request);
 
-
-        // Assert
-        result.Value.ShouldBeOfType<InvalidRefreshTokenError>();
+        //Assert
+        result.Value.ShouldBeOfType<List<ValidationProblem>>();
     }
 }
