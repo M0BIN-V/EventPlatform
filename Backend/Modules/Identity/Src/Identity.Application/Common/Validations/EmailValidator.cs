@@ -1,5 +1,4 @@
 using System.Text.RegularExpressions;
-using FluentValidation;
 
 namespace Identity.Application.Common.Validations;
 

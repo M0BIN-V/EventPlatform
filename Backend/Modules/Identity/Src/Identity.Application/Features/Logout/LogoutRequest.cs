@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace Identity.Application.Features.Logout;
 
 public record LogoutRequest(string RefreshToken);

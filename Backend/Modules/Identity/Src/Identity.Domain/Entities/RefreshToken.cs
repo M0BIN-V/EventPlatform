@@ -1,4 +1,5 @@
 using BuildingBlocks.Domain.Entities;
+using Identity.Domain.Constants;
 
 namespace Identity.Domain.Entities;
 
@@ -10,44 +11,60 @@ public class RefreshToken : EntityBase
 
     public required string TokenHash { get; init; }
 
-    public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
+    public required DateTimeOffset CreatedAt { get; init; }
 
-    public required DateTime ExpiresAt { get; init; }
+    public required DateTimeOffset ExpiresAt { get; init; }
 
-    public DateTime? RevokedAt { get; private set; }
+    public DateTimeOffset? RevokedAt { get; private set; }
+    public RevocationReason RevocationReason { get; private set; }
 
     public Guid? ReplacedByTokenId { get; private set; }
     public RefreshToken? ReplacedByToken { get; private set; }
-    public bool IsRotated => ReplacedByToken is not null;
+    public DateTimeOffset? ReplacedAt { get; private set; }
 
     public string? IpAddress { get; init; }
 
     public string? UserAgent { get; init; }
 
-
-    public bool IsActive => !IsExpired && !IsRevoked;
-
-    public bool IsExpired => DateTime.UtcNow >= ExpiresAt;
-
-    public bool IsRevoked => RevokedAt.HasValue;
-
-    public bool Validate(string refreshTokenHash)
+    public bool IsExpired(DateTimeOffset now)
     {
-        return refreshTokenHash == TokenHash && IsActive;
+        return ExpiresAt > now;
     }
 
-    public void Revoke()
+    public bool IsRevoked()
     {
-        RevokedAt = DateTime.UtcNow;
+        return RevokedAt is not null;
     }
 
-    public void Rotate(RefreshToken newRefreshToken)
+    public bool IsReplaced()
     {
-        if (IsRotated)
-            throw new InvalidOperationException("Token has already been rotated.");
+        return ReplacedAt is not null;
+    }
+
+    public bool IsActive(DateTimeOffset now)
+    {
+        return
+            !IsRevoked() &&
+            !IsExpired(now) &&
+            !IsReplaced();
+    }
+
+    public void Revoke(DateTimeOffset revokedAt, RevocationReason reason)
+    {
+        if (IsActive(revokedAt)) throw new InvalidOperationException("Token is not active.");
+
+        RevokedAt = revokedAt;
+        RevocationReason = reason;
+    }
+
+    public void Rotate(RefreshToken newRefreshToken, DateTimeOffset now)
+    {
+        if (IsActive(now)) throw new InvalidOperationException("Token is not active.");
 
         ReplacedByTokenId = newRefreshToken.Id;
         ReplacedByToken = newRefreshToken;
-        Revoke();
+        ReplacedAt = now;
+
+        Revoke(now, RevocationReason.Rotated);
     }
 }

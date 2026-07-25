@@ -5,7 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Identity.Infrastructure.Persistence.Repositories;
 
-public class RefreshTokenRepository(EfIdentityDbContext context) : IRefreshTokenRepository
+public class RefreshTokenRepository(
+    EfIdentityDbContext context,
+    TimeProvider timeProvider) : IRefreshTokenRepository
 {
     public void Add(RefreshToken refreshToken)
     {
@@ -15,7 +17,11 @@ public class RefreshTokenRepository(EfIdentityDbContext context) : IRefreshToken
     public async Task<List<RefreshToken>> GetActiveTokensAsync(string userId, CancellationToken ct = default)
     {
         return await context.RefreshTokens
-            .Where(t => t.UserId == userId && t.IsActive)
+            .Where(t => 
+                t.UserId == userId &&
+                t.RevokedAt == null &&
+                t.ReplacedByTokenId != null &&
+                t.ExpiresAt!= timeProvider.GetUtcNow())
             .ToListAsync(ct);
     }
 
@@ -32,6 +38,6 @@ public class RefreshTokenRepository(EfIdentityDbContext context) : IRefreshToken
     public async Task<RefreshToken?> GetByTokenHashAsync(string tokenHash, CancellationToken ct = default)
     {
         return await context.RefreshTokens
-            .FirstOrDefaultAsync(t => t.TokenHash == tokenHash, ct);
+            .SingleOrDefaultAsync(t => t.TokenHash == tokenHash, ct);
     }
 }

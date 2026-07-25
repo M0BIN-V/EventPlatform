@@ -1,5 +1,4 @@
 using BuildingBlocks.Application.Extensions;
-using FluentValidation;
 using Identity.Application.Common.Options;
 using Identity.Application.Features.Login;
 using Identity.Application.Features.Register;

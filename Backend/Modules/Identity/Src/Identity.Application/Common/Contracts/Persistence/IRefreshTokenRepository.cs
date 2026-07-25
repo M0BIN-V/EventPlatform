@@ -1,5 +1,3 @@
-using Identity.Domain.Entities;
-
 namespace Identity.Application.Common.Contracts.Persistence;
 
 public interface IRefreshTokenRepository

@@ -1,7 +1,6 @@
-using BuildingBlocks.Application;
 using Microsoft.AspNetCore.Identity;
 
-namespace Identity.Application.Errors;
+namespace Identity.Application.Common.Errors;
 
 public sealed record EmailConfirmationFailedError : Error
 {

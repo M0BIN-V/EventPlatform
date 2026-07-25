@@ -1,4 +1,3 @@
-using Identity.Domain.Entities;
 using System.Security.Claims;
 
 namespace Identity.Application.Common.Contracts.Services;

@@ -1,14 +1,9 @@
 using System.Text;
-using BuildingBlocks.Application;
 using BuildingBlocks.Application.Contracts;
-using FluentValidation;
 using Identity.Application.Common.Mappers;
-using Identity.Application.Errors;
-using Identity.Domain.Entities;
 using Messaging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Options;
 
 namespace Identity.Application.Features.Register;
 

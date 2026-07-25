@@ -1,5 +1,4 @@
 using Identity.Application.Common.Validations;
-using FluentValidation;
 
 namespace Identity.Application.Features.Register;
 

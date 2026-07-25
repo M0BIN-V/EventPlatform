@@ -2,8 +2,8 @@ using BuildingBlocks.Application;
 using FluentValidation;
 using Identity.Application.Common.Contracts.Persistence;
 using Identity.Application.Common.Contracts.Services;
+using Identity.Application.Common.Errors;
 using Identity.Application.Common.Options;
-using Identity.Application.Errors;
 using Identity.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -11,6 +11,7 @@ using Microsoft.Extensions.Options;
 namespace Identity.Application.Features.Login;
 
 public class LoginHandler(
+    TimeProvider timeProvider,
     IValidator<LoginRequest> validator,
     ISecureTokenGenerator tokenGenerator,
     IRefreshTokenHasher hasher,
@@ -40,13 +41,16 @@ public class LoginHandler(
 
         var rawRefreshToken = tokenGenerator.Generate();
 
+        var now = timeProvider.GetUtcNow();
+
         var refreshTokenEntity = new RefreshToken
         {
             TokenHash = hasher.HashToken(rawRefreshToken),
+            CreatedAt = now,
             UserId = user.Id,
-            ExpiresAt = DateTime.UtcNow.AddDays(options.Value.ExpirationDays)
+            ExpiresAt = now.AddDays(options.Value.ExpirationDays)
         };
-        
+
         repository.Add(refreshTokenEntity);
         await uow.SaveChangesAsync(ct);
 

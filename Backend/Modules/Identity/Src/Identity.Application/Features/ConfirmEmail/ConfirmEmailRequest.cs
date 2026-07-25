@@ -1,4 +1,3 @@
-using FluentValidation;
 using Identity.Application.Common.Validations;
 
 namespace Identity.Application.Features.ConfirmEmail;

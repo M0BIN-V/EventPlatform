@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace Identity.Application.Features.Refresh;
 
 public record RefreshRequest(string RefreshToken);
