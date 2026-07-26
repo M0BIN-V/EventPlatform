@@ -11,6 +11,7 @@
     <Project Path="Backend/Modules/Identity/Src/Identity.Presentation/Identity.Presentation.csproj" />
   </Folder>
   <Folder Name="/Backend/Modules/Identity/Tests/">
+    <Project Path="Backend/Modules/Identity/Tests/Identity.IntegrationTests/Identity.IntegrationTests.csproj" />
     <Project Path="Backend/Modules/Identity/Tests/Identity.UnitTests/Identity.UnitTests.csproj" />
   </Folder>
   <Folder Name="/Backend/Modules/Notification/" />
@@ -23,6 +24,7 @@
     <Project Path="Backend/Modules/Shared/Messaging/Messaging.csproj" />
   </Folder>
   <Folder Name="/Backend/Modules/Shared/Tests/">
+    <Project Path="Backend/Modules/Shared/Tests/Shared.IntegrationTests/Shared.IntegrationTests.csproj" />
     <Project Path="Backend/Modules/Shared/Tests/Shared.UnitTests/Shared.UnitTests.csproj" />
   </Folder>
   <Folder Name="/Client/">
