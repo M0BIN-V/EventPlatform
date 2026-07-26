@@ -18,7 +18,7 @@ public class RefreshHandlerUnitTests
     private readonly RefreshHandler _handler;
     private readonly IRefreshTokenHasher _hasher = For<IRefreshTokenHasher>();
     private readonly IRefreshTokenManager _refreshTokenManager = For<IRefreshTokenManager>();
-    private readonly UserManager<User> _userManager = Helpers.CreateUserManager();
+    private readonly UserManager<User> _userManager = new FakeUserManagerBuilder().Create();
     private readonly RefreshRequestValidator _validator = new();
 
     public RefreshHandlerUnitTests()
