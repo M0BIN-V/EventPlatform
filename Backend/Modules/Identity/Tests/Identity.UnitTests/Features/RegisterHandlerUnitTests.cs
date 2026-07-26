@@ -1,9 +1,5 @@
 using BuildingBlocks.Application.Contracts;
-using FluentValidation;
-using FluentValidation.Results;
 using Identity.Application.Features.Register;
-using Identity.Domain.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;

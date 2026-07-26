@@ -23,8 +23,7 @@ public class ConfirmEmailHandler(
 
         if (user is null) return new UserNotFoundError(request.Email);
 
-        var decodedToken = Encoding.UTF8.GetString(
-            WebEncoders.Base64UrlDecode(request.Token));
+        var decodedToken = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(request.Token));
 
         var confirmationResult = await manager.ConfirmEmailAsync(user, decodedToken);
 

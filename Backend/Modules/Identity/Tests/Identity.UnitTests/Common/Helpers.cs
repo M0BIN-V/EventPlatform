@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace Application.UnitTests.Common;
 
-public class Helpers
+public static class Helpers
 {
     public static UserManager<User> CreateUserManager()
     {
