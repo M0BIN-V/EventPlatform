@@ -1,6 +1,6 @@
 using Testcontainers.PostgreSql;
 
-namespace Identity.IntegrationTests.Common;
+namespace Shared.IntegrationTests.Common;
 
 public class IntegrationTestFixture : IAsyncLifetime
 {

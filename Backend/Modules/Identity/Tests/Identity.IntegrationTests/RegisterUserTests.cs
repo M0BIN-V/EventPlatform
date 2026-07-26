@@ -1,4 +1,4 @@
-using Identity.IntegrationTests.Common;
+using Shared.IntegrationTests.Common;
 
 namespace Identity.IntegrationTests;
 
