@@ -32,7 +32,7 @@ public class ConfirmEmailHandlerUnitTests
 
 
     [Fact]
-    public async Task ConfirmEmail_UserDoesNotExist_ReturnsUserNotFoundError()
+    public async Task ConfirmEmail_WhenUserDoesNotExist_ReturnsUserNotFoundError()
     {
         // Arrange
         _userManager.FindByEmailAsync(Any<string>())
@@ -54,7 +54,7 @@ public class ConfirmEmailHandlerUnitTests
 
 
     [Fact]
-    public async Task ConfirmEmail_InvalidToken_ReturnsConfirmationFailedError()
+    public async Task ConfirmEmail_WithInvalidToken_ReturnsConfirmationFailedError()
     {
         // Arrange
         var user = new User
@@ -94,7 +94,7 @@ public class ConfirmEmailHandlerUnitTests
 
 
     [Fact]
-    public async Task ConfirmEmail_ValidToken_ReturnsSuccessMessage()
+    public async Task ConfirmEmail_WithValidToken_ReturnsSuccessMessage()
     {
         // Arrange
         var user = new User

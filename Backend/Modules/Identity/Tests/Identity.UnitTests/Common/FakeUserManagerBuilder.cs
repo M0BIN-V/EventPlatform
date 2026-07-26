@@ -18,7 +18,7 @@ public class FakeUserManagerBuilder
     public UserManager<User> Create()
     {
         IdentityOptions.Value.Returns(new IdentityOptions());
-        
+
         return For<UserManager<User>>(UserStore, IdentityOptions, PwdHasher, UserValidators, PwdValidators,
             Normalizer,
             Describer, Services, Logger);
