@@ -1,7 +1,8 @@
+using Application.UnitTests.Application.Common;
 using Identity.Application.Features.ConfirmEmail;
 using Microsoft.AspNetCore.WebUtilities;
 
-namespace Application.UnitTests.Features;
+namespace Application.UnitTests.Application.Features;
 
 public class ConfirmEmailHandlerUnitTests
 {

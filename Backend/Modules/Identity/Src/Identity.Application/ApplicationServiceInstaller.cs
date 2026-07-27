@@ -1,8 +1,8 @@
 using BuildingBlocks.Application.Extensions;
 using Identity.Application.Common.Contracts.ApplicationServices;
 using Identity.Application.Common.Options;
-using Identity.Application.Common.Services;
 using Identity.Application.Features.Register;
+using Identity.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 

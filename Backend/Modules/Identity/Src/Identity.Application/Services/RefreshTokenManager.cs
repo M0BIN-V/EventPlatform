@@ -4,7 +4,7 @@ using Identity.Application.Common.Contracts.Services;
 using Identity.Application.Common.Options;
 using Microsoft.AspNetCore.Identity;
 
-namespace Identity.Application.Common.Services;
+namespace Identity.Application.Services;
 
 public class RefreshTokenManager(
     IRefreshTokenRepository repository,

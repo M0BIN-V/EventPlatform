@@ -1,16 +1,11 @@
-using Application.UnitTests.Common;
-using FluentValidation.Results;
+using Application.UnitTests.Application.Common;
 using Identity.Application.Common.Contracts.ApplicationServices;
 using Identity.Application.Common.Contracts.Persistence;
 using Identity.Application.Common.Contracts.Services;
-using Identity.Application.Common.Errors;
 using Identity.Application.Features.Refresh;
-using Identity.Domain.Entities;
-using JasperFx.Core.Reflection;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Time.Testing;
 
-namespace Application.UnitTests.Features;
+namespace Application.UnitTests.Application.Features;
 
 public class RefreshHandlerUnitTests
 {

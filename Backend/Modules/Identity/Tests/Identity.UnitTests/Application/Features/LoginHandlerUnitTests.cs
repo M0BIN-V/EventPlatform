@@ -1,4 +1,5 @@
-using Application.UnitTests.Common.Abstractions;
+using Application.UnitTests.Application.Common;
+using Application.UnitTests.Application.Common.Abstractions;
 using Identity.Application.Common.Contracts.Persistence;
 using Identity.Application.Common.Contracts.Services;
 using Identity.Application.Common.Options;
@@ -6,7 +7,7 @@ using Identity.Application.Features.Login;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Time.Testing;
 
-namespace Application.UnitTests.Features;
+namespace Application.UnitTests.Application.Features;
 
 public class LoginHandlerUnitTests : HandlerTest<LoginHandler, LoginRequest, LoginResponse>
 {

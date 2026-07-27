@@ -1,11 +1,9 @@
-using FluentValidation.Results;
 using Identity.Application.Common.Contracts.ApplicationServices;
 using Identity.Application.Common.Contracts.Persistence;
-using Identity.Application.Common.Errors;
 using Identity.Application.Features.Logout;
 using Identity.Domain.Constants;
 
-namespace Application.UnitTests.Features;
+namespace Application.UnitTests.Application.Features;
 
 public class LogoutHandlerUnitTests
 {

@@ -28,7 +28,7 @@ public class RefreshToken : EntityBase
 
     public bool IsExpired(DateTimeOffset now)
     {
-        return ExpiresAt > now;
+        return ExpiresAt <= now;
     }
 
     public bool IsRevoked()
@@ -38,7 +38,7 @@ public class RefreshToken : EntityBase
 
     public bool IsReplaced()
     {
-        return ReplacedAt is not null;
+        return ReplacedByTokenId is not null;
     }
 
     public bool IsActive(DateTimeOffset now)
@@ -51,7 +51,7 @@ public class RefreshToken : EntityBase
 
     public void Revoke(DateTimeOffset revokedAt, RevocationReason reason)
     {
-        if (IsActive(revokedAt)) throw new InvalidOperationException("Token is not active.");
+        if (IsRevoked()) throw new InvalidOperationException("Token already revoked.");
 
         RevokedAt = revokedAt;
         RevocationReason = reason;
@@ -59,7 +59,7 @@ public class RefreshToken : EntityBase
 
     public void Rotate(RefreshToken newRefreshToken, DateTimeOffset now)
     {
-        if (IsActive(now)) throw new InvalidOperationException("Token is not active.");
+        if (!IsActive(now)) throw new InvalidOperationException("Token is not active.");
 
         ReplacedByTokenId = newRefreshToken.Id;
         ReplacedByToken = newRefreshToken;

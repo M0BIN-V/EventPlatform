@@ -31,5 +31,9 @@
         <ProjectReference Include="..\..\Src\Identity.Infrastructure\Identity.Infrastructure.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Application\" />
+    </ItemGroup>
+
 
 </Project>

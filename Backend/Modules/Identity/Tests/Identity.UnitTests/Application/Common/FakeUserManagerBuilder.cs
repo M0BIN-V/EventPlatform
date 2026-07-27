@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Application.UnitTests.Common;
+namespace Application.UnitTests.Application.Common;
 
 public class FakeUserManagerBuilder
 {

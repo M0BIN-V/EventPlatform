@@ -1,7 +1,6 @@
 // Global using directives
 
 global using System.Text;
-global using Application.UnitTests.Common;
 global using FluentValidation;
 global using FluentValidation.Results;
 global using Identity.Application.Common.Errors;

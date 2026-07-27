@@ -1,7 +1,7 @@
 using BuildingBlocks.Application;
 using OneOf;
 
-namespace Application.UnitTests.Common.Abstractions;
+namespace Application.UnitTests.Application.Common.Abstractions;
 
 public abstract class HandlerTest<THandler, TRequest, TResponse>
     where THandler : Handler<TRequest, TResponse>

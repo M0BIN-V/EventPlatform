@@ -1,10 +1,11 @@
-using Application.UnitTests.Common.Abstractions;
+using Application.UnitTests.Application.Common;
+using Application.UnitTests.Application.Common.Abstractions;
 using BuildingBlocks.Application.Contracts;
 using Identity.Application.Features.Register;
 using Messaging;
 using Microsoft.Extensions.Options;
 
-namespace Application.UnitTests.Features.Register;
+namespace Application.UnitTests.Application.Features.Register;
 
 public class RegisterHandlerUnitTests :
     HandlerTest<RegisterHandler, RegisterRequest, RegisterResponse>
