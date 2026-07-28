@@ -19,12 +19,12 @@
         <PackageReference Include="OneOf" Version="3.0.271"/>
         <PackageReference Include="OneOf.SourceGenerator" Version="3.0.271"/>
         <PackageReference Include="Scrutor" Version="7.0.0" />
-        <PackageReference Include="WolverineFx" Version="6.22.0" />
+        <PackageReference Include="WolverineFx" Version="6.23.1" />
     </ItemGroup>
 
     <!-- including debug packages -->
     <ItemGroup Condition="'$(Configuration)' == 'Debug'">
-        <PackageReference Include="WolverineFx.RuntimeCompilation" Version="6.22.0" />
+        <PackageReference Include="WolverineFx.RuntimeCompilation" Version="6.23.1" />
     </ItemGroup>
 
     <ItemGroup>

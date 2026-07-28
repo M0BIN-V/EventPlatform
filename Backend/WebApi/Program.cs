@@ -12,7 +12,7 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment() || AppDomain.CurrentDomain.IsOpenApiGeneration())
+if (app.Environment.IsDevelopment() || ProcessHelper.IsOpenApiGeneration())
 {
     app.MapOpenApi();
     app.MapScalarApiReference(options => options.Theme = ScalarTheme.BluePlanet);

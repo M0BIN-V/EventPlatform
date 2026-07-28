@@ -28,7 +28,12 @@ public class WolverineInstaller : IServiceInstaller
 
             var connectionString = builder.Configuration.GetConnectionString("event-platform-db");
 
-            if (!AppDomain.CurrentDomain.IsDesignTimeProcess())
+            if (ProcessHelper.IsDesignTimeProcess())
+                builder.Services
+                    .DisableAllExternalWolverineTransports()
+                    .DisableAllWolverineMessagePersistence();
+
+            if (!ProcessHelper.IsDesignTimeProcess())
                 opts.PersistMessagesWithPostgresql(
                     connectionString ?? throw new NullReferenceException("Connection string is not configured"),
                     "wolverine");
@@ -43,17 +48,12 @@ public class WolverineInstaller : IServiceInstaller
             opts.Discovery.IncludeAssembly(typeof(RegisterHandler).Assembly);
             opts.Discovery.IncludeAssembly(typeof(ConfirmEmailRequestedEventHandler).Assembly);
 
-            if (builder.Environment.IsDevelopment())
-            {
-                opts.CodeGeneration.GeneratedCodeOutputPath =
-                    Path.Combine(builder.Environment.ContentRootPath, "obj", "Wolverine");
-                opts.CodeGeneration.TypeLoadMode = TypeLoadMode.Auto;
-                opts.UseRuntimeCompilation();
-            }
-            else
-            {
-                opts.CodeGeneration.TypeLoadMode = TypeLoadMode.Static;
-            }
+            opts.CodeGeneration.GeneratedCodeOutputPath =
+                Path.Combine(builder.Environment.ContentRootPath,"Generated","Wolverine");
+
+            opts.CodeGeneration.TypeLoadMode = builder.Environment.IsDevelopment()
+                ? TypeLoadMode.Auto
+                : TypeLoadMode.Static;
         });
 
         builder.Services.AddScoped<IMessagePublisher, WolverineMessagePublisher>();

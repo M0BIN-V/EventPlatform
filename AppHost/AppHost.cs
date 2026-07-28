@@ -1,3 +1,4 @@
+using JasperFx.Aspire;
 using Microsoft.Extensions.Hosting;
 using Projects;
 
@@ -9,8 +10,7 @@ var postgres = builder
     .WithLifetime(ContainerLifetime.Persistent)
     .WithPgAdmin(config => config
         .WithContainerName("event-platform-pgadmin")
-        .WithImage("dpage/pgadmin4", "9.9.0")
-        .WithLifetime(ContainerLifetime.Persistent));
+        .WithImage("dpage/pgadmin4", "9.9.0"));
 
 var database = postgres.AddDatabase("event-platform-db");
 
@@ -19,6 +19,7 @@ var mailpit = builder.AddMailPit("event-platform-mailpit")
 
 var api = builder
     .AddProject<WebApi>("event-platform-api")
+    .WithJasperFxCommands(opts => { opts.IncludeMutatingCommands = true; })
     .WithReference(database)
     .WaitFor(database)
     .WithReference(mailpit)

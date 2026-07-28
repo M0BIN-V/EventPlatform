@@ -20,8 +20,9 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Scalar.AspNetCore" Version="2.16.16"/>
-        <PackageReference Include="WolverineFx.EntityFrameworkCore" Version="6.22.0"/>
-        <PackageReference Include="WolverineFx.Postgresql" Version="6.22.0"/>
+        <PackageReference Include="WolverineFx.EntityFrameworkCore" Version="6.23.1" />
+        <PackageReference Include="WolverineFx.Postgresql" Version="6.23.1" />
+        <PackageReference Include="WolverineFx.RuntimeCompilation" Version="6.23.1" />
     </ItemGroup>
 
     <PropertyGroup>
@@ -36,12 +37,5 @@
         <ProjectReference Include="..\Modules\Notification\Src\Notification.Application\Notification.Application.csproj"/>
         <ProjectReference Include="..\Modules\Notification\Src\Notification.Infrastructure\Notification.Infrastructure.csproj"/>
     </ItemGroup>
-
-
-    <!-- Generate Wolverine Handlers -->
-    <Target Name="GenerateWolverineCode" BeforeTargets="Build" Condition="'$(Configuration)' == 'Release'">
-        <Message Importance="high" Text="Wolverine is pre-generating code for Production..."/>
-        <Exec Command="dotnet run -- codegen write"/>
-    </Target>
 
 </Project>
