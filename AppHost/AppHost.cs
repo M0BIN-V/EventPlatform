@@ -38,6 +38,12 @@ var api = builder
         context.EnvironmentVariables["EmailSettings__Security"] = "Auto";
     });
 
+var identityModuleMigration = api
+    .AddEFMigrations("identity-module-migrations", "Identity.Infrastructure.Persistence.DbContext.EfIdentityDbContext")
+    .RunDatabaseUpdateOnStart()
+    .WaitFor(database)
+    .WaitFor(mailpit);
+
 // var webapp = builder
 //     .AddProject<WebApp>("event-platform-webapp")
 //     .WithReference(api)

@@ -2,8 +2,25 @@ namespace WebApi.Extensions;
 
 public static class AppDomainExtensions
 {
-    public static bool RunByDocumentInsider(this AppDomain  appDomain)
+    private const string EfTool = "ef";
+    private const string OpenApiTool = "GetDocument.Insider";
+
+    extension(AppDomain appDomain)
     {
-        return appDomain.FriendlyName == "GetDocument.Insider";
-    } 
+        public bool IsOpenApiGeneration()
+        {
+            return appDomain.FriendlyName == OpenApiTool;
+        }
+
+        public bool IsRunningByEfTool()
+        {
+            return appDomain.FriendlyName == EfTool;
+        }
+
+        public bool IsDesignTimeProcess()
+        {
+            return appDomain.IsRunningByEfTool()
+                   || appDomain.IsOpenApiGeneration();
+        }
+    }
 }

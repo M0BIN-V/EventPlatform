@@ -25,6 +25,7 @@
     </ItemGroup>
 
     <PropertyGroup>
+        <OpenApiGenerateDocumentsEnvironment>Development</OpenApiGenerateDocumentsEnvironment>
         <OpenApiGenerateDocuments>true</OpenApiGenerateDocuments>
     </PropertyGroup>
     

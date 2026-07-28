@@ -24,6 +24,7 @@
         <Using Include="Xunit"/>
     </ItemGroup>
 
+
     <ItemGroup>
       <ProjectReference Include="..\..\..\..\WebApi\WebApi.csproj" />
       <ProjectReference Include="..\..\..\Shared\Tests\Shared.IntegrationTests\Shared.IntegrationTests.csproj" />

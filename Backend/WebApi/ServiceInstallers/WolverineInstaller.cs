@@ -7,6 +7,7 @@ using JasperFx.CodeGeneration.Model;
 using Messaging;
 using Notification.Application.Features;
 using Polly.CircuitBreaker;
+using WebApi.Extensions;
 using Wolverine;
 using Wolverine.EntityFrameworkCore;
 using Wolverine.ErrorHandling;
@@ -25,10 +26,13 @@ public class WolverineInstaller : IServiceInstaller
             opts.OnException<BrokenCircuitException>()
                 .RetryWithCooldown(5.Minutes(), 15.Minutes(), 30.Minutes());
 
-            opts.PersistMessagesWithPostgresql(
-                builder.Configuration.GetConnectionString("event-platform-db") ??
-                throw new NullReferenceException("Connection string 'event-platform-db' is not configured"),
-                "wolverine");
+            var connectionString = builder.Configuration.GetConnectionString("event-platform-db");
+
+            if (!AppDomain.CurrentDomain.IsDesignTimeProcess())
+                opts.PersistMessagesWithPostgresql(
+                    connectionString ?? throw new NullReferenceException("Connection string is not configured"),
+                    "wolverine");
+
             opts.UseEntityFrameworkCoreTransactions();
             opts.Policies.UseDurableLocalQueues();
             opts.Policies.AutoApplyTransactions();
