@@ -1,4 +1,5 @@
 using BuildingBlocks.Presentation.Extensions;
+using Identity.Application.Common.Errors;
 using Identity.Application.Features.ConfirmEmail;
 using Identity.Application.Features.Login;
 using Identity.Application.Features.Logout;
@@ -30,16 +31,16 @@ public static class IdentityEndpointExtensions
             validationFailure => validationFailure.ToValidationProblem());
     }
 
-    private static async Task<Results<Created, Conflict<string>, ValidationProblem>> Register(
+    private static async Task<Results<Created, Conflict<UserAlreadyExistsError>, ValidationProblem>> Register(
         [FromServices] RegisterHandler handler,
         [FromBody] RegisterRequest request)
     {
         var result = await handler.HandleAsync(request);
 
-        return result.Match<Results<Created, Conflict<string>, ValidationProblem>>(
+        return result.Match<Results<Created, Conflict<UserAlreadyExistsError>, ValidationProblem>>(
             userId => Created(),
             validationErrors => validationErrors.ToValidationProblem(),
-            userAlreadyExistsError => Conflict(userAlreadyExistsError.Message)
+            userAlreadyExistsError => Conflict(userAlreadyExistsError)
         );
     }
 

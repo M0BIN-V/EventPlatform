@@ -1,26 +1,78 @@
-using Shared.IntegrationTests;
-using Shared.IntegrationTests.Common;
+using Identity.Application.Features.Register;
 
 namespace Identity.IntegrationTests;
 
 [Collection("Integration")]
 public class RegisterUserTests(IntegrationTestFixture testFixture)
 {
-    private readonly ApiClient _client = new(testFixture.Api.CreateClient());
+    private const string Endpoint = "api/identity/register";
+    private readonly HttpClient _client = testFixture.CreateClient();
 
     [Fact]
     public async Task RegisterUser_WhenUserAlreadyExists_ShouldReturnConflictResponse()
     {
+        //Arrange
         var request = new RegisterRequest
-        {
-            FirstName = "user first name ",
-            LastName = "user last name",
-            Email = "user email ",
-            Password = "asdf_09sdfKd2$"
-        };
+        (
+            "user first name ",
+            "user last name",
+            "user@email.com",
+            "asdf(*dsFD_223"
+        );
 
-        await _client.RegisterUserAsync(request);
+        await _client.PostAsJsonAsync(Endpoint, request);
 
-        await _client.RegisterUserAsync(request);
+
+        //Act
+        var response = await _client.PostAsJsonAsync(Endpoint, request);
+
+
+        //Assert 
+        response.StatusCode.ShouldBe(HttpStatusCode.Conflict);
+        await response.ShouldBeErrorAsync<UserNotFoundError>(
+            message: $"User with email '{request.Email}' already exists.");
     }
+    
+    [Fact]
+    public async Task RegisterUser_WhenEmailIsNotValid_ShouldReturnBadRequestResponse()
+    {
+        //Arrange
+        var request = new RegisterRequest
+        (
+            "user first name ",
+            "user last name",
+            "user email.com",
+            "asdf(*dsFD_223"
+        );
+
+
+        //Act
+        var response = await _client.PostAsJsonAsync(Endpoint, request);
+
+
+        //Assert 
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+    }
+
+    [Fact]
+    public async Task RegisterUser_WhenUserDoesNotExist_ShouldReturnCreatedResponse()
+    {
+        //Arrange
+        var request = new RegisterRequest
+        (
+            "user first name ",
+            "user last name",
+            "user@email.com",
+            "asdf(*dsFD_223"
+        );
+
+
+        //Act
+        var response = await _client.PostAsJsonAsync(Endpoint, request);
+
+
+        //Assert 
+        response.StatusCode.ShouldBe(HttpStatusCode.Created);
+    }
+
 }

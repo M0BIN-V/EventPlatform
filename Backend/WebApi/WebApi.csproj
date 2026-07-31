@@ -25,10 +25,10 @@
         <PackageReference Include="WolverineFx.RuntimeCompilation" Version="6.23.1" />
     </ItemGroup>
 
-    <PropertyGroup>
-        <OpenApiGenerateDocumentsEnvironment>Development</OpenApiGenerateDocumentsEnvironment>
-        <OpenApiGenerateDocuments>true</OpenApiGenerateDocuments>
-    </PropertyGroup>
+<!--    <PropertyGroup>-->
+<!--        <OpenApiGenerateDocumentsEnvironment>Development</OpenApiGenerateDocumentsEnvironment>-->
+<!--        <OpenApiGenerateDocuments>true</OpenApiGenerateDocuments>-->
+<!--    </PropertyGroup>-->
     
     <ItemGroup>
         <ProjectReference Include="..\..\ServiceDefaults\ServiceDefaults.csproj"/>

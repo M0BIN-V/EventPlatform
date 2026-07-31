@@ -29,9 +29,9 @@
     </ItemGroup>
 
     <!--Generate api client from opan api-->
-    <Target Name="NSwag" AfterTargets="Build">
-        <Exec Command="$(NSwagExe_Net100) run nswag.json"/>
-    </Target>
+<!--    <Target Name="NSwag" AfterTargets="Build">-->
+<!--        <Exec Command="$(NSwagExe_Net100) run nswag.json"/>-->
+<!--    </Target>-->
 
     <ItemGroup>
         <Using Include="Xunit"/>
