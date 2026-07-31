@@ -1,4 +1,5 @@
 using Identity.Application.Features.Register;
+using Messaging;
 
 namespace Identity.IntegrationTests;
 
@@ -34,13 +35,18 @@ public class RegisterUserTests(IntegrationTestFixture testFixture) : IAsyncLifet
 
 
         //Act
-        var response = await _client.PostAsJsonAsync(Endpoint, request);
+        var (response, tracked) = await testFixture.TrackAsync(() =>
+            _client.PostAsJsonAsync(Endpoint, request));
 
 
         //Assert 
         response.StatusCode.ShouldBe(HttpStatusCode.Conflict);
         await response.ShouldBeErrorAsync<UserNotFoundError>(
             message: $"User with email '{request.Email}' already exists.");
+
+        tracked.Sent
+            .SingleMessage<ConfirmEmailRequestedEvent>()
+            .ShouldBeNull();
     }
 
     [Fact]
@@ -57,11 +63,13 @@ public class RegisterUserTests(IntegrationTestFixture testFixture) : IAsyncLifet
 
 
         //Act
-        var response = await _client.PostAsJsonAsync(Endpoint, request);
-
+        var (response, tracked) = await testFixture.TrackAsync(() => 
+            _client.PostAsJsonAsync(Endpoint, request));
 
         //Assert 
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        
+        tracked.Sent.SingleMessage<ConfirmEmailRequestedEvent>().ShouldBeNull();
     }
 
     [Fact]
@@ -78,52 +86,14 @@ public class RegisterUserTests(IntegrationTestFixture testFixture) : IAsyncLifet
 
 
         //Act
-        var response = await _client.PostAsJsonAsync(Endpoint, request);
+        var (response, tracked) = await testFixture.TrackAsync(() =>
+            _client.PostAsJsonAsync(Endpoint, request));
 
-
-        //Assert 
+        //assert
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
-    }
 
-    [Fact]
-    public async Task RegisterUser_WhenUserDoesNotExist_ShouldReturnCreatedRespons2()
-    {
-        //Arrange
-        var request = new RegisterRequest
-        (
-            "user first name ",
-            "user last name",
-            "user@email.com",
-            "asdf(*dsFD_223"
-        );
-
-
-        //Act
-        var response = await _client.PostAsJsonAsync(Endpoint, request);
-
-
-        //Assert 
-        response.StatusCode.ShouldBe(HttpStatusCode.Created);
-    }
-
-    [Fact]
-    public async Task RegisterUser_WhenUserDoesNotExist_ShouldReturnCreatedRespons3()
-    {
-        //Arrange
-        var request = new RegisterRequest
-        (
-            "user first name ",
-            "user last name",
-            "user@email.com",
-            "asdf(*dsFD_223"
-        );
-
-
-        //Act
-        var response = await _client.PostAsJsonAsync(Endpoint, request);
-
-
-        //Assert 
-        response.StatusCode.ShouldBe(HttpStatusCode.Created);
+        var publishedEvent = tracked.Sent.SingleMessage<ConfirmEmailRequestedEvent>();
+        publishedEvent.ShouldNotBeNull();
+        publishedEvent.Email.ShouldBe(request.Email);
     }
 }

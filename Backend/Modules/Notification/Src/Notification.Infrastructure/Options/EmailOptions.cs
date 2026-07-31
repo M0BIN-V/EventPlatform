@@ -10,8 +10,6 @@ public class EmailOptions
     public int Port { get; set; }
     public string Username { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
-    public int RetryCount { get; set; } = 3;
-    public int BackoffBaseSeconds { get; set; } = 2;
     public int TimeoutSeconds { get; set; } = 5;
     public SecureSocketOptions Security { get; set; }
 }

@@ -1,30 +1,55 @@
 using System.Data.Common;
+using DotNet.Testcontainers.Builders;
+using DotNet.Testcontainers.Containers;
 using Identity.Infrastructure.Persistence.DbContext;
+using MailKit.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Notification.Infrastructure.Options;
 using Npgsql;
 using Respawn;
 using Testcontainers.PostgreSql;
+using Wolverine.Tracking;
 
 namespace Shared.IntegrationTests.Common;
 
 public class IntegrationTestFixture : IAsyncLifetime
 {
-    private DbConnection _connection = null!;
-    private Respawner _respawner = null!;
-    private WebApiFactory _webApiFactory = null!;
+    private readonly IContainer _mailpit = new ContainerBuilder("axllent/mailpit:latest")
+        .WithPortBinding(1025, true) // SMTP
+        .WithPortBinding(8025, true) // Web UI
+        .Build();
 
-    private PostgreSqlContainer PostgresContainer { get; } = new PostgreSqlBuilder("postgres:18.3")
-        .WithName("haaaaaaaaaaaaaaaaaaa")
+    private readonly PostgreSqlContainer _postgresContainer = new PostgreSqlBuilder("postgres:18.3")
+        .WithName("test-container-postgres")
         .WithDatabase("event-platform-db")
         .WithUsername("postgres")
         .WithPassword("postgres")
         .Build();
 
+    private DbConnection _connection = null!;
+    private Respawner _respawner = null!;
+    private WebApiFactory _webApiFactory = null!;
+
     public async Task InitializeAsync()
     {
-        await PostgresContainer.StartAsync();
-        _webApiFactory = new WebApiFactory(PostgresContainer);
+        await _postgresContainer.StartAsync();
+        
+        var dbConnectionString = _postgresContainer.GetConnectionString();
+
+        await _mailpit.StartAsync();
+        var emailOptions = new EmailOptions
+        {
+            SmtpServer = _mailpit.Hostname,
+            Port = _mailpit.GetMappedPublicPort(1025),
+            Username = "",
+            Password = "",
+            DefaultFromName = "Event Platform",
+            DefaultFromEmail = "noreply@eventplatform.local",
+            Security = SecureSocketOptions.Auto
+        };
+
+        _webApiFactory = new WebApiFactory(dbConnectionString, emailOptions);
 
         var identityDb = _webApiFactory.Services
             .CreateScope().ServiceProvider
@@ -32,7 +57,7 @@ public class IntegrationTestFixture : IAsyncLifetime
 
         await identityDb.Database.MigrateAsync();
 
-        _connection = new NpgsqlConnection(PostgresContainer.GetConnectionString());
+        _connection = new NpgsqlConnection(dbConnectionString);
 
         await _connection.OpenAsync();
 
@@ -44,7 +69,12 @@ public class IntegrationTestFixture : IAsyncLifetime
 
     public async Task DisposeAsync()
     {
-        await PostgresContainer.StopAsync();
+        await _postgresContainer.StopAsync();
+    }
+
+    public async Task<ITrackedSession> TrackWolverineAsync(Func<Task> action)
+    {
+        return await _webApiFactory.Services.ExecuteAndWaitAsync(action);
     }
 
     public async Task ResetDatabaseAsync()
