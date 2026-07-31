@@ -15,6 +15,7 @@ public class IntegrationTestFixture : IAsyncLifetime
     private WebApiFactory _webApiFactory = null!;
 
     private PostgreSqlContainer PostgresContainer { get; } = new PostgreSqlBuilder("postgres:18.3")
+        .WithName("haaaaaaaaaaaaaaaaaaa")
         .WithDatabase("event-platform-db")
         .WithUsername("postgres")
         .WithPassword("postgres")
