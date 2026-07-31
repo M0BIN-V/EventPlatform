@@ -4,20 +4,9 @@ using Messaging;
 namespace Identity.IntegrationTests;
 
 [Collection("Integration")]
-public class RegisterUserTests(IntegrationTestFixture testFixture) : IAsyncLifetime
+public class RegisterUserTests(IntegrationTestFixture testFixture) : IntegrationTest(testFixture)
 {
     private const string Endpoint = "api/identity/register";
-    private readonly HttpClient _client = testFixture.CreateClient();
-
-    public async Task InitializeAsync()
-    {
-        await testFixture.ResetDatabaseAsync();
-    }
-
-    public Task DisposeAsync()
-    {
-        return Task.CompletedTask;
-    }
 
     [Fact]
     public async Task RegisterUser_WhenUserAlreadyExists_ShouldReturnConflictResponse()
@@ -31,17 +20,17 @@ public class RegisterUserTests(IntegrationTestFixture testFixture) : IAsyncLifet
             "asdf(*dsFD_223"
         );
 
-        await _client.PostAsJsonAsync(Endpoint, request);
+        await Client.PostAsJsonAsync(Endpoint, request);
 
 
         //Act
-        var (response, tracked) = await testFixture.TrackAsync(() =>
-            _client.PostAsJsonAsync(Endpoint, request));
+        var (response, tracked) = await TestFixture.TrackAsync(() =>
+            Client.PostAsJsonAsync(Endpoint, request));
 
 
         //Assert 
         response.StatusCode.ShouldBe(HttpStatusCode.Conflict);
-        await response.ShouldBeErrorAsync<UserNotFoundError>(
+        await response.ShouldBeErrorAsync<UserAlreadyExistsError>(
             message: $"User with email '{request.Email}' already exists.");
 
         tracked.Sent.MessagesOf<ConfirmEmailRequestedEvent>()
@@ -62,8 +51,8 @@ public class RegisterUserTests(IntegrationTestFixture testFixture) : IAsyncLifet
 
 
         //Act
-        var (response, tracked) = await testFixture.TrackAsync(() =>
-            _client.PostAsJsonAsync(Endpoint, request));
+        var (response, tracked) = await TestFixture.TrackAsync(() =>
+            Client.PostAsJsonAsync(Endpoint, request));
 
         //Assert 
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -86,8 +75,8 @@ public class RegisterUserTests(IntegrationTestFixture testFixture) : IAsyncLifet
 
 
         //Act
-        var (response, tracked) = await testFixture.TrackAsync(() =>
-            _client.PostAsJsonAsync(Endpoint, request));
+        var (response, tracked) = await TestFixture.TrackAsync(() =>
+            Client.PostAsJsonAsync(Endpoint, request));
 
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
