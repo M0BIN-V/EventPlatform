@@ -44,9 +44,8 @@ public class RegisterUserTests(IntegrationTestFixture testFixture) : IAsyncLifet
         await response.ShouldBeErrorAsync<UserNotFoundError>(
             message: $"User with email '{request.Email}' already exists.");
 
-        tracked.Sent
-            .SingleMessage<ConfirmEmailRequestedEvent>()
-            .ShouldBeNull();
+        tracked.Sent.MessagesOf<ConfirmEmailRequestedEvent>()
+            .ShouldBeEmpty();
     }
 
     [Fact]
@@ -63,13 +62,14 @@ public class RegisterUserTests(IntegrationTestFixture testFixture) : IAsyncLifet
 
 
         //Act
-        var (response, tracked) = await testFixture.TrackAsync(() => 
+        var (response, tracked) = await testFixture.TrackAsync(() =>
             _client.PostAsJsonAsync(Endpoint, request));
 
         //Assert 
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-        
-        tracked.Sent.SingleMessage<ConfirmEmailRequestedEvent>().ShouldBeNull();
+
+        tracked.Sent.MessagesOf<ConfirmEmailRequestedEvent>()
+            .ShouldBeEmpty();
     }
 
     [Fact]
