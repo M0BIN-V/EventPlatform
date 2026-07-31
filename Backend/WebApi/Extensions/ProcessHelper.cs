@@ -1,16 +1,15 @@
-using System.Reflection;
-
 namespace WebApi.Extensions;
 
 public static class ProcessHelper
 {
     private const string EfTool = "ef";
     private const string OpenApiTool = "GetDocument.Insider";
+    private const string GenerationArgName = "codegen";
 
     public static bool IsRunningGeneration()
     {
-        return Assembly.GetEntryAssembly()?.GetName().Name == "GetDocument.Insider" ||
-               Environment.GetCommandLineArgs().Contains("codegen");
+        return Environment.GetCommandLineArgs()
+            .Contains(GenerationArgName);
     }
 
     public static bool IsOpenApiGeneration()
