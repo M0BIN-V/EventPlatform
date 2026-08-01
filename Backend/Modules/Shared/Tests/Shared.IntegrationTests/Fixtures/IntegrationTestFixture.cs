@@ -11,7 +11,7 @@ using Respawn;
 using Testcontainers.PostgreSql;
 using Wolverine.Tracking;
 
-namespace Shared.IntegrationTests.Common;
+namespace Shared.IntegrationTests.Fixtures;
 
 public class IntegrationTestFixture : IAsyncLifetime
 {

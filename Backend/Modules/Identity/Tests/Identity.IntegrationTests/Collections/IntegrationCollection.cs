@@ -1,3 +1,5 @@
+using Shared.IntegrationTests.Fixtures;
+
 namespace Identity.IntegrationTests.Collections;
 
 [CollectionDefinition("Integration")]

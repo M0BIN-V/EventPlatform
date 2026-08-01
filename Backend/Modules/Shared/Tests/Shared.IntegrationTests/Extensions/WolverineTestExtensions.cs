@@ -1,4 +1,4 @@
-using Shared.IntegrationTests.Common;
+using Shared.IntegrationTests.Fixtures;
 using Wolverine.Tracking;
 
 namespace Shared.IntegrationTests.Extensions;

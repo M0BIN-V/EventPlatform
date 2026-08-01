@@ -1,5 +1,7 @@
 using Identity.Application.Features.Login;
 using Identity.Application.Features.Register;
+using Shared.IntegrationTests.Abstractions;
+using Shared.IntegrationTests.Fixtures;
 
 namespace Identity.IntegrationTests;
 

@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Notification.Infrastructure.Options;
 
-namespace Shared.IntegrationTests.Common;
+namespace Shared.IntegrationTests;
 
 public class WebApiFactory(string databaseConnectionString, EmailOptions emailOptions) : WebApplicationFactory<Program>
 {
@@ -13,5 +13,4 @@ public class WebApiFactory(string databaseConnectionString, EmailOptions emailOp
         Environment.SetEnvironmentVariable("ConnectionStrings:event-platform-db", databaseConnectionString);
         builder.ConfigureServices(s => s.AddSingleton(Options.Create(emailOptions)));
     }
-
 }

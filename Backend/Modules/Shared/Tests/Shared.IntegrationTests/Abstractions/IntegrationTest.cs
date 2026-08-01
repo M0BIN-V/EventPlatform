@@ -1,4 +1,6 @@
-namespace Shared.IntegrationTests.Common;
+using Shared.IntegrationTests.Fixtures;
+
+namespace Shared.IntegrationTests.Abstractions;
 
 public abstract class IntegrationTest(IntegrationTestFixture testFixture) : IAsyncLifetime
 {
