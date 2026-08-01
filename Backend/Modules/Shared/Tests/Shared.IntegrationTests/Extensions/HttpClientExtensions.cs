@@ -1,8 +1,8 @@
 using System.Net.Http.Json;
+using Identity.Application.Features.Login;
 using Identity.Application.Features.Register;
 
 namespace Shared.IntegrationTests.Extensions;
-
 
 public static class HttpClientExtensions
 {
@@ -16,6 +16,11 @@ public static class HttpClientExtensions
         public Task<HttpResponseMessage> RegisterUserAsync(RegisterRequest request)
         {
             return client.PostAsJsonAsync("/api/identity/register", request);
+        }
+
+        public Task<HttpResponseMessage> LoginAsync(LoginRequest request)
+        {
+            return client.PostAsJsonAsync("/api/identity/login", request);
         }
     }
 }

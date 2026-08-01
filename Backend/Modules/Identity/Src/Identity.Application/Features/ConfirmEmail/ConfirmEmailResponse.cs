@@ -5,6 +5,5 @@ namespace Identity.Application.Features.ConfirmEmail;
 [GenerateOneOf]
 public partial class ConfirmEmailResponse : OneOfBase<
     string,
-    EmailConfirmationFailedError,
-    UserNotFoundError,
+    EmailOrConfirmationTokenIsNotValidError,
     List<ValidationFailure>>;

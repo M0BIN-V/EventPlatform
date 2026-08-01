@@ -9,5 +9,6 @@ public partial class LoginResponse : OneOfBase<
     LoginTokenResponse,
     List<ValidationFailure>,
     UserNotFoundError,
+    EmailNotConfirmedError,
     InvalidPasswordError
 >;

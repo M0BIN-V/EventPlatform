@@ -22,7 +22,7 @@ public class ConfirmEmailHandlerUnitTests
     }
 
     [Fact]
-    public async Task ConfirmEmail_WhenUserDoesNotExist_ReturnsUserNotFoundError()
+    public async Task ConfirmEmail_WhenUserDoesNotExist_ReturnsEmailOrConfirmationTokenIsNotValidError()
     {
         // Arrange
         _userManager.FindByEmailAsync(Any<string>())
@@ -38,13 +38,12 @@ public class ConfirmEmailHandlerUnitTests
 
 
         // Assert
-        result.Value.ShouldBeOfType<UserNotFoundError>()
-            .Email.ShouldBe("john@example.com");
+        result.Value.ShouldBeOfType<EmailOrConfirmationTokenIsNotValidError>() ;
     }
 
 
     [Fact]
-    public async Task ConfirmEmail_WithInvalidToken_ReturnsConfirmationFailedError()
+    public async Task ConfirmEmail_WithInvalidToken_ReturnsEmailOrConfirmationTokenIsNotValidError()
     {
         // Arrange
         var user = new User
@@ -78,8 +77,7 @@ public class ConfirmEmailHandlerUnitTests
 
 
         // Assert
-        result.Value.ShouldBeOfType<EmailConfirmationFailedError>()
-            .Errors.ShouldContain(x => x == "Invalid email confirmation token");
+        result.Value.ShouldBeOfType<EmailOrConfirmationTokenIsNotValidError>();
     }
 
 
@@ -101,7 +99,7 @@ public class ConfirmEmailHandlerUnitTests
 
         var token = WebEncoders.Base64UrlEncode("valid-token"u8.ToArray());
 
-        var request = new ConfirmEmailRequest("john@example.com", token);
+        var request = new ConfirmEmailRequest(user.Email, token);
 
 
         // Act

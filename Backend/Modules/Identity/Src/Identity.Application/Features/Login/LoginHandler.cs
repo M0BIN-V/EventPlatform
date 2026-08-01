@@ -29,11 +29,12 @@ public class LoginHandler(
             return validationResult.Errors;
 
         var user = await userManager.FindByEmailAsync(request.Email);
-        if (user is null)
-            return new UserNotFoundError(request.Email);
+        if (user is null) return new UserNotFoundError(request.Email);
 
         var isPasswordValid = await userManager.CheckPasswordAsync(user, request.Password);
         if (!isPasswordValid) return new InvalidPasswordError();
+
+        if (!user.EmailConfirmed) return new EmailNotConfirmedError();
 
         var userRoles = await userManager.GetRolesAsync(user);
 

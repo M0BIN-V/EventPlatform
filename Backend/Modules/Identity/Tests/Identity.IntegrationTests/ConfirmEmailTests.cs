@@ -1,3 +1,4 @@
+using System.Text;
 using Bogus;
 using Messaging;
 using Microsoft.AspNetCore.WebUtilities;
@@ -11,7 +12,7 @@ namespace Identity.IntegrationTests;
 public class ConfirmEmailTests(IntegrationTestFixture testFixture) : IntegrationTest(testFixture)
 {
     [Fact]
-    public async Task ConfirmEmail_WhenEmailIsNotFound_ShouldReturnNotFound()
+    public async Task ConfirmEmail_WhenEmailIsNotFound_ShouldReturnError()
     {
         //Arrange 
         var faker = new Faker();
@@ -21,8 +22,8 @@ public class ConfirmEmailTests(IntegrationTestFixture testFixture) : Integration
         //Act 
         var response = await Client.ConfirmEmailAsync(email, token);
 
-        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
-        await response.ShouldBeErrorAsync<UserNotFoundError>();
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        await response.ShouldBeErrorAsync<EmailOrConfirmationTokenIsNotValidError>();
     }
 
     [Fact]
@@ -46,7 +47,24 @@ public class ConfirmEmailTests(IntegrationTestFixture testFixture) : Integration
     }
 
     [Fact]
-    public async Task ConfirmEmail_WhenTokenIsInvalid_ShouldReturnError()
+    public async Task ConfirmEmail_WhenTokenIsInvalid_ShouldReturnBadRequest()
+    {
+        //Arrange 
+        var user = Fakers.RegisterRequestFaker.Generate();
+        await Client.RegisterUserAsync(user);
+        var token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes("invalid-token"));
+
+        //Act 
+        var response = await Client.ConfirmEmailAsync(user.Email, token);
+
+        //Assert 
+        var body = await response.Content.ReadAsStringAsync();
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        await response.ShouldBeErrorAsync<EmailOrConfirmationTokenIsNotValidError>();
+    }
+
+    [Fact]
+    public async Task ConfirmEmail_WhenTokenIsNotBase64_ShouldReturnBadRequest()
     {
         //Arrange 
         var user = Fakers.RegisterRequestFaker.Generate();
@@ -58,8 +76,7 @@ public class ConfirmEmailTests(IntegrationTestFixture testFixture) : Integration
 
         //Assert 
         var body = await response.Content.ReadAsStringAsync();
-        body.ShouldBeEmpty();
-
-        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        await response.ShouldBeErrorAsync<EmailOrConfirmationTokenIsNotValidError>();
     }
 }

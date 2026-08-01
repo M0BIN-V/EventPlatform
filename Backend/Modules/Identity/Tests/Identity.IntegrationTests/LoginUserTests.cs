@@ -1,7 +1,7 @@
 using Identity.Application.Features.Login;
-using Identity.Application.Features.Register;
 using Shared.IntegrationTests.Abstractions;
 using Shared.IntegrationTests.Fixtures;
+using Shared.IntegrationTests.Helpers;
 
 namespace Identity.IntegrationTests;
 
@@ -9,18 +9,37 @@ namespace Identity.IntegrationTests;
 public class LoginUserTests(IntegrationTestFixture testFixture) : IntegrationTest(testFixture)
 {
     [Fact]
-    public async Task LoginUser_WhenPasswordIsInvalid_ShouldReturnUnauthorizedResponse()
+    public async Task LoginUser_WhenEmailIsNotConfirmed_ShouldReturnForbidden()
     {
-        //Arrange 
-        const string email = "user@email.com";
-        const string password = "pasd#$98Ddd";
+        // Arrange
+        var registerRequest = Fakers.RegisterRequestFaker.Generate();
+        await Client.RegisterUserAsync(registerRequest);
 
-        var request = new LoginRequest(email, password);
+        var request = new LoginRequest(registerRequest.Email, registerRequest.Password);
 
-        await Client.PostAsJsonAsync("api/identity/register",
-            new RegisterRequest("user first name", "user last name", email, password));
-        
-        //TODO 
-        
+        // Act
+        var response = await Client.LoginAsync(request);
+
+        // Assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
+        await response.ShouldBeErrorAsync<EmailNotConfirmedError>();
+    }
+
+    [Fact]
+    public async Task LoginUser_WhenPasswordIsInvalid_ShouldReturnBadRequest()
+    {
+        // Arrange
+        var registerRequest = Fakers.RegisterRequestFaker.Generate();
+
+        await RegisterAndConfirmEmailAsync(registerRequest);
+
+        var request = new LoginRequest(registerRequest.Email, "invalid-password");
+
+        // Act
+        var response = await Client.LoginAsync(request);
+
+        // Assert
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        await response.ShouldBeErrorAsync<InvalidPasswordError>();
     }
 }

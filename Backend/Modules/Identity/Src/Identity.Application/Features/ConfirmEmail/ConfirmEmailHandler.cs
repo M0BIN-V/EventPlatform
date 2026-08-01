@@ -17,14 +17,32 @@ public class ConfirmEmailHandler(
 
         var user = await manager.FindByEmailAsync(request.Email);
 
-        if (user is null) return new UserNotFoundError(request.Email);
+        var tokenFormatIsValid = TryDecodeBase64Url(request.Token, out var decodedToken);
 
-        var decodedToken = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(request.Token));
+        if (user is null || !tokenFormatIsValid) return new EmailOrConfirmationTokenIsNotValidError();
 
-        var confirmationResult = await manager.ConfirmEmailAsync(user, decodedToken);
+        var confirmationResult = await manager.ConfirmEmailAsync(user, decodedToken!);
 
-        if (!confirmationResult.Succeeded) return new EmailConfirmationFailedError(confirmationResult.Errors);
+        if (!confirmationResult.Succeeded) return new EmailOrConfirmationTokenIsNotValidError();
 
         return "Email Confirmed";
+    }
+
+    private static bool TryDecodeBase64Url(string value, out string? result)
+    {
+        result = null;
+
+        if (string.IsNullOrWhiteSpace(value)) return false;
+
+        try
+        {
+            var bytes = WebEncoders.Base64UrlDecode(value);
+            result = Encoding.UTF8.GetString(bytes);
+            return true;
+        }
+        catch (FormatException)
+        {
+            return false;
+        }
     }
 }

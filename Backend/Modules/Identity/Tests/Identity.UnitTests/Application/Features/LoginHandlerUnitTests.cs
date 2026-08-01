@@ -96,6 +96,7 @@ public class LoginHandlerUnitTests : HandlerTest<LoginHandler, LoginRequest, Log
         const string accessToken = "this-is-the-access-token";
         const string rawRefreshToken = "raw-refresh-token";
         const string refreshTokenHash = "refresh-token-hash";
+        user.EmailConfirmed = true;
 
         _userManager.FindByEmailAsync(Any<string>())
             .Returns(Task.FromResult<User?>(user));

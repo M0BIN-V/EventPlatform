@@ -15,7 +15,11 @@ namespace Identity.Presentation;
 
 public static class IdentityEndpointExtensions
 {
-    private static async Task<Results<Ok<string>, ValidationProblem, NotFound<UserNotFoundError>,UnauthorizedHttpResult>>
+    private static async Task<Results<
+            Ok<string>,
+            ValidationProblem,
+            NotFound<UserNotFoundError>,
+            BadRequest<EmailOrConfirmationTokenIsNotValidError>>>
         ConfirmEmail(
             [FromServices] ConfirmEmailHandler handler,
             [FromQuery] string email,
@@ -25,11 +29,15 @@ public static class IdentityEndpointExtensions
 
         var result = await handler.HandleAsync(request);
 
-        return result.Match<Results<Ok<string>, ValidationProblem, NotFound<UserNotFoundError>, UnauthorizedHttpResult>>(
-            confirmed => Ok(confirmed),
-            failed => Unauthorized(),
-            userNotFoundError => NotFound(userNotFoundError),
-            validationFailure => validationFailure.ToValidationProblem());
+        return result
+            .Match<Results<
+                Ok<string>,
+                ValidationProblem,
+                NotFound<UserNotFoundError>,
+                BadRequest<EmailOrConfirmationTokenIsNotValidError>>>(
+                confirmed => Ok(confirmed),
+                invalidTokenOrEmailError => BadRequest(invalidTokenOrEmailError),
+                validationFailure => validationFailure.ToValidationProblem());
     }
 
     private static async Task<Results<Created, Conflict<UserAlreadyExistsError>, ValidationProblem>> Register(
@@ -45,27 +53,35 @@ public static class IdentityEndpointExtensions
         );
     }
 
-    private static async Task<Results<Ok<LoginTokenResponse>, BadRequest<string>, NotFound<string>, ValidationProblem>> Login(
+    private static async Task<Results<
+        Ok<LoginTokenResponse>,
+        BadRequest<InvalidPasswordError>,
+        NotFound<UserNotFoundError>,
+        IResult,
+        ValidationProblem>> Login(
         [FromServices] LoginHandler handler,
         [FromBody] LoginRequest request)
     {
         var result = await handler.HandleAsync(request);
 
-        return result.Match<Results<Ok<LoginTokenResponse>, BadRequest<string>, NotFound<string>, ValidationProblem>>(
-            tokens => Ok(tokens),
-            validationErrors => validationErrors.ToValidationProblem(),
-            userNotFoundError => NotFound(userNotFoundError.Message),
-            invalidPasswordError => BadRequest(invalidPasswordError.Message)
-        );
+        return result
+            .Match<Results<Ok<LoginTokenResponse>, BadRequest<InvalidPasswordError>, NotFound<UserNotFoundError>,
+                IResult, ValidationProblem>>(
+                tokens => Ok(tokens),
+                validationErrors => validationErrors.ToValidationProblem(),
+                userNotFoundError => NotFound(userNotFoundError),
+                emailNotConfirmedError => Json(emailNotConfirmedError, statusCode: StatusCodes.Status403Forbidden),
+                invalidPasswordError => BadRequest(invalidPasswordError)
+            );
     }
 
-    private static async Task<Results<Ok<RefreshTokenResponse>,  UnauthorizedHttpResult, ValidationProblem>> Refresh(
+    private static async Task<Results<Ok<RefreshTokenResponse>, UnauthorizedHttpResult, ValidationProblem>> Refresh(
         [FromServices] RefreshHandler handler,
         [FromBody] RefreshRequest request)
     {
         var result = await handler.HandleAsync(request);
 
-        return result.Match<Results<Ok<RefreshTokenResponse>,  UnauthorizedHttpResult, ValidationProblem>>(
+        return result.Match<Results<Ok<RefreshTokenResponse>, UnauthorizedHttpResult, ValidationProblem>>(
             tokens => Ok(tokens),
             validationErrors => validationErrors.ToValidationProblem(),
             invalidTokenError => Unauthorized()
@@ -93,7 +109,7 @@ public static class IdentityEndpointExtensions
             .WithName("RegisterUser")
             .WithSummary("Registers a new user.")
             .WithDescription("Creates a new user account with the provided details.");
-        
+
         identityGroup.MapPost("/login", Login)
             .WithName("LoginUser")
             .WithSummary("Logs in a user.")
@@ -108,7 +124,7 @@ public static class IdentityEndpointExtensions
             .WithName("LogoutUser")
             .WithSummary("Logs out a user.")
             .WithDescription("Revokes the current refresh token.");
-        
+
         identityGroup.MapGet("confirm-email", ConfirmEmail)
             .WithName("ConfirmEmail")
             .WithSummary("Confirms email address.")
