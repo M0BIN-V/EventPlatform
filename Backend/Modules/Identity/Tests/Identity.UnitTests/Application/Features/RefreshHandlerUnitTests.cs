@@ -11,7 +11,6 @@ public class RefreshHandlerUnitTests
 {
     private readonly IAccessTokenService _accessTokenService = For<IAccessTokenService>();
     private readonly RefreshHandler _handler;
-    private readonly IRefreshTokenHasher _hasher = For<IRefreshTokenHasher>();
     private readonly IRefreshTokenManager _refreshTokenManager = For<IRefreshTokenManager>();
     private readonly UserManager<User> _userManager = new FakeUserManagerBuilder().Create();
     private readonly RefreshRequestValidator _validator = new();
@@ -23,8 +22,7 @@ public class RefreshHandlerUnitTests
             _validator,
             _userManager,
             _accessTokenService,
-            For<IIdentityUnitOfWork>(),
-            _hasher);
+            For<IIdentityUnitOfWork>());
     }
 
     [Fact]

@@ -14,8 +14,7 @@ public class RefreshHandler(
     IValidator<RefreshRequest> validator,
     UserManager<User> userManager,
     IAccessTokenService accessTokenService,
-    IIdentityUnitOfWork uow,
-    IRefreshTokenHasher hasher) :
+    IIdentityUnitOfWork uow) :
     Handler<RefreshRequest, RefreshResponse>
 {
     public override async Task<RefreshResponse> HandleAsync(
