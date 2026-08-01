@@ -29,12 +29,12 @@ public class IntegrationTestFixture : IAsyncLifetime
 
     private DbConnection _connection = null!;
     private Respawner _respawner = null!;
-    private WebApiFactory _webApiFactory = null!;
+    public WebApiFactory WebApiFactory { get; private set; } = null!;
 
     public async Task InitializeAsync()
     {
         await _postgresContainer.StartAsync();
-        
+
         var dbConnectionString = _postgresContainer.GetConnectionString();
 
         await _mailpit.StartAsync();
@@ -49,9 +49,9 @@ public class IntegrationTestFixture : IAsyncLifetime
             Security = SecureSocketOptions.Auto
         };
 
-        _webApiFactory = new WebApiFactory(dbConnectionString, emailOptions);
+        WebApiFactory = new WebApiFactory(dbConnectionString, emailOptions);
 
-        var identityDb = _webApiFactory.Services
+        var identityDb = WebApiFactory.Services
             .CreateScope().ServiceProvider
             .GetRequiredService<EfIdentityDbContext>();
 
@@ -74,7 +74,7 @@ public class IntegrationTestFixture : IAsyncLifetime
 
     public async Task<ITrackedSession> TrackWolverineAsync(Func<Task> action)
     {
-        return await _webApiFactory.Services.ExecuteAndWaitAsync(action);
+        return await WebApiFactory.Services.ExecuteAndWaitAsync(action);
     }
 
     public async Task ResetDatabaseAsync()
@@ -84,7 +84,7 @@ public class IntegrationTestFixture : IAsyncLifetime
 
     public HttpClient CreateClient()
     {
-        var client = _webApiFactory.CreateClient();
+        var client = WebApiFactory.CreateClient();
 
         return client;
     }
