@@ -69,6 +69,12 @@ public class IntegrationTestFixture : IAsyncLifetime
 
     public async Task DisposeAsync()
     {
+        await WebApiFactory.DisposeAsync();
+
+        await _connection.DisposeAsync();
+
+        await _mailpit.StopAsync();
+
         await _postgresContainer.StopAsync();
     }
 

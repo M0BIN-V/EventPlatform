@@ -15,7 +15,7 @@ namespace Identity.Presentation;
 
 public static class IdentityEndpointExtensions
 {
-    private static async Task<Results<Ok<string>, ValidationProblem, NotFound<UserNotFoundError>, BadRequest<string>>>
+    private static async Task<Results<Ok<string>, ValidationProblem, NotFound<UserNotFoundError>,UnauthorizedHttpResult>>
         ConfirmEmail(
             [FromServices] ConfirmEmailHandler handler,
             [FromQuery] string email,
@@ -25,9 +25,9 @@ public static class IdentityEndpointExtensions
 
         var result = await handler.HandleAsync(request);
 
-        return result.Match<Results<Ok<string>, ValidationProblem, NotFound<UserNotFoundError>, BadRequest<string>>>(
+        return result.Match<Results<Ok<string>, ValidationProblem, NotFound<UserNotFoundError>, UnauthorizedHttpResult>>(
             confirmed => Ok(confirmed),
-            failed => BadRequest(failed.Message),
+            failed => Unauthorized(),
             userNotFoundError => NotFound(userNotFoundError),
             validationFailure => validationFailure.ToValidationProblem());
     }

@@ -16,9 +16,10 @@ public class ConfirmEmailTests(IntegrationTestFixture testFixture) : Integration
         //Arrange 
         var faker = new Faker();
         var email = faker.Person.Email;
+        const string token = "some-token";
 
         //Act 
-        var response = await Client.ConfirmEmailAsync(email, "invalid-token");
+        var response = await Client.ConfirmEmailAsync(email, token);
 
         response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
         await response.ShouldBeErrorAsync<UserNotFoundError>();
@@ -50,12 +51,15 @@ public class ConfirmEmailTests(IntegrationTestFixture testFixture) : Integration
         //Arrange 
         var user = Fakers.RegisterRequestFaker.Generate();
         await Client.RegisterUserAsync(user);
-        const string token = "this-is-invalid-token";
+        const string token = "invalid-token";
 
         //Act 
-        var response = await Client.GetAsync($"/api/identity/confirm-email?email={user.Email}&token={token}");
+        var response = await Client.ConfirmEmailAsync(user.Email, token);
 
         //Assert 
+        var body = await response.Content.ReadAsStringAsync();
+        body.ShouldBeEmpty();
+
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
 }

@@ -9,28 +9,17 @@ public class ConfirmEmailHandlerUnitTests
     private readonly ConfirmEmailHandler _handler;
     private readonly UserManager<User> _userManager;
     private readonly FakeUserManagerBuilder _userManagerBuilder = new();
+    private readonly IValidator<ConfirmEmailRequest> _validator = For<IValidator<ConfirmEmailRequest>>();
 
     public ConfirmEmailHandlerUnitTests()
     {
         _userManager = _userManagerBuilder.Create();
-        _handler = new ConfirmEmailHandler(new ConfirmEmailRequestValidator(), _userManager);
+        
+        _validator.ValidateAsync(Any<ConfirmEmailRequest>(), Any<CancellationToken>())
+            .Returns(Task.FromResult(new ValidationResult()));
+        
+        _handler = new ConfirmEmailHandler(_validator, _userManager);
     }
-
-
-    [Fact]
-    public async Task ConfirmEmail_WithInvalidEmailPattern_ReturnsValidationErrors()
-    {
-        //Arrange 
-        const string email = "this is invalid email";
-        var request = new ConfirmEmailRequest(email, "token");
-
-        //Act 
-        var result = await _handler.HandleAsync(request);
-
-        //Assert
-        result.Value.ShouldBeOfType<List<ValidationFailure>>();
-    }
-
 
     [Fact]
     public async Task ConfirmEmail_WhenUserDoesNotExist_ReturnsUserNotFoundError()

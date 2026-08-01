@@ -1,8 +1,4 @@
 using System.Text;
-using BuildingBlocks.Application;
-using FluentValidation;
-using Identity.Application.Common.Errors;
-using Identity.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 
