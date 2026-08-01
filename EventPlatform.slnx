@@ -34,6 +34,7 @@
     <File Path=".github/workflows/test.yml" />
     <File Path=".gitignore" />
     <File Path="opencode.json" />
+    <File Path="README.md" />
   </Folder>
   <Project Path="AppHost/AppHost.csproj" />
   <Project Path="ServiceDefaults/ServiceDefaults.csproj" />

@@ -1,0 +1,1 @@
+![Build & Test Status](https://github.com/M0BIN-V/EventPlatform/actions/workflows/test.yml/badge.svg)
