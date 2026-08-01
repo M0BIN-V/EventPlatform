@@ -31,6 +31,7 @@
     <Project Path="Client/WebApp/WebApp.csproj" />
   </Folder>
   <Folder Name="/Solution items/">
+    <File Path=".github/workflows/test.yml" />
     <File Path=".gitignore" />
     <File Path="opencode.json" />
   </Folder>
