@@ -1,3 +1,4 @@
+using BuildingBlocks.Infrastructure;
 using Identity.Application.Common.Contracts.Persistence;
 using Identity.Application.Common.Contracts.Services;
 using Identity.Domain.Entities;
@@ -41,6 +42,8 @@ public static class ApplicationServiceInstaller
 
         // Configure options
         builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
+
+        builder.Services.AddScoped<IModuleInitializer, IdentityModuleInitializer>();
 
         return builder;
     }

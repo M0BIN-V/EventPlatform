@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 builder.InstallServices(typeof(Program).Assembly);
+
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
@@ -28,6 +29,5 @@ app.MapDefaultEndpoints();
 
 var apiGroup = app.MapGroup("api");
 apiGroup.MapIdentityModuleEndpoints();
-
 
 return await app.RunJasperFxCommands(args);
