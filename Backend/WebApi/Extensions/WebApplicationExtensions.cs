@@ -1,20 +1,31 @@
-using Microsoft.EntityFrameworkCore;
+using BuildingBlocks.Infrastructure;
 
 namespace WebApi.Extensions;
 
-public static class WebApplicationExtensions
+public static partial class WebApplicationExtensions
 {
+    [LoggerMessage(LogLevel.Information, "Initializing {Count} module initializers...")]
+    static partial void LogInitializingCountModuleInitializers(ILogger<WebApplication> logger, int count);
+
     extension(WebApplication app)
     {
-        public async Task EnsureMigrationsApplied<TDbContext>()
-            where TDbContext : DbContext
+        public async Task InitializeModulesAsync()
         {
             using var scope = app.Services.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
 
-            var pendingMigrations = await dbContext.Database.GetPendingMigrationsAsync();
+            var logger = scope.ServiceProvider.GetRequiredService<ILogger<WebApplication>>();
 
-            if (pendingMigrations.Any()) await dbContext.Database.MigrateAsync();
+            var moduleInitializers = scope.ServiceProvider
+                .GetServices<IModuleInitializer>().ToList();
+
+            LogInitializingCountModuleInitializers(logger, moduleInitializers.Count);
+            
+            foreach (var initializer in moduleInitializers)
+            {
+                await initializer.InitializeAsync();
+            }
+            
+            logger.LogInformation("Module initialization completed.");
         }
     }
 }
