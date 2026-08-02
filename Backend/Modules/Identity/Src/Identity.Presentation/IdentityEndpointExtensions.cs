@@ -1,25 +1,14 @@
-using BuildingBlocks.Presentation.Extensions;
-using Identity.Application.Common.Errors;
 using Identity.Application.Features.ConfirmEmail;
 using Identity.Application.Features.Login;
 using Identity.Application.Features.Logout;
 using Identity.Application.Features.Refresh;
 using Identity.Application.Features.Register;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 
 namespace Identity.Presentation;
 
 public static class IdentityEndpointExtensions
 {
-    private static async Task<Results<
-            Ok<string>,
-            ValidationProblem,
-            NotFound<UserNotFoundError>,
-            BadRequest<EmailOrConfirmationTokenIsNotValidError>>>
+    private static async Task<IResult>
         ConfirmEmail(
             [FromServices] ConfirmEmailHandler handler,
             [FromQuery] string email,
@@ -30,13 +19,9 @@ public static class IdentityEndpointExtensions
         var result = await handler.HandleAsync(request);
 
         return result
-            .Match<Results<
-                Ok<string>,
-                ValidationProblem,
-                NotFound<UserNotFoundError>,
-                BadRequest<EmailOrConfirmationTokenIsNotValidError>>>(
-                confirmed => Ok(confirmed),
-                invalidTokenOrEmailError => BadRequest(invalidTokenOrEmailError),
+            .Match<IResult>(
+                Ok,
+                BadRequest,
                 validationFailure => validationFailure.ToValidationProblem());
     }
 

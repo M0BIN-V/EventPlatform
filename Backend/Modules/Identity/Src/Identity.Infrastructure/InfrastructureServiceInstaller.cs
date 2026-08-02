@@ -30,17 +30,17 @@ public static class ApplicationServiceInstaller
             .AddEntityFrameworkStores<EfIdentityDbContext>()
             .AddDefaultTokenProviders();
 
-        // Register token and refresh token services
-        builder.Services.AddScoped<IAccessTokenService, AccessTokenService>();
-        builder.Services.AddScoped<IRefreshTokenHasher, RefreshTokenHasher>();
-        builder.Services.AddScoped<ISecureTokenGenerator, SecureTokenGenerator>();
+        // Register services
+        builder.Services.AddScoped<IAccessTokenService, AccessTokenService>()
+            .AddScoped<IRefreshTokenHasher, RefreshTokenHasher>()
+            .AddScoped<ISecureTokenGenerator, SecureTokenGenerator>();
 
         // Register repositories 
-        builder.Services.AddScoped<IIdentityUnitOfWork, IdentityUnitOfWork>();
-        builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+        builder.Services.AddScoped<IIdentityUnitOfWork, IdentityUnitOfWork>()
+            .AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
-        builder.Services.Configure<JwtOptions>(
-            builder.Configuration.GetSection("Jwt"));
+        // Configure options
+        builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 
         return builder;
     }
