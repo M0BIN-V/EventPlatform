@@ -1,4 +1,5 @@
 using System.Data.Common;
+using BuildingBlocks.Infrastructure;
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
 using Identity.Infrastructure.Persistence.DbContext;
@@ -51,11 +52,11 @@ public class IntegrationTestFixture : IAsyncLifetime
 
         WebApiFactory = new WebApiFactory(dbConnectionString, emailOptions);
 
-        var identityDb = WebApiFactory.Services
-            .CreateScope().ServiceProvider
-            .GetRequiredService<EfIdentityDbContext>();
-
-        await identityDb.Database.MigrateAsync();
+        var options = new DbContextOptionsBuilder<EfIdentityDbContext>()
+            .UseNpgsql(dbConnectionString)
+            .Options;
+        await using var db = new EfIdentityDbContext(options);
+        await db.Database.MigrateAsync();
 
         _connection = new NpgsqlConnection(dbConnectionString);
 
@@ -86,6 +87,13 @@ public class IntegrationTestFixture : IAsyncLifetime
     public async Task ResetDatabaseAsync()
     {
         await _respawner.ResetAsync(_connection);
+
+
+        using var scope = WebApiFactory.Services.CreateScope();
+        var moduleInitializers = scope.ServiceProvider
+            .GetServices<IModuleInitializer>();
+
+        foreach (var initializer in moduleInitializers) await initializer.InitializeAsync();
     }
 
     public HttpClient CreateClient()

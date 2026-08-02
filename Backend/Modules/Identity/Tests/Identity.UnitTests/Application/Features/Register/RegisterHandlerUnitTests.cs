@@ -95,6 +95,9 @@ public class RegisterHandlerUnitTests :
 
         _userManager.CreateAsync(Any<User>(), Any<string>())
             .Returns(IdentityResult.Success);
+        
+        _userManager.AddToRoleAsync(Any<User>(), Any<string>())
+            .Returns(IdentityResult.Success);
 
         //Act
         var result = await Handler.HandleAsync(request);

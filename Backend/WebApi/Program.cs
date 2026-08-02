@@ -19,7 +19,7 @@ if (app.Environment.IsDevelopment() || ProcessHelper.IsOpenApiGeneration())
     app.MapScalarApiReference(options => options.Theme = ScalarTheme.BluePlanet);
 }
 
-await app.InitializeModulesAsync();
+if (!ProcessHelper.IsDesignTimeProcess()) await app.InitializeModulesAsync();
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
