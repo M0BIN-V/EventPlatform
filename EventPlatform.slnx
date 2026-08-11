@@ -19,6 +19,13 @@
     <Project Path="Backend/Modules/Notification/Src/Notification.Application/Notification.Application.csproj" />
     <Project Path="Backend/Modules/Notification/Src/Notification.Infrastructure/Notification.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/Backend/Modules/Organization/" />
+  <Folder Name="/Backend/Modules/Organization/Src/">
+    <Project Path="Backend/Modules/Organization/Src/Organization.Application/Organization.Application.csproj" />
+    <Project Path="Backend/Modules/Organization/Src/Organization.Domain/Organization.Domain.csproj" />
+    <Project Path="Backend/Modules/Organization/Src/Organization.Infrastructure/Organization.Infrastructure.csproj" />
+    <Project Path="Backend/Modules/Organization/Src/Organization.Presentation/Organization.Presentation.csproj" />
+  </Folder>
   <Folder Name="/Backend/Modules/Shared/">
     <Project Path="Backend/Modules/Shared/BuildingBlocks/BuildingBlocks.csproj" />
     <Project Path="Backend/Modules/Shared/Messaging/Messaging.csproj" />

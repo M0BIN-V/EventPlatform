@@ -1,5 +1,6 @@
 using DiServiceInstaller;
 using Identity.Presentation;
+using Organization.Presentation;
 using JasperFx;
 using Scalar.AspNetCore;
 using WebApi.Extensions;
@@ -29,5 +30,6 @@ app.MapDefaultEndpoints();
 
 var apiGroup = app.MapGroup("api");
 apiGroup.MapIdentityModuleEndpoints();
+apiGroup.MapOrganizationModuleEndpoints();
 
 return await app.RunJasperFxCommands(args);

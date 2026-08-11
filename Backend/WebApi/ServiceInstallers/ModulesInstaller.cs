@@ -1,6 +1,7 @@
 using DiServiceInstaller;
 using Identity.Presentation;
 using Notification.Infrastructure;
+using Organization.Presentation;
 
 namespace WebApi.ServiceInstallers;
 
@@ -10,6 +11,7 @@ public class ModulesInstaller : IServiceInstaller
     {
         builder
             .AddIdentityModule()
-            .AddNotificationModule();
+            .AddNotificationModule()
+            .AddOrganizationModule();
     }
 }
