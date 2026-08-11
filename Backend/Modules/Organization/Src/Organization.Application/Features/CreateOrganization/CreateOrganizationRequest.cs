@@ -8,7 +8,7 @@ public class CreateOrganizationRequestValidator : AbstractValidator<CreateOrgani
     {
         RuleFor(x => x.Name)
             .NotEmpty();
-        
+
         RuleFor(x => x.Slug)
             .NotEmpty()
             .Matches(@"^[a-z0-9]+(?:-[a-z0-9]+)*$")
