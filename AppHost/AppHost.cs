@@ -32,6 +32,13 @@ var identityModuleMigration = api
     .WaitFor(database)
     .WaitFor(mailpit);
 
+var organizationModuleMigration = api
+    .AddEFMigrations("organization-module-migrations",
+        "Organizations.Infrastructure.Persistence.DbContext.EfOrganizationDbContext")
+    .RunDatabaseUpdateOnStart()
+    .WaitFor(database)
+    .WaitFor(mailpit);
+
 // var webapp = builder
 //     .AddProject<WebApp>("event-platform-webapp")
 //     .WithReference(api)

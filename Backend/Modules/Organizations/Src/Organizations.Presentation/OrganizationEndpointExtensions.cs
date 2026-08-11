@@ -36,7 +36,8 @@ public static class OrganizationEndpointExtensions
         orgGroup.MapPost("", CreateOrganization)
             .WithName("CreateOrganization")
             .WithSummary("Creates a new organization.")
-            .WithDescription("Creates a new organization and adds the current user as the owner.");
+            .WithDescription("Creates a new organization and adds the current user as the owner.")
+            .RequireAuthorization();
 
         return app;
     }
