@@ -2,16 +2,13 @@ using BuildingBlocks.Domain.Entities;
 
 namespace Organization.Domain.Entities;
 
-public class Organization : EntityBase
+public class Organization(string name, string slug, string? description, string creatorUserId) : EntityBase
 {
-    public string Name { get; set; } = null!;
-    public string Slug { get; set; } = null!;
-    public string? Description { get; set; }
-    
-    /// <summary>
-    /// External reference to Identity UserId who created this organization
-    /// </summary>
-    public string CreatorUserId { get; set; } = null!;
+    public string Name { get; set; } = name;
+    public string Slug { get; set; } = slug;
+    public string? Description { get; set; } = description;
+
+    public string CreatorUserId { get; init; } = creatorUserId;
 
     public ICollection<OrganizationMember> Members { get; set; } = [];
 }

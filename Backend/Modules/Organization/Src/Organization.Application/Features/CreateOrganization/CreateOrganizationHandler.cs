@@ -1,53 +1,47 @@
 using BuildingBlocks.Application.Contracts;
 using Organization.Application.Common.Contracts.Persistence;
-using Organization.Application.Common.Errors;
 using Organization.Domain.Constants;
+using Organization.Domain.Entities;
 
 namespace Organization.Application.Features.CreateOrganization;
 
 public class CreateOrganizationHandler(
     IValidator<CreateOrganizationRequest> validator,
+    ICurrentUser currentUser,
     IOrganizationUnitOfWork unitOfWork) :
     Handler<CreateOrganizationRequest, CreateOrganizationResponse>
 {
-    public override async Task<CreateOrganizationResponse> HandleAsync(CreateOrganizationRequest request, CancellationToken ct = default)
+    public override async Task<CreateOrganizationResponse> HandleAsync(CreateOrganizationRequest request,
+        CancellationToken ct = default)
     {
-        // Validate request
         var validationResult = await validator.ValidateAsync(request, ct);
-        if (!validationResult.IsValid) 
-            return validationResult.Errors;
+        if (!validationResult.IsValid) return validationResult.Errors;
 
-        // Check if slug already exists
-        var slugExists = await unitOfWork.Organizations.SlugExistsAsync(request.Slug!, ct);
-        if (slugExists)
-            return new OrganizationSlugAlreadyExistsError(request.Slug!);
+        var userId = currentUser.Id;
 
-        // Create organization with creator as the owner
-        var organization = new Organization.Domain.Entities.Organization
-        {
-            Name = request.Name!,
-            Slug = request.Slug!.ToLowerInvariant(),
-            Description = request.Description,
-            CreatorUserId = request.UserId
-        };
+        var slugExists = await unitOfWork.Organizations.SlugExistsAsync(request.Slug, ct);
+        if (slugExists) return new OrganizationSlugAlreadyExistsError(request.Slug);
 
-        // Add organization
+        var organization = new Domain.Entities.Organization(
+            request.Name,
+            request.Slug.ToLowerInvariant(),
+            request.Description,
+            userId
+        );
+
         await unitOfWork.Organizations.AddAsync(organization, ct);
 
-        // Create owner membership
-        var ownerMember = new Organization.Domain.Entities.OrganizationMember
+        var ownerMember = new OrganizationMember
         {
             OrganizationId = organization.Id,
-            UserId = request.UserId,
+            UserId = userId,
             Role = OrganizationRole.Owner
         };
 
         await unitOfWork.Members.AddAsync(ownerMember, ct);
 
-        // Save transaction
         await unitOfWork.SaveChangesAsync(ct);
 
         return new CreateOrganizationResponseData(organization.Id, organization.Name, organization.Slug);
     }
 }
-

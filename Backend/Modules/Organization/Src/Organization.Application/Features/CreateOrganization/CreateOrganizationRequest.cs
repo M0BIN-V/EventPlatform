@@ -1,20 +1,23 @@
-using FluentValidation.Results;
-using Organization.Application.Common.Errors;
-using OneOf;
-
 namespace Organization.Application.Features.CreateOrganization;
 
-/// <summary>
-/// Internal request object that includes the authenticated user's ID.
-/// The UserId is always provided by the endpoint from JWT claims.
-/// </summary>
-public record CreateOrganizationRequest(string? Name, string? Slug, string? Description, string UserId = "");
 
-public record CreateOrganizationResponseData(Guid Id, string Name, string Slug);
+public record CreateOrganizationRequest(string Name, string Slug, string? Description);
 
-[GenerateOneOf]
-public partial class CreateOrganizationResponse : OneOfBase<
-    CreateOrganizationResponseData,
-    List<ValidationFailure>,
-    OrganizationSlugAlreadyExistsError
->;
+public class CreateOrganizationRequestValidator : AbstractValidator<CreateOrganizationRequest>
+{
+    public CreateOrganizationRequestValidator()
+    {
+        RuleFor(x => x.Name)
+            .NotEmpty().WithName("Name").WithErrorCode(nameof(OrganizationNameRequiredError));
+
+        RuleFor(x => x.Slug)
+            .NotEmpty().WithName("Slug").WithErrorCode(nameof(OrganizationSlugRequiredError))
+            .Matches(@"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+            .WithName("Slug")
+            .WithErrorCode(nameof(InvalidOrganizationSlugError))
+            .WithMessage("Slug must contain only lowercase letters, numbers, and hyphens.");
+
+        RuleFor(x => x.Description)
+            .MaximumLength(500).WithName("Description");
+    }
+}
