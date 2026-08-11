@@ -10,8 +10,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 builder.InstallServices(typeof(Program).Assembly);
 
-builder.Services.AddOpenApi();
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment() || ProcessHelper.IsOpenApiGeneration())
