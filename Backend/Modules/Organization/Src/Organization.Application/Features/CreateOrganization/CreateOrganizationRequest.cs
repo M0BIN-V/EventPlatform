@@ -7,16 +7,15 @@ public class CreateOrganizationRequestValidator : AbstractValidator<CreateOrgani
     public CreateOrganizationRequestValidator()
     {
         RuleFor(x => x.Name)
-            .NotEmpty().WithName("Name").WithErrorCode(nameof(OrganizationNameRequiredError));
-
+            .NotEmpty();
+        
         RuleFor(x => x.Slug)
-            .NotEmpty().WithName("Slug").WithErrorCode(nameof(OrganizationSlugRequiredError))
+            .NotEmpty()
             .Matches(@"^[a-z0-9]+(?:-[a-z0-9]+)*$")
-            .WithName("Slug")
-            .WithErrorCode(nameof(InvalidOrganizationSlugError))
             .WithMessage("Slug must contain only lowercase letters, numbers, and hyphens.");
 
         RuleFor(x => x.Description)
-            .MaximumLength(500).WithName("Description");
+            .MaximumLength(500)
+            .WithName("Description");
     }
 }
