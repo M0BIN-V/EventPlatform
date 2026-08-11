@@ -14,10 +14,10 @@ public class ConfirmEmailHandlerUnitTests
     public ConfirmEmailHandlerUnitTests()
     {
         _userManager = _userManagerBuilder.Create();
-        
+
         _validator.ValidateAsync(Any<ConfirmEmailRequest>(), Any<CancellationToken>())
             .Returns(Task.FromResult(new ValidationResult()));
-        
+
         _handler = new ConfirmEmailHandler(_validator, _userManager);
     }
 
@@ -38,7 +38,7 @@ public class ConfirmEmailHandlerUnitTests
 
 
         // Assert
-        result.Value.ShouldBeOfType<EmailOrConfirmationTokenIsNotValidError>() ;
+        result.Value.ShouldBeOfType<EmailOrConfirmationTokenIsNotValidError>();
     }
 
 

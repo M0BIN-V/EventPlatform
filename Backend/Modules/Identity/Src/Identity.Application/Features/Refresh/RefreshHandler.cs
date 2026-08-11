@@ -1,10 +1,6 @@
-using BuildingBlocks.Application;
-using FluentValidation;
 using Identity.Application.Common.Contracts.ApplicationServices;
 using Identity.Application.Common.Contracts.Persistence;
 using Identity.Application.Common.Contracts.Services;
-using Identity.Application.Common.Errors;
-using Identity.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Application.Features.Refresh;

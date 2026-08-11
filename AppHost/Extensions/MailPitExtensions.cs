@@ -1,5 +1,3 @@
-using Microsoft.Extensions.Hosting;
-
 namespace AppHost.Extensions;
 
 public static class MailPitExtensions

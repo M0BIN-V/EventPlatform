@@ -89,7 +89,7 @@ public class RefreshHandlerUnitTests
         //Assert
         result.Value.ShouldBeOfType<InvalidRefreshTokenError>();
     }
-    
+
     [Fact]
     public async Task Handler_WhenUserNotFound_ShouldReturnInvalidTokenError()
     {

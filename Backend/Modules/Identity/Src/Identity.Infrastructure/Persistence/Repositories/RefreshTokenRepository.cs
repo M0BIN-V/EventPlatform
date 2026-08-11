@@ -17,11 +17,11 @@ public class RefreshTokenRepository(
     public async Task<List<RefreshToken>> GetActiveTokensAsync(string userId, CancellationToken ct = default)
     {
         return await context.RefreshTokens
-            .Where(t => 
+            .Where(t =>
                 t.UserId == userId &&
                 t.RevokedAt == null &&
                 t.ReplacedByTokenId != null &&
-                t.ExpiresAt!= timeProvider.GetUtcNow())
+                t.ExpiresAt != timeProvider.GetUtcNow())
             .ToListAsync(ct);
     }
 

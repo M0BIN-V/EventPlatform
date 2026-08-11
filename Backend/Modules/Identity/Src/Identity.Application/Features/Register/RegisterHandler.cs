@@ -41,7 +41,7 @@ public class RegisterHandler(
             return result.Errors.ToValidationFailure();
 
         var roleResult = await manager.AddToRoleAsync(newUser, Roles.User);
-        
+
         if (!roleResult.Succeeded)
             throw new Exception(
                 $"Failed to assign role '{Roles.User}' to user '{newUser.Email}': {string.Join(", ", roleResult.Errors.Select(e => e.Description))}");

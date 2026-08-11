@@ -1,5 +1,4 @@
 using FluentValidation.Results;
-using Identity.Application.Common.Contracts.Services;
 
 namespace Identity.Application.Features.Refresh;
 

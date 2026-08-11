@@ -1,6 +1,5 @@
 namespace Organization.Application.Features.CreateOrganization;
 
-
 public record CreateOrganizationRequest(string Name, string Slug, string? Description);
 
 public class CreateOrganizationRequestValidator : AbstractValidator<CreateOrganizationRequest>

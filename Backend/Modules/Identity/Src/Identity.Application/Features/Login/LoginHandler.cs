@@ -1,12 +1,7 @@
-using BuildingBlocks.Application;
-using FluentValidation;
 using Identity.Application.Common.Contracts.Persistence;
 using Identity.Application.Common.Contracts.Services;
-using Identity.Application.Common.Errors;
 using Identity.Application.Common.Options;
-using Identity.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 
 namespace Identity.Application.Features.Login;
 

@@ -1,13 +1,11 @@
-using Organization.Application.Common.Contracts.Persistence;
-using Organization.Infrastructure.Persistence.DbContext;
 using Organization.Infrastructure.Persistence.Repositories;
 
 namespace Organization.Infrastructure.Persistence;
 
 public class OrganizationUnitOfWork(EfOrganizationDbContext context) : IOrganizationUnitOfWork
 {
-    private IOrganizationRepository? _organizationRepository;
     private IOrganizationMemberRepository? _memberRepository;
+    private IOrganizationRepository? _organizationRepository;
 
     public IOrganizationRepository Organizations =>
         _organizationRepository ??= new OrganizationRepository(context);

@@ -52,7 +52,7 @@ public class LogoutHandlerUnitTests
         // Arrange
         var request = new LogoutRequest("");
 
-        
+
         // Act
         var result = await _handler.HandleAsync(request);
 
@@ -66,7 +66,7 @@ public class LogoutHandlerUnitTests
     {
         // Arrange
         var request = new LogoutRequest("invalid-token");
-        
+
         _refreshTokenManager
             .RevokeAsync(
                 request.RefreshToken,
@@ -78,7 +78,7 @@ public class LogoutHandlerUnitTests
         // Act
         var result = await _handler.HandleAsync(request);
 
-        
+
         // Assert
         result.Value.ShouldBeOfType<InvalidRefreshTokenError>();
     }

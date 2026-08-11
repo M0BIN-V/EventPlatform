@@ -50,8 +50,8 @@ public class RefreshTokenManagerTests
         //Arrange
         const string rawToken = "this is token";
         const RevocationReason reason = RevocationReason.Logout;
-        
-        var now  = _timeProvider.GetUtcNow();
+
+        var now = _timeProvider.GetUtcNow();
 
         var storedRefreshToken = new RefreshToken
         {
@@ -60,7 +60,7 @@ public class RefreshTokenManagerTests
             TokenHash = "this is token hash",
             UserId = "this is user id"
         };
-        
+
         _timeProvider.Advance(10.Days());
 
         _repository.GetByTokenHashAsync(Any<string>(), Any<CancellationToken>())
@@ -89,10 +89,10 @@ public class RefreshTokenManagerTests
         };
         _repository.GetByTokenHashAsync(Any<string>(), Any<CancellationToken>())
             .Returns(storedRefreshToken);
-     
+
         //Act
         var result = await _manager.RevokeAsync(rawToken, reason, CancellationToken.None);
-        
+
         //Assert
         result.ShouldBeNull();
         storedRefreshToken.IsActive(_timeProvider.GetUtcNow()).ShouldBeFalse();

@@ -1,7 +1,7 @@
 using DiServiceInstaller;
 using Identity.Presentation;
-using Organization.Presentation;
 using JasperFx;
+using Organization.Presentation;
 using Scalar.AspNetCore;
 using WebApi.Extensions;
 

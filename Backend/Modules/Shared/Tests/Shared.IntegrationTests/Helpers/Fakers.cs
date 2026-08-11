@@ -10,5 +10,5 @@ public static class Fakers
             f.Person.FirstName,
             f.Person.LastName,
             f.Person.Email,
-            f.Internet.Password(8, false,prefix:"Aa1!")));
+            f.Internet.Password(8, prefix: "Aa1!")));
 }

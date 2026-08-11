@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Organization.Application.Common.Contracts.Persistence;
 using Organization.Infrastructure.Persistence;
 
 namespace Organization.Infrastructure;

@@ -8,8 +8,8 @@ public class User : IdentityUser
     public string? LastName { get; set; }
 
     /// <summary>
-    /// Token version used for invalidating all active tokens on security-sensitive changes.
-    /// Increment when: password changes, user disabled, role changes, etc.
+    ///     Token version used for invalidating all active tokens on security-sensitive changes.
+    ///     Increment when: password changes, user disabled, role changes, etc.
     /// </summary>
     public int TokenVersion { get; set; } = 1;
 

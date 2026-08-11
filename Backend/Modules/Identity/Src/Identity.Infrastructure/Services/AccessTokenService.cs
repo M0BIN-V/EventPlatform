@@ -1,14 +1,12 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Identity.Application;
 using Identity.Application.Common.Contracts.Services;
 using Identity.Domain.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Identity.Infrastructure.Services;
-
 
 public class AccessTokenService(IOptions<JwtOptions> jwtOptions) : IAccessTokenService
 {

@@ -1,6 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-
 namespace Identity.Infrastructure.Persistence.DbContext;
 
 // public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<EfIdentityDbContext>

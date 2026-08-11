@@ -49,7 +49,7 @@ public class WolverineInstaller : IServiceInstaller
             opts.Discovery.IncludeAssembly(typeof(ConfirmEmailRequestedEventHandler).Assembly);
 
             opts.CodeGeneration.GeneratedCodeOutputPath =
-                Path.Combine(builder.Environment.ContentRootPath,"Generated","Wolverine");
+                Path.Combine(builder.Environment.ContentRootPath, "Generated", "Wolverine");
 
             opts.CodeGeneration.TypeLoadMode = builder.Environment.IsDevelopment()
                 ? TypeLoadMode.Auto

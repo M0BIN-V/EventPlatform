@@ -1,6 +1,6 @@
-using Organization.Infrastructure;
-using Organization.Application;
 using Microsoft.Extensions.Hosting;
+using Organization.Application;
+using Organization.Infrastructure;
 
 namespace Organization.Presentation;
 

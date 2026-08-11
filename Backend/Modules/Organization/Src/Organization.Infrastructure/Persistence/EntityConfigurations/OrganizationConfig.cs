@@ -1,12 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Organization.Domain.Entities;
 
 namespace Organization.Infrastructure.Persistence.EntityConfigurations;
 
-public class OrganizationConfig : IEntityTypeConfiguration<Organization.Domain.Entities.Organization>
+public class OrganizationConfig : IEntityTypeConfiguration<Domain.Entities.Organization>
 {
-    public void Configure(EntityTypeBuilder<Organization.Domain.Entities.Organization> builder)
+    public void Configure(EntityTypeBuilder<Domain.Entities.Organization> builder)
     {
         builder.HasKey(x => x.Id);
 

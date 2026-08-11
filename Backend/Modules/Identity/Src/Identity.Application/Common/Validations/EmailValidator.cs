@@ -4,7 +4,7 @@ namespace Identity.Application.Common.Validations;
 
 public static partial class EmailValidator
 {
-    static readonly Regex EmailRegex =
+    private static readonly Regex EmailRegex =
         MyRegex();
 
     public static bool IsValid(string email)

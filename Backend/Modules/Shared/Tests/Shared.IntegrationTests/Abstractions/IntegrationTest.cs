@@ -1,7 +1,5 @@
-using BuildingBlocks.Infrastructure;
 using Identity.Application.Features.Register;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.DependencyInjection;
 using Shared.IntegrationTests.Extensions;
 using Shared.IntegrationTests.Fixtures;
 

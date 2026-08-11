@@ -1,6 +1,5 @@
 using Identity.Application.Common.Contracts.Persistence;
 using Identity.Infrastructure.Persistence.DbContext;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Identity.Infrastructure.Persistence;
 

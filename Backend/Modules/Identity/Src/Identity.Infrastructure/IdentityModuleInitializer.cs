@@ -13,9 +13,9 @@ public class IdentityModuleInitializer(
     public async Task InitializeAsync(CancellationToken ct = default)
     {
         logger.LogInformation("Initializing Identity Module");
-        
+
         logger.LogInformation("Seeding roles...");
-        
+
         string[] roleNames = [Roles.Admin, Roles.User, Roles.Organizer];
         var storedRoles = await roleManager.Roles.ToListAsync(ct);
 
@@ -29,7 +29,7 @@ public class IdentityModuleInitializer(
                 var errors = string.Join(", ", result.Errors.Select(e => e.Description));
                 throw new InvalidOperationException($"Failed to seed role '{roleName}'. Errors: {errors}");
             }
-        
+
         logger.LogInformation("Roles seeded successfully.");
     }
 }
