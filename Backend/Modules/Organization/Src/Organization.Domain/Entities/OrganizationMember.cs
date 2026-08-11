@@ -4,11 +4,11 @@ namespace Organization.Domain.Entities;
 
 public class OrganizationMember : EntityBase
 {
-    public Guid OrganizationId { get; set; }
+    public required Guid OrganizationId { get; init; }
 
-    public string UserId { get; set; } = null!;
+    public required string UserId { get; init; }
 
-    public string Role { get; set; } = null!;
+    public required string Role { get; set; }
 
     public Organization Organization { get; set; } = null!;
 }
