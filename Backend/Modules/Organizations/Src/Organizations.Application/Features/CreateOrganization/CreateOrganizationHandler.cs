@@ -1,16 +1,15 @@
 using System.Threading;
 using System.Threading.Tasks;
-using BuildingBlocks.Application;
 using BuildingBlocks.Application.Contracts;
-using FluentValidation;
 using Organizations.Application.Common.Contracts.Persistence;
-using Organizations.Application.Common.Errors;
 using Organizations.Domain.Constants;
 using Organizations.Domain.Entities;
 
 namespace Organizations.Application.Features.CreateOrganization;
 
 public class CreateOrganizationHandler(
+    IOrganizationRepository organizationsRepo,
+    IOrganizationMemberRepository membersRepo,
     IValidator<CreateOrganizationRequest> validator,
     ICurrentUser currentUser,
     IOrganizationUnitOfWork unitOfWork) :
@@ -24,7 +23,7 @@ public class CreateOrganizationHandler(
 
         var userId = currentUser.Id;
 
-        var slugExists = await unitOfWork.Organizations.SlugExistsAsync(request.Slug, ct);
+        var slugExists = await organizationsRepo.SlugExistsAsync(request.Slug, ct);
         if (slugExists) return new OrganizationSlugAlreadyExistsError(request.Slug);
 
         var organization = new Organization(
@@ -34,7 +33,7 @@ public class CreateOrganizationHandler(
             userId
         );
 
-        await unitOfWork.Organizations.AddAsync(organization, ct);
+        await organizationsRepo.AddAsync(organization, ct);
 
         var ownerMember = new OrganizationMember
         {
@@ -43,7 +42,7 @@ public class CreateOrganizationHandler(
             Role = OrganizationRole.Owner
         };
 
-        await unitOfWork.Members.AddAsync(ownerMember, ct);
+        await membersRepo.AddAsync(ownerMember, ct);
 
         await unitOfWork.SaveChangesAsync(ct);
 

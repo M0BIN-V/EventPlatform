@@ -1,6 +1,5 @@
+using BuildingBlocks.Application.Contracts;
+
 namespace Identity.Application.Common.Contracts.Persistence;
 
-public interface IIdentityUnitOfWork
-{
-    Task SaveChangesAsync(CancellationToken ct = default);
-}
+public interface IIdentityUnitOfWork : IUnitOfWork;

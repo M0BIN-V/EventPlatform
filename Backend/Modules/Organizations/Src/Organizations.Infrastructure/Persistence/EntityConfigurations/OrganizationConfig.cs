@@ -22,13 +22,11 @@ public class OrganizationConfig : IEntityTypeConfiguration<Organizations.Domain.
 
         builder.Property(x => x.CreatorUserId)
             .IsRequired()
-            .HasMaxLength(450); // IdentityUser Id max length
+            .HasMaxLength(450); 
 
-        // Unique constraint on slug
         builder.HasIndex(x => x.Slug)
             .IsUnique();
 
-        // Navigation
         builder.HasMany(x => x.Members)
             .WithOne(x => x.Organization)
             .HasForeignKey(x => x.OrganizationId)

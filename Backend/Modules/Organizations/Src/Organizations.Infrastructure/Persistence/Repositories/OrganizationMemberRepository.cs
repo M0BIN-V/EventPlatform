@@ -1,7 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Organizations.Application.Common.Contracts.Persistence;
 using Organizations.Domain.Entities;
-using Organizations.Infrastructure.Persistence.DbContext;
 
 namespace Organizations.Infrastructure.Persistence.Repositories;
 

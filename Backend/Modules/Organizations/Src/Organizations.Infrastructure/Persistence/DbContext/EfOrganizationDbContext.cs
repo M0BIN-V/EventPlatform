@@ -8,8 +8,8 @@ public class EfOrganizationDbContext(DbContextOptions<EfOrganizationDbContext> o
 {
     public const string Schema = "organization";
 
-    public DbSet<Organizations.Domain.Entities.Organization> Organizations { get; init; } = null!;
-    public DbSet<OrganizationMember> OrganizationMembers { get; init; } = null!;
+    public DbSet<Organization> Organizations { get; init; }
+    public DbSet<OrganizationMember> OrganizationMembers { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

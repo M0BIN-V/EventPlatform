@@ -15,13 +15,12 @@ public class OrganizationMemberConfig : IEntityTypeConfiguration<OrganizationMem
 
         builder.Property(x => x.UserId)
             .IsRequired()
-            .HasMaxLength(450); // IdentityUser Id max length
+            .HasMaxLength(450);
 
         builder.Property(x => x.Role)
             .IsRequired()
             .HasMaxLength(50);
 
-        // Foreign key
         builder.HasOne(x => x.Organization)
             .WithMany(x => x.Members)
             .HasForeignKey(x => x.OrganizationId)
