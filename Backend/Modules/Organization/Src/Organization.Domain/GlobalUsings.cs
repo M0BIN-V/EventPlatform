@@ -1,2 +1,0 @@
-// Domain layer global usings
-

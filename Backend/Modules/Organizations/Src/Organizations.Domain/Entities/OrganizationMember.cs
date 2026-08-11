@@ -1,0 +1,14 @@
+using BuildingBlocks.Domain.Entities;
+
+namespace Organizations.Domain.Entities;
+
+public class OrganizationMember : EntityBase
+{
+    public required Guid OrganizationId { get; init; }
+
+    public required string UserId { get; init; }
+
+    public required string Role { get; set; }
+
+    public Organization Organization { get; set; } = null!;
+}
