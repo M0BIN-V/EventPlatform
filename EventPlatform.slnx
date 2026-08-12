@@ -26,6 +26,10 @@
         <Project Path="Backend/Modules/Organizations/Src/Organizations.Infrastructure/Organizations.Infrastructure.csproj" />
         <Project Path="Backend/Modules/Organizations/Src/Organizations.Presentation/Organizations.Presentation.csproj" />
     </Folder>
+    <Folder Name="/Backend/Modules/Organizations/Tests/">
+        <Project Path="Backend/Modules/Organizations/Tests/Organizations.IntegrationTests/Organizations.IntegrationTests.csproj" />
+        <Project Path="Backend/Modules/Organizations/Tests/Organizations.UnitTests/Organizations.UnitTests.csproj" />
+    </Folder>
     <Folder Name="/Backend/Modules/Shared/">
         <Project Path="Backend/Modules/Shared/BuildingBlocks/BuildingBlocks.csproj" />
         <Project Path="Backend/Modules/Shared/Messaging/Messaging.csproj" />
