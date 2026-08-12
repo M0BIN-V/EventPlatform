@@ -1,7 +1,6 @@
-using BuildingBlocks.Application;
-using OneOf;
+using Xunit;
 
-namespace Application.UnitTests.Application.Common.Abstractions;
+namespace Shared.UnitTests.Abstractions;
 
 public abstract class HandlerTest<THandler, TRequest, TResponse>
     where THandler : Handler<TRequest, TResponse>

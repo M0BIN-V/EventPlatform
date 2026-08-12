@@ -1,9 +1,9 @@
 using Application.UnitTests.Application.Common;
-using Application.UnitTests.Application.Common.Abstractions;
 using BuildingBlocks.Application.Contracts;
 using Identity.Application.Features.Register;
 using Messaging;
 using Microsoft.Extensions.Options;
+using Shared.UnitTests.Abstractions;
 
 namespace Application.UnitTests.Application.Features.Register;
 

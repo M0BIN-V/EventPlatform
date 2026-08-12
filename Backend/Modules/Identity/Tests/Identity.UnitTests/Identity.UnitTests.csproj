@@ -33,6 +33,7 @@
 
     <ItemGroup>
         <Folder Include="Application\"/>
+        <Folder Include="Application\Common\Abstractions\" />
     </ItemGroup>
 
 
