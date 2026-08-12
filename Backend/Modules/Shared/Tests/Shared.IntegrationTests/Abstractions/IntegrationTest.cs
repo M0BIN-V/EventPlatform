@@ -48,7 +48,8 @@ public abstract class IntegrationTest(IntegrationTestFixture testFixture) : IAsy
         return Task.CompletedTask;
     }
 
-    protected async Task AuthenticateClient(
+    protected async Task<User> AuthenticateClient(
+        HttpClient client,
         string firstName = "user1",
         string lastName = "user1",
         string email = "user1@email.com",
@@ -96,6 +97,8 @@ public abstract class IntegrationTest(IntegrationTestFixture testFixture) : IAsy
         var accessTokenGenerator = services.GetRequiredService<IAccessTokenService>();
         var accessToken = accessTokenGenerator.GenerateAccessToken(user, [userRole]);
 
-        Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+        return user;
     }
 }
