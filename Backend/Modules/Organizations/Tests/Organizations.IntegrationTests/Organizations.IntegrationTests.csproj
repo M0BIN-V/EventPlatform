@@ -30,8 +30,4 @@
         <ProjectReference Include="..\..\..\Shared\Tests\Shared.IntegrationTests\Shared.IntegrationTests.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="Collections\"/>
-    </ItemGroup>
-
 </Project>

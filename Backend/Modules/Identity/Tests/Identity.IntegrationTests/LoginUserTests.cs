@@ -1,4 +1,6 @@
 using Identity.Application.Features.Login;
+using Messaging;
+using Microsoft.AspNetCore.WebUtilities;
 using Shared.IntegrationTests.Abstractions;
 using Shared.IntegrationTests.Fixtures;
 using Shared.IntegrationTests.Helpers;
@@ -31,7 +33,14 @@ public class LoginUserTests(IntegrationTestFixture testFixture) : IntegrationTes
         // Arrange
         var registerRequest = Fakers.RegisterRequestFaker.Generate();
 
-        await RegisterAndConfirmEmailAsync(registerRequest);
+        var (_, tracked) = await TestFixture.TrackAsync(() => Client.RegisterUserAsync(registerRequest));
+
+        var confirmationUrl = tracked.Sent.SingleMessage<ConfirmEmailRequestedEvent>().ConfirmationUrl;
+        var uri = new Uri(confirmationUrl);
+        var query = QueryHelpers.ParseQuery(uri.Query);
+        var token = query["token"];
+
+        await Client.ConfirmEmailAsync(registerRequest.Email, token!);
 
         var request = new LoginRequest(registerRequest.Email, "invalid-password");
 

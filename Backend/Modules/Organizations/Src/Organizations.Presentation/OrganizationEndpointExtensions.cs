@@ -8,7 +8,7 @@ public static class OrganizationEndpointExtensions
     private static async Task<Results<
             Created<CreateOrganizationResponseData>,
             ValidationProblem,
-            BadRequest<OrganizationSlugAlreadyExistsError>>>
+            Conflict<OrganizationSlugAlreadyExistsError>>>
         CreateOrganization(
             [FromServices] CreateOrganizationHandler handler,
             [FromBody] CreateOrganizationRequest requestBody,
@@ -20,10 +20,10 @@ public static class OrganizationEndpointExtensions
 
         return result
             .Match<Results<Created<CreateOrganizationResponseData>, ValidationProblem,
-                BadRequest<OrganizationSlugAlreadyExistsError>>>(
+                Conflict<OrganizationSlugAlreadyExistsError>>>(
                 org => Created($"/api/organizations/{org.Id}", org),
                 validationErrors => validationErrors.ToValidationProblem(),
-                slugError => BadRequest(slugError)
+                slugError => Conflict(slugError)
             );
     }
 

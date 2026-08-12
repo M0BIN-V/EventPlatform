@@ -8,7 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Notification.Infrastructure.Options;
 using Npgsql;
+using Organizations.Infrastructure.Persistence.DbContext;
 using Respawn;
+using Shared.IntegrationTests.Extensions;
 using Testcontainers.PostgreSql;
 using Wolverine.Tracking;
 
@@ -52,11 +54,16 @@ public class IntegrationTestFixture : IAsyncLifetime
 
         WebApiFactory = new WebApiFactory(dbConnectionString, emailOptions);
 
-        var options = new DbContextOptionsBuilder<EfIdentityDbContext>()
-            .UseNpgsql(dbConnectionString)
-            .Options;
-        await using var db = new EfIdentityDbContext(options);
-        await db.Database.MigrateAsync();
+
+        // Migrations 
+        var identityDbOptions = DbHelpers.ConfigureOptions<EfIdentityDbContext>(dbConnectionString);
+        await using var identityDb = new EfIdentityDbContext(identityDbOptions);
+        await identityDb.Database.MigrateAsync();
+
+        var organizationOptions = DbHelpers.ConfigureOptions<EfOrganizationDbContext>(dbConnectionString);
+        await using var organization = new EfOrganizationDbContext(organizationOptions);
+        await organization.Database.MigrateAsync();
+
 
         _connection = new NpgsqlConnection(dbConnectionString);
 
@@ -79,6 +86,7 @@ public class IntegrationTestFixture : IAsyncLifetime
         await _postgresContainer.StopAsync();
     }
 
+
     public async Task<ITrackedSession> TrackWolverineAsync(Func<Task> action)
     {
         return await WebApiFactory.Services.ExecuteAndWaitAsync(action);
@@ -87,7 +95,6 @@ public class IntegrationTestFixture : IAsyncLifetime
     public async Task ResetDatabaseAsync()
     {
         await _respawner.ResetAsync(_connection);
-
 
         using var scope = WebApiFactory.Services.CreateScope();
         var moduleInitializers = scope.ServiceProvider
