@@ -24,7 +24,6 @@ public class IntegrationTestFixture : IAsyncLifetime
         .Build();
 
     private readonly PostgreSqlContainer _postgresContainer = new PostgreSqlBuilder("postgres:18.3")
-        .WithName("test-container-postgres")
         .WithDatabase("event-platform-db")
         .WithUsername("postgres")
         .WithPassword("postgres")
