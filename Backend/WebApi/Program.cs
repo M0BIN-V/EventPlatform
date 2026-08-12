@@ -1,6 +1,7 @@
 using DiServiceInstaller;
 using Identity.Presentation;
 using JasperFx;
+using Microsoft.AspNetCore.Authentication;
 using Organization.Presentation;
 using Scalar.AspNetCore;
 using WebApi.Extensions;
@@ -9,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 builder.InstallServices(typeof(Program).Assembly);
+
 
 var app = builder.Build();
 
@@ -23,10 +25,10 @@ if (!ProcessHelper.IsDesignTimeProcess()) await app.InitializeModulesAsync();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapDefaultEndpoints();
 
-
-var apiGroup = app.MapGroup("api");
+var apiGroup = app.MapGroup("/api");
 apiGroup.MapIdentityModuleEndpoints();
 apiGroup.MapOrganizationModuleEndpoints();
 

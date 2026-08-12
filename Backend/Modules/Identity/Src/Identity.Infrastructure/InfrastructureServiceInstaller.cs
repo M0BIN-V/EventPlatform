@@ -23,13 +23,22 @@ public static class ApplicationServiceInstaller
             dbContextOpt => dbContextOpt.UseNpgsql(npgOpt => npgOpt
                 .MigrationsHistoryTable("__EFMigrationsHistory", EfIdentityDbContext.Schema)));
 
-        builder.Services.AddIdentity<User, IdentityRole>(options =>
+        builder.Services.AddIdentityCore<User>(options =>
             {
                 options.User.RequireUniqueEmail = true;
                 options.SignIn.RequireConfirmedEmail = true;
             })
+            .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<EfIdentityDbContext>()
             .AddDefaultTokenProviders();
+        
+        // builder.Services.AddIdentity<User, IdentityRole>(options =>
+        //     {
+        //         options.User.RequireUniqueEmail = true;
+        //         options.SignIn.RequireConfirmedEmail = true;
+        //     })
+        //     .AddEntityFrameworkStores<EfIdentityDbContext>()
+        //     .AddDefaultTokenProviders();
 
         // Register services
         builder.Services.AddScoped<IAccessTokenService, AccessTokenService>()

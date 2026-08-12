@@ -15,10 +15,10 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.ApiDescription.Server" Version="10.0.10">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
+        <!--        <PackageReference Include="Microsoft.Extensions.ApiDescription.Server" Version="10.0.10">-->
+        <!--            <PrivateAssets>all</PrivateAssets>-->
+        <!--            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>-->
+        <!--        </PackageReference>-->
         <PackageReference Include="Scalar.AspNetCore" Version="2.16.16"/>
         <PackageReference Include="WolverineFx.EntityFrameworkCore" Version="6.23.1"/>
         <PackageReference Include="WolverineFx.Postgresql" Version="6.23.1"/>
@@ -36,8 +36,8 @@
         <ProjectReference Include="..\Modules\Identity\Src\Identity.Presentation\Identity.Presentation.csproj"/>
         <ProjectReference Include="..\Modules\Notification\Src\Notification.Application\Notification.Application.csproj"/>
         <ProjectReference Include="..\Modules\Notification\Src\Notification.Infrastructure\Notification.Infrastructure.csproj"/>
-        <ProjectReference Include="..\Modules\Organizations\Src\Organizations.Infrastructure\Organizations.Infrastructure.csproj" />
-        <ProjectReference Include="..\Modules\Organizations\Src\Organizations.Presentation\Organizations.Presentation.csproj" />
+        <ProjectReference Include="..\Modules\Organizations\Src\Organizations.Infrastructure\Organizations.Infrastructure.csproj"/>
+        <ProjectReference Include="..\Modules\Organizations\Src\Organizations.Presentation\Organizations.Presentation.csproj"/>
     </ItemGroup>
 
 </Project>

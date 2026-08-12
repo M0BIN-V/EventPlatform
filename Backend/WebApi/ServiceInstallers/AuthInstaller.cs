@@ -13,26 +13,63 @@ public class AuthInstaller : IServiceInstaller
 
         builder.Services.AddAuthorization();
 
-        builder.Services.AddAuthentication(options =>
+        var issuer = jwt["Issuer"];
+        var audience = jwt["Audience"];
+        var key = jwt["Key"];
+
+        var validationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+
+            ValidIssuer = issuer,
+            ValidAudience = audience,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(key ?? throw new NullReferenceException("Jwt:Key configuration is missing")))
+        };
+
+        builder.Services
+            .AddAuthentication(options =>
             {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme =
+                    JwtBearerDefaults.AuthenticationScheme;
+
+                options.DefaultChallengeScheme =
+                    JwtBearerDefaults.AuthenticationScheme;
             })
             .AddJwtBearer(options =>
             {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
+                options.TokenValidationParameters = validationParameters;
 
-                    ValidIssuer = jwt["Issuer"],
-                    ValidAudience = jwt["Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(jwt["Key"] ??
-                                               throw new NullReferenceException(
-                                                   "Jwt:Key configuration is missing")))
+                if (!builder.Environment.IsDevelopment()) return;
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        Console.WriteLine("JWT OnMessageReceived");
+                        Console.WriteLine(
+                            $"Token: {context.Request.Headers.Authorization}");
+
+                        return Task.CompletedTask;
+                    },
+
+                    OnAuthenticationFailed = context =>
+                    {
+                        Console.WriteLine("JWT AuthenticationFailed");
+                        Console.WriteLine(context.Exception);
+
+                        return Task.CompletedTask;
+                    },
+
+                    OnTokenValidated = context =>
+                    {
+                        Console.WriteLine("JWT TokenValidated");
+
+                        return Task.CompletedTask;
+                    }
                 };
             });
     }

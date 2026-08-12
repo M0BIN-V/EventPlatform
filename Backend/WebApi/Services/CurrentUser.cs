@@ -1,4 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using BuildingBlocks.Application.Contracts;
 
@@ -6,15 +5,11 @@ namespace WebApi.Services;
 
 public sealed class CurrentUser(IHttpContextAccessor httpContextAccessor) : ICurrentUser
 {
-    public string Id
-    {
-        get
-        {
-            var userId = httpContextAccessor.HttpContext?
-                .User
-                .FindFirstValue(JwtRegisteredClaimNames.Sub);
+    private ClaimsPrincipal User =>
+        httpContextAccessor.HttpContext?.User
+        ?? throw new UnauthorizedAccessException();
 
-            return userId!;
-        }
-    }
+    public string Id =>
+        User.FindFirstValue(ClaimTypes.NameIdentifier)
+        ?? throw new UnauthorizedAccessException("User id claim was not found.");
 }
