@@ -2,7 +2,7 @@ using Microsoft.Extensions.Hosting;
 using Organizations.Application;
 using Organizations.Infrastructure;
 
-namespace Organization.Presentation;
+namespace Organizations.Presentation;
 
 public static class ModuleInstaller
 {
