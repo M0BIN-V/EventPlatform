@@ -1,3 +1,5 @@
+using Organizations.Application.Common.Validators;
+
 namespace Organizations.Application.Features.CreateOrganization;
 
 public record CreateOrganizationRequest(string Name, string Slug, string? Description);
@@ -7,15 +9,14 @@ public class CreateOrganizationRequestValidator : AbstractValidator<CreateOrgani
     public CreateOrganizationRequestValidator()
     {
         RuleFor(x => x.Name)
-            .NotEmpty();
+            .NotEmpty()
+            .IsOrganizationName();
 
         RuleFor(x => x.Slug)
             .NotEmpty()
-            .Matches(@"^[a-z0-9]+(?:-[a-z0-9]+)*$")
-            .WithMessage("Slug must contain only lowercase letters, numbers, and hyphens.");
+            .IsOrganizationSlug();
 
         RuleFor(x => x.Description)
-            .MaximumLength(500)
-            .WithName("Description");
+            .IsOrganizationDescription();
     }
 }
