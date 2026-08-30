@@ -1,5 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -19,9 +18,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Identity.Application\Identity.Application.csproj"/>
-        <ProjectReference Include="..\Identity.Domain\Identity.Domain.csproj"/>
-        <ProjectReference Include="..\Identity.Infrastructure\Identity.Infrastructure.csproj"/>
+        <ProjectReference Include="..\Files.Contracts\Files.Contracts.csproj"/>
+        <ProjectReference Include="..\Files.Application\Files.Application.csproj"/>
+        <ProjectReference Include="..\Files.Infrastructure\Files.Infrastructure.csproj"/>
     </ItemGroup>
-
 </Project>
