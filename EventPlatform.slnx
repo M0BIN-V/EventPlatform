@@ -3,6 +3,15 @@
         <Project Path="Backend/WebApi/WebApi.csproj" />
     </Folder>
     <Folder Name="/Backend/Modules/" />
+    <Folder Name="/Backend/Modules/Files/" />
+    <Folder Name="/Backend/Modules/Files/Src/">
+        <Project Path="Backend/Modules/Files/Src/Files.Application.Contracts/Files.Application.Contracts.csproj" />
+        <Project Path="Backend/Modules/Files/Src/Files.Domain/Files.Domain.csproj" />
+        <Project Path="Backend/Modules/Files/Src/Files.Infrastructure/Files.Infrastructure.csproj" />
+    </Folder>
+    <Folder Name="/Backend/Modules/Files/Tests/">
+        <Project Path="Backend/Modules/Files/Tests/Files.Infrastructure.Tests/Files.Infrastructure.Tests.csproj" />
+    </Folder>
     <Folder Name="/Backend/Modules/Identity/" />
     <Folder Name="/Backend/Modules/Identity/Src/">
         <Project Path="Backend/Modules/Identity/Src/Identity.Application/Identity.Application.csproj" />
