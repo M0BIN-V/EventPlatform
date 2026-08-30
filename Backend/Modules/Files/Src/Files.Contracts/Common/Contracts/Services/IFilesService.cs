@@ -1,6 +1,6 @@
-using Files.Application.Contracts.Dtos;
+using Files.Contracts.Dtos;
 
-namespace Files.Application.Contracts.Common.Contracts.ApplicationServices;
+namespace Files.Contracts.Common.Contracts.Services;
 
 public interface IFilesService
 {

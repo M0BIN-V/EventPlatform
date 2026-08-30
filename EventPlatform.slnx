@@ -1,64 +1,60 @@
 <Solution>
     <Folder Name="/Backend/">
-        <Project Path="Backend/WebApi/WebApi.csproj"/>
+        <Project Path="Backend/WebApi/WebApi.csproj" />
     </Folder>
-    <Folder Name="/Backend/Modules/"/>
-    <Folder Name="/Backend/Modules/Files/"/>
+    <Folder Name="/Backend/Modules/" />
+    <Folder Name="/Backend/Modules/Files/" />
     <Folder Name="/Backend/Modules/Files/Src/">
-        <Project Path="Backend/Modules/Files/Src/Files.Application.Contracts/Files.Application.Contracts.csproj"/>
-        <Project Path="Backend/Modules/Files/Src/Files.Domain/Files.Domain.csproj"/>
-        <Project Path="Backend/Modules/Files/Src/Files.Infrastructure/Files.Infrastructure.csproj"/>
+        <Project Path="Backend/Modules/Files/Src/Files.Application/Files.Application.csproj" />
+        <Project Path="Backend/Modules/Files/Src/Files.Contracts/Files.Contracts.csproj" />
+        <Project Path="Backend/Modules/Files/Src/Files.Domain/Files.Domain.csproj" />
+        <Project Path="Backend/Modules/Files/Src/Files.Infrastructure/Files.Infrastructure.csproj" />
+        <Project Path="Backend/Modules/Files/Src/Files.Presentation/Files.Presentation.csproj" />
     </Folder>
-    <Folder Name="/Backend/Modules/Files/Tests/">
-        <Project Path="Backend/Modules/Files/Tests/Files.Infrastructure.Tests/Files.Infrastructure.Tests.csproj"/>
-    </Folder>
-    <Folder Name="/Backend/Modules/Identity/"/>
+    <Folder Name="/Backend/Modules/Identity/" />
     <Folder Name="/Backend/Modules/Identity/Src/">
-        <Project Path="Backend/Modules/Identity/Src/Identity.Application/Identity.Application.csproj"/>
-        <Project Path="Backend/Modules/Identity/Src/Identity.Domain/Identity.Domain.csproj"/>
-        <Project Path="Backend/Modules/Identity/Src/Identity.Infrastructure/Identity.Infrastructure.csproj"/>
-        <Project Path="Backend/Modules/Identity/Src/Identity.Presentation/Identity.Presentation.csproj"/>
+        <Project Path="Backend/Modules/Identity/Src/Identity.Application/Identity.Application.csproj" />
+        <Project Path="Backend/Modules/Identity/Src/Identity.Domain/Identity.Domain.csproj" />
+        <Project Path="Backend/Modules/Identity/Src/Identity.Infrastructure/Identity.Infrastructure.csproj" />
+        <Project Path="Backend/Modules/Identity/Src/Identity.Presentation/Identity.Presentation.csproj" />
     </Folder>
     <Folder Name="/Backend/Modules/Identity/Tests/">
-        <Project Path="Backend/Modules/Identity/Tests/Identity.IntegrationTests/Identity.IntegrationTests.csproj"/>
-        <Project Path="Backend/Modules/Identity/Tests/Identity.UnitTests/Identity.UnitTests.csproj"/>
+        <Project Path="Backend/Modules/Identity/Tests/Identity.IntegrationTests/Identity.IntegrationTests.csproj" />
+        <Project Path="Backend/Modules/Identity/Tests/Identity.UnitTests/Identity.UnitTests.csproj" />
     </Folder>
-    <Folder Name="/Backend/Modules/Notification/"/>
+    <Folder Name="/Backend/Modules/Notification/" />
     <Folder Name="/Backend/Modules/Notification/Src/">
-        <Project Path="Backend/Modules/Notification/Src/Notification.Application/Notification.Application.csproj"/>
-        <Project
-                Path="Backend/Modules/Notification/Src/Notification.Infrastructure/Notification.Infrastructure.csproj"/>
+        <Project Path="Backend/Modules/Notification/Src/Notification.Application/Notification.Application.csproj" />
+        <Project Path="Backend/Modules/Notification/Src/Notification.Infrastructure/Notification.Infrastructure.csproj" />
     </Folder>
-    <Folder Name="/Backend/Modules/Organizations/"/>
+    <Folder Name="/Backend/Modules/Organizations/" />
     <Folder Name="/Backend/Modules/Organizations/Src/">
-        <Project Path="Backend/Modules/Organizations/Src/Organizations.Application/Organizations.Application.csproj"/>
-        <Project Path="Backend/Modules/Organizations/Src/Organizations.Domain/Organizations.Domain.csproj"/>
-        <Project
-                Path="Backend/Modules/Organizations/Src/Organizations.Infrastructure/Organizations.Infrastructure.csproj"/>
-        <Project Path="Backend/Modules/Organizations/Src/Organizations.Presentation/Organizations.Presentation.csproj"/>
+        <Project Path="Backend/Modules/Organizations/Src/Organizations.Application/Organizations.Application.csproj" />
+        <Project Path="Backend/Modules/Organizations/Src/Organizations.Domain/Organizations.Domain.csproj" />
+        <Project Path="Backend/Modules/Organizations/Src/Organizations.Infrastructure/Organizations.Infrastructure.csproj" />
+        <Project Path="Backend/Modules/Organizations/Src/Organizations.Presentation/Organizations.Presentation.csproj" />
     </Folder>
     <Folder Name="/Backend/Modules/Organizations/Tests/">
-        <Project
-                Path="Backend/Modules/Organizations/Tests/Organizations.IntegrationTests/Organizations.IntegrationTests.csproj"/>
-        <Project Path="Backend/Modules/Organizations/Tests/Organizations.UnitTests/Organizations.UnitTests.csproj"/>
+        <Project Path="Backend/Modules/Organizations/Tests/Organizations.IntegrationTests/Organizations.IntegrationTests.csproj" />
+        <Project Path="Backend/Modules/Organizations/Tests/Organizations.UnitTests/Organizations.UnitTests.csproj" />
     </Folder>
     <Folder Name="/Backend/Modules/Shared/">
-        <Project Path="Backend/Modules/Shared/BuildingBlocks/BuildingBlocks.csproj"/>
-        <Project Path="Backend/Modules/Shared/Messaging/Messaging.csproj"/>
+        <Project Path="Backend/Modules/Shared/BuildingBlocks/BuildingBlocks.csproj" />
+        <Project Path="Backend/Modules/Shared/Messaging/Messaging.csproj" />
     </Folder>
     <Folder Name="/Backend/Modules/Shared/Tests/">
-        <Project Path="Backend/Modules/Shared/Tests/Shared.IntegrationTests/Shared.IntegrationTests.csproj"/>
-        <Project Path="Backend/Modules/Shared/Tests/Shared.UnitTests/Shared.UnitTests.csproj"/>
+        <Project Path="Backend/Modules/Shared/Tests/Shared.IntegrationTests/Shared.IntegrationTests.csproj" />
+        <Project Path="Backend/Modules/Shared/Tests/Shared.UnitTests/Shared.UnitTests.csproj" />
     </Folder>
     <Folder Name="/Client/">
-        <Project Path="Client/WebApp/WebApp.csproj"/>
+        <Project Path="Client/WebApp/WebApp.csproj" />
     </Folder>
     <Folder Name="/Solution items/">
-        <File Path=".github/workflows/test.yml"/>
-        <File Path=".gitignore"/>
-        <File Path="opencode.json"/>
-        <File Path="README.md"/>
+        <File Path=".github/workflows/test.yml" />
+        <File Path=".gitignore" />
+        <File Path="opencode.json" />
+        <File Path="README.md" />
     </Folder>
-    <Project Path="AppHost/AppHost.csproj"/>
-    <Project Path="ServiceDefaults/ServiceDefaults.csproj"/>
+    <Project Path="AppHost/AppHost.csproj" />
+    <Project Path="ServiceDefaults/ServiceDefaults.csproj" />
 </Solution>

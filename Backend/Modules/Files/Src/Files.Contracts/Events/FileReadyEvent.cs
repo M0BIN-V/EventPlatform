@@ -1,4 +1,4 @@
-namespace Files.Application.Contracts.Events;
+namespace Files.Contracts.Events;
 
 public record FileReadyEvent(
     Guid FileId,

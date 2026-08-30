@@ -1,3 +1,3 @@
-namespace Files.Application.Contracts.Dtos;
+namespace Files.Contracts.Dtos;
 
 public record CreateDownloadUrlRequest(Guid FileId, TimeSpan? ExpiresIn = null);

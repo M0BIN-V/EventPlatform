@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using File = Files.Domain.Entities.File;
 
 namespace Files.Infrastructure.Persistence.EntityConfigurations;
 
@@ -9,10 +8,6 @@ public class FileConfig : IEntityTypeConfiguration<File>
     public void Configure(EntityTypeBuilder<File> builder)
     {
         builder.HasKey(x => x.Id);
-
-        builder.Property(x => x.ObjectKey)
-            .IsRequired()
-            .HasMaxLength(512);
 
         builder.Property(x => x.FileName)
             .IsRequired()
@@ -26,22 +21,14 @@ public class FileConfig : IEntityTypeConfiguration<File>
             .HasColumnType("bigint");
 
         builder.Property(x => x.Purpose)
-            .HasConversion<int>()
+            .HasConversion<string>()
             .IsRequired();
 
         builder.Property(x => x.Status)
-            .HasConversion<int>()
+            .HasConversion<string>()
             .IsRequired();
 
         builder.Property(x => x.CreatedAt)
             .IsRequired();
-
-        builder.Property(x => x.CompletedAt);
-
-        builder.Property(x => x.FailureReason)
-            .HasMaxLength(1000);
-
-        builder.HasIndex(x => x.ObjectKey)
-            .IsUnique();
     }
 }

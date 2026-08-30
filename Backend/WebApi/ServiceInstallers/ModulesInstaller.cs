@@ -1,4 +1,5 @@
 using DiServiceInstaller;
+using Files.Presentation;
 using Identity.Presentation;
 using Notification.Infrastructure;
 using Organizations.Presentation;
@@ -12,6 +13,7 @@ public class ModulesInstaller : IServiceInstaller
         builder
             .AddIdentityModule()
             .AddNotificationModule()
-            .AddOrganizationModule();
+            .AddOrganizationModule()
+            .AddFilesModule();
     }
 }

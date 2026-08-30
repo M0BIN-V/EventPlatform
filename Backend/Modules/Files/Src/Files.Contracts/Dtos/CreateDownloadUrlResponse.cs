@@ -1,3 +1,3 @@
-namespace Files.Application.Contracts.Dtos;
+namespace Files.Contracts.Dtos;
 
 public record CreateDownloadUrlResponse(string Url, DateTime ExpiresAt);

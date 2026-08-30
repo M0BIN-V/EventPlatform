@@ -18,7 +18,7 @@ var database = postgres.AddDatabase("event-platform-db");
 var mailpit = builder.AddMailPit("event-platform-mailpit")
     .WithLifetime(ContainerLifetime.Persistent);
 
-var rustFs = builder.AddRustFs("rustFs");
+var rustFs = builder.AddRustFs("object-storage");
 
 var api = builder
     .AddProject<WebApi>("event-platform-api")

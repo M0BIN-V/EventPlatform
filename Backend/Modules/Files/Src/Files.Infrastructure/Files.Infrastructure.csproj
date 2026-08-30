@@ -8,12 +8,10 @@
     <ItemGroup>
         <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="13.4.6"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11"/>
-        <PackageReference Include="AWSSDK.S3" Version="3.9.0.3" />
+        <PackageReference Include="AWSSDK.S3" Version="4.0.102.4"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Files.Domain\Files.Domain.csproj" />
-        <ProjectReference Include="..\Files.Application.Contracts\Files.Application.Contracts.csproj" />
-        <ProjectReference Include="..\..\..\Shared\BuildingBlocks\BuildingBlocks.csproj" />
+        <ProjectReference Include="..\Files.Application\Files.Application.csproj"/>
     </ItemGroup>
 </Project>

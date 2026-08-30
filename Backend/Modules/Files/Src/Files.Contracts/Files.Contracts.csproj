@@ -7,8 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\Shared\BuildingBlocks\BuildingBlocks.csproj"/>
-        <ProjectReference Include="..\Files.Contracts\Files.Contracts.csproj" />
+      <PackageReference Include="FluentValidation" Version="12.1.1" />
+      <PackageReference Include="OneOf" Version="3.0.271" />
+      <PackageReference Include="OneOf.SourceGenerator" Version="3.0.271" />
     </ItemGroup>
 
 </Project>

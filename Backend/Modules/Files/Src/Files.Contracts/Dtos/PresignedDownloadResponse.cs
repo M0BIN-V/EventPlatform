@@ -1,5 +1,5 @@
 using System;
 
-namespace Files.Application.Contracts.Dtos;
+namespace Files.Contracts.Dtos;
 
 public record PresignedDownloadResponse(string Url, DateTime ExpiresAt);

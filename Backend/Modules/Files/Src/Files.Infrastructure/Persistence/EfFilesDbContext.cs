@@ -1,13 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using File = Files.Domain.Entities.File;
 
-namespace Files.Infrastructure.Persistence.DbContext;
+namespace Files.Infrastructure.Persistence;
 
-public class EfFilesDbContext(DbContextOptions<EfFilesDbContext> options)
-    : Microsoft.EntityFrameworkCore.DbContext(options)
+public class EfFilesDbContext(DbContextOptions<EfFilesDbContext> options) : DbContext(options)
 {
     public const string Schema = "files";
-
 
     public DbSet<File> Files { get; init; }
 
