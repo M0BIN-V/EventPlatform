@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace Files.Application.Contracts.Dtos;
 
 public record CreateUploadResponse(

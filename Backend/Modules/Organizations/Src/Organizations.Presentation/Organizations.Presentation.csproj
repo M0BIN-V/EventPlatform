@@ -9,12 +9,12 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\..\Shared\BuildingBlocks\BuildingBlocks.csproj"/>
-        <ProjectReference Include="..\Organizations.Application\Organizations.Application.csproj" />
-        <ProjectReference Include="..\Organizations.Infrastructure\Organizations.Infrastructure.csproj" />
+        <ProjectReference Include="..\Organizations.Application\Organizations.Application.csproj"/>
+        <ProjectReference Include="..\Organizations.Infrastructure\Organizations.Infrastructure.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.12" />
+        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.12"/>
     </ItemGroup>
 
 </Project>

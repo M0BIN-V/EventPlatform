@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using Organizations.Application.Features.CreateOrganization;
 using Organizations.Application.Features.EditOrganization;
-using ApplicationEditOrganizationRequest = Organizations.Application.Features.EditOrganization.EditOrganizationRequest; 
+using ApplicationEditOrganizationRequest = Organizations.Application.Features.EditOrganization.EditOrganizationRequest;
 
 namespace Organizations.Presentation;
 
@@ -42,7 +42,8 @@ public static class OrganizationEndpointExtensions
             ClaimsPrincipal user)
     {
         var request =
-            new ApplicationEditOrganizationRequest(slug, requestBody.NewName, requestBody.NewSlug, requestBody.NewDescription);
+            new ApplicationEditOrganizationRequest(slug, requestBody.NewName, requestBody.NewSlug,
+                requestBody.NewDescription);
 
         var result = await handler.HandleAsync(request);
 

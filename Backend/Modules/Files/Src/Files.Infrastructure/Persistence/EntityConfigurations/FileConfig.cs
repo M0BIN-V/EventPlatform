@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Files.Domain.Entities;
+using File = Files.Domain.Entities.File;
 
 namespace Files.Infrastructure.Persistence.EntityConfigurations;
 
-public class FileConfig : IEntityTypeConfiguration<Files.Domain.Entities.File>
+public class FileConfig : IEntityTypeConfiguration<File>
 {
-    public void Configure(EntityTypeBuilder<Files.Domain.Entities.File> builder)
+    public void Configure(EntityTypeBuilder<File> builder)
     {
         builder.HasKey(x => x.Id);
 

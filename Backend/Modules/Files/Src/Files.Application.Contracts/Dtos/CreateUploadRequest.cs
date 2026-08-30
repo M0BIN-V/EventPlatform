@@ -1,4 +1,3 @@
-using System;
 namespace Files.Application.Contracts.Dtos;
 
 public record CreateUploadRequest(

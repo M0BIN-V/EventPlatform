@@ -31,7 +31,7 @@ public static class ApplicationServiceInstaller
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<EfIdentityDbContext>()
             .AddDefaultTokenProviders();
-        
+
         // builder.Services.AddIdentity<User, IdentityRole>(options =>
         //     {
         //         options.User.RequireUniqueEmail = true;

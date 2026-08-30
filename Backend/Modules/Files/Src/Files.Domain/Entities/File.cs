@@ -44,9 +44,9 @@ public class File
     {
         if (string.IsNullOrWhiteSpace(objectKey))
             throw new ArgumentException("objectKey is required", nameof(objectKey));
-      
+
         if (string.IsNullOrWhiteSpace(fileName)) throw new ArgumentException("fileName is required", nameof(fileName));
-      
+
         if (string.IsNullOrWhiteSpace(contentType))
             throw new ArgumentException("contentType is required", nameof(contentType));
 

@@ -1,8 +1,8 @@
+using Files.Infrastructure.Persistence.DbContext;
+using Files.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Files.Infrastructure.Persistence.DbContext;
-using Files.Infrastructure.Persistence.Repositories;
 
 namespace Files.Infrastructure;
 
@@ -17,8 +17,8 @@ public static class InfrastructureServiceInstaller
                 .MigrationsHistoryTable("__EFMigrationsHistory", EfFilesDbContext.Schema)));
 
         builder.Services
-            .AddScoped<Files.Infrastructure.Persistence.Repositories.FilesRepository>();
+            .AddScoped<FilesRepository>();
 
-                    return builder;
+        return builder;
     }
 }

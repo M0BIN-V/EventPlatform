@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using BuildingBlocks.Domain.Entities;
 
 namespace Organizations.Domain.Entities;

@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Organizations.Domain.Entities;
 
 namespace Organizations.Infrastructure.Persistence.EntityConfigurations;
 
-public class OrganizationConfig : IEntityTypeConfiguration<Organizations.Domain.Entities.Organization>
+public class OrganizationConfig : IEntityTypeConfiguration<Organization>
 {
-    public void Configure(EntityTypeBuilder<Organizations.Domain.Entities.Organization> builder)
+    public void Configure(EntityTypeBuilder<Organization> builder)
     {
         builder.HasKey(x => x.Id);
 
@@ -22,7 +23,7 @@ public class OrganizationConfig : IEntityTypeConfiguration<Organizations.Domain.
 
         builder.Property(x => x.CreatorUserId)
             .IsRequired()
-            .HasMaxLength(450); 
+            .HasMaxLength(450);
 
         builder.HasIndex(x => x.Slug)
             .IsUnique();
