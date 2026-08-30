@@ -2,7 +2,7 @@ using BuildingBlocks.Domain.Entities;
 
 namespace Organizations.Domain.Entities;
 
-public class OrganizationMember : EntityBase
+public class OrganizationMemberShip : EntityBase
 {
     public required Guid OrganizationId { get; init; }
 

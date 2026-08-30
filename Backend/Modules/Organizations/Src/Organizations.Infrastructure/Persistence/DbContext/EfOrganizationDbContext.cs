@@ -9,7 +9,7 @@ public class EfOrganizationDbContext(DbContextOptions<EfOrganizationDbContext> o
     public const string Schema = "organization";
 
     public DbSet<Organization> Organizations { get; init; }
-    public DbSet<OrganizationMember> OrganizationMembers { get; init; }
+    public DbSet<OrganizationMemberShip> OrganizationMemberShips { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

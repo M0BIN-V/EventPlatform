@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Organizations.Infrastructure.Persistence.DbContext;
@@ -11,9 +12,11 @@ using Organizations.Infrastructure.Persistence.DbContext;
 namespace Organizations.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(EfOrganizationDbContext))]
-    partial class EfOrganizationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260814154839_EditOrganizationMemberTableName")]
+    partial class EditOrganizationMemberTableName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

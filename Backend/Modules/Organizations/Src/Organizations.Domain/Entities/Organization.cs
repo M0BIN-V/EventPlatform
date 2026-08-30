@@ -11,5 +11,5 @@ public class Organization(string name, string slug, string? description, string 
 
     public string CreatorUserId { get; } = creatorUserId;
 
-    public ICollection<OrganizationMember> Members { get; set; } = [];
+    public ICollection<OrganizationMemberShip> Members { get; set; } = [];
 }

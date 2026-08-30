@@ -6,8 +6,8 @@ namespace Organizations.Application.Common.Contracts.Persistence;
 
 public interface IOrganizationMemberRepository
 {
-    Task AddAsync(OrganizationMember member, CancellationToken ct = default);
+    Task AddAsync(OrganizationMemberShip memberShip, CancellationToken ct = default);
 
-    Task<OrganizationMember?> GetByOrganizationAndUserAsync(Guid organizationId, string userId,
+    Task<OrganizationMemberShip?> GetByOrganizationAndUserAsync(Guid organizationId, string userId,
         CancellationToken ct = default);
 }

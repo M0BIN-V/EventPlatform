@@ -26,7 +26,7 @@ public class CreateOrganizationTests(IntegrationTestFixture testFixture)
         //Assert
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
 
-        var organizationExists = await DbContext.OrganizationMembers.AnyAsync();
+        var organizationExists = await DbContext.OrganizationMemberShips.AnyAsync();
         organizationExists.ShouldBeFalse();
     }
 

@@ -8,6 +8,7 @@ public class EditOrganizationHandler(
     IOrganizationRepository organizationsRepo,
     IValidator<EditOrganizationRequest> validator,
     ICurrentUser currentUser,
+    IOrganizationMemberRepository memberRepository,
     IOrganizationUnitOfWork unitOfWork) :
     Handler<EditOrganizationRequest, EditOrganizationResponse>
 {
@@ -22,7 +23,7 @@ public class EditOrganizationHandler(
             return new OrganizationNotFoundError(request.Slug);
 
         var userId = currentUser.Id;
-        var userMembership = organization.Members.FirstOrDefault(m => m.UserId == userId);
+        var userMembership = await memberRepository.GetByOrganizationAndUserAsync(organization.Id, userId, ct);
         if (userMembership?.Role != OrganizationRole.Owner)
             return new OrganizationUnauthorizedError();
 

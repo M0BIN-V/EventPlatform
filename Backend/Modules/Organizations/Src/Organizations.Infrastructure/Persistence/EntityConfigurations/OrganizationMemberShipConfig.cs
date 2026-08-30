@@ -4,9 +4,9 @@ using Organizations.Domain.Entities;
 
 namespace Organizations.Infrastructure.Persistence.EntityConfigurations;
 
-public class OrganizationMemberConfig : IEntityTypeConfiguration<OrganizationMember>
+public class OrganizationMemberShipConfig : IEntityTypeConfiguration<OrganizationMemberShip>
 {
-    public void Configure(EntityTypeBuilder<OrganizationMember> builder)
+    public void Configure(EntityTypeBuilder<OrganizationMemberShip> builder)
     {
         builder.HasKey(x => x.Id);
 

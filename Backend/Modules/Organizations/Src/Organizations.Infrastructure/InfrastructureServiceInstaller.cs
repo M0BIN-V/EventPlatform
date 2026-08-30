@@ -18,7 +18,7 @@ public static class InfrastructureServiceInstaller
 
         // Register repositories and unit of work
         builder.Services
-            .AddScoped<IOrganizationMemberRepository, OrganizationMemberRepository>()
+            .AddScoped<IOrganizationMemberRepository, OrganizationMemberShipRepository>()
             .AddScoped<IOrganizationRepository, OrganizationRepository>()
             .AddScoped<IOrganizationUnitOfWork, OrganizationUnitOfWork>();
 

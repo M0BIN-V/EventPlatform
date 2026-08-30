@@ -1,4 +1,5 @@
 using AppHost.Extensions;
+using AppHost.RustFs;
 using JasperFx.Aspire;
 using Projects;
 
@@ -17,6 +18,8 @@ var database = postgres.AddDatabase("event-platform-db");
 var mailpit = builder.AddMailPit("event-platform-mailpit")
     .WithLifetime(ContainerLifetime.Persistent);
 
+var rustFs = builder.AddRustFs("rustFs");
+
 var api = builder
     .AddProject<WebApi>("event-platform-api")
     .WithJasperFxCommands(opts => { opts.IncludeMutatingCommands = true; })
@@ -24,7 +27,9 @@ var api = builder
     .WaitFor(database)
     .WithReference(mailpit)
     .WaitFor(mailpit)
-    .ConfigureMailSettings(mailpit);
+    .ConfigureMailSettings(mailpit)
+    .WaitFor(rustFs)
+    .WithReference(rustFs);
 
 var identityModuleMigration = api
     .AddEFMigrations("identity-module-migrations", "Identity.Infrastructure.Persistence.DbContext.EfIdentityDbContext")

@@ -35,7 +35,7 @@ public class CreateOrganizationHandler(
 
         await organizationsRepo.AddAsync(organization, ct);
 
-        var ownerMember = new OrganizationMember
+        var ownerMember = new OrganizationMemberShip
         {
             OrganizationId = organization.Id,
             UserId = userId,
