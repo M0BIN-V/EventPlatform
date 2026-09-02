@@ -10,7 +10,7 @@ public static class ApplicationServiceInstaller
         var assembly = typeof(ApplicationServiceInstaller).Assembly;
 
                 builder.Services.RegisterHandlers(assembly);
-        builder.Services.AddValidatorsFromAssembly(assembly);
+                builder.Services.AddValidatorsFromAssembly(assembly);
 
                 return builder;
     }

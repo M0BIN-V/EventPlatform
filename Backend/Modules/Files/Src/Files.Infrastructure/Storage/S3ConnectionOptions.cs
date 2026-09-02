@@ -1,6 +1,6 @@
 ﻿using System.Data.Common;
 
-namespace Files.Infrastructure.ServiceInstallers;
+namespace Files.Infrastructure.Storage;
 
 public class S3ConnectionOptions
 {
@@ -26,7 +26,7 @@ public class S3ConnectionOptions
             Endpoint = GetRequired(builder, "Endpoint"),
             AccessKey = GetRequired(builder, "AccessKey"),
             SecretKey = GetRequired(builder, "SecretKey"),
-            Bucket = GetRequired(builder, "Bucket")
+            Bucket = "App"
         };
     }
 

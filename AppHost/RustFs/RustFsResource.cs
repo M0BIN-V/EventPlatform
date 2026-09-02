@@ -9,7 +9,7 @@ public sealed class RustFsResource(
 {
     internal const string S3EndpointName = "s3";
     internal const string ConsoleEndpointName = "console";
-
+    
     private EndpointReference? _consoleEndpoint;
     private EndpointReference? _s3Endpoint;
 

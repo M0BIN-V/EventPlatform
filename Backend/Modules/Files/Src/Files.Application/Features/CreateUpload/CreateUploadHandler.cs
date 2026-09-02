@@ -1,4 +1,3 @@
-using BuildingBlocks.Domain.Contracts;
 using Files.Application.Common.Contracts.Persistence;
 using Files.Application.Common.Contracts.Services;
 using Files.Contracts.Common.Enums;
@@ -7,7 +6,7 @@ namespace Files.Application.Features.CreateUpload;
 
 public class CreateUploadHandler(
     IFilesRepository filesRepo,
-    ITimeProvider timeProvider,
+    TimeProvider timeProvider,
     IFilesUnitOfWork unitOfWork,
     IObjectStorageService objectStorage,
     IValidator<CreateUploadRequest> validator)
@@ -21,7 +20,7 @@ public class CreateUploadHandler(
         var validationResult = await validator.ValidateAsync(request, ct);
         if (!validationResult.IsValid) return validationResult.Errors;
 
-        var now = timeProvider.Now;
+        var now = timeProvider.GetUtcNow();
 
         var file = File.CreatePending(FilePurpose.OrganizationProfilePicture, now);
 
@@ -30,7 +29,7 @@ public class CreateUploadHandler(
 
         var uploadRequest = await objectStorage.CreatePresignedUploadAsync(
             file.Id.ToString(),
-            timeProvider.Now.Add(PresignExpiry),
+            now.Add(PresignExpiry),
             request.Purpose,
             request.MinLength,
             request.MaxLength);
