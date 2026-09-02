@@ -1,7 +1,7 @@
 using System.Text;
 using BuildingBlocks.Application.Contracts;
 using Identity.Application.Common.Mappers;
-using Messaging;
+using Identity.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 

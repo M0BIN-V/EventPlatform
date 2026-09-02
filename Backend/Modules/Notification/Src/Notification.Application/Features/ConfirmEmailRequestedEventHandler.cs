@@ -1,4 +1,4 @@
-using Messaging;
+using Identity.Contracts;
 using Notification.Application.Contracts.Services;
 
 namespace Notification.Application.Features;

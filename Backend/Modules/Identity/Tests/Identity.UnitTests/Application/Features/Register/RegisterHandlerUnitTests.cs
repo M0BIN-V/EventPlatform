@@ -1,7 +1,7 @@
 using Application.UnitTests.Application.Common;
 using BuildingBlocks.Application.Contracts;
 using Identity.Application.Features.Register;
-using Messaging;
+using Identity.Contracts;
 using Microsoft.Extensions.Options;
 using Shared.UnitTests.Abstractions;
 

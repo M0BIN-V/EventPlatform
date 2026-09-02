@@ -1,5 +1,5 @@
 using Identity.Application.Features.Register;
-using Messaging;
+using Identity.Contracts;
 using Shared.IntegrationTests.Abstractions;
 using Shared.IntegrationTests.Fixtures;
 

@@ -1,5 +1,5 @@
 using Identity.Application.Features.Login;
-using Messaging;
+using Identity.Contracts;
 using Microsoft.AspNetCore.WebUtilities;
 using Shared.IntegrationTests.Abstractions;
 using Shared.IntegrationTests.Fixtures;

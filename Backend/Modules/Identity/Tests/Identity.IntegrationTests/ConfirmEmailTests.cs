@@ -1,6 +1,6 @@
 using System.Text;
 using Bogus;
-using Messaging;
+using Identity.Contracts;
 using Microsoft.AspNetCore.WebUtilities;
 using Shared.IntegrationTests.Abstractions;
 using Shared.IntegrationTests.Fixtures;
