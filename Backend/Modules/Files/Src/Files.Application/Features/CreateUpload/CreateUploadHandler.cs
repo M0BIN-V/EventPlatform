@@ -1,7 +1,3 @@
-using Files.Application.Common.Contracts.Persistence;
-using Files.Application.Common.Contracts.Services;
-using Files.Contracts.Common.Enums;
-
 namespace Files.Application.Features.CreateUpload;
 
 public class CreateUploadHandler(
@@ -22,19 +18,21 @@ public class CreateUploadHandler(
 
         var now = timeProvider.GetUtcNow();
 
-        var file = File.CreatePending(FilePurpose.OrganizationProfilePicture, now);
-
-        await filesRepo.AddAsync(file, ct);
-        await unitOfWork.SaveChangesAsync(ct);
-
-        var uploadRequest = await objectStorage.CreatePresignedUploadAsync(
-            file.Id.ToString(),
-            now.Add(PresignExpiry),
-            request.Purpose,
-            request.MinLength,
-            request.MaxLength);
-
-
-        return new CreateUploadSuccess(file.Id, uploadRequest.Url);
+        throw new NotImplementedException();
+        // var file = File.CreatePending(request.ModuleName, now);
+        //
+        // await filesRepo.AddAsync(file, ct);
+        // await unitOfWork.SaveChangesAsync(ct);
+        //
+        // var objectKey = $"{request.ModuleName}/{string.Join('/', request.PathSegments)}/{file.Id}_{request.FileName}";
+        //
+        // var uploadRequest = await objectStorage.CreatePresignedUploadAsync(
+        //     objectKey,
+        //     now.Add(PresignExpiry),
+        //     request.MinLength,
+        //     request.MaxLength);
+        //
+        //
+        // return new CreateUploadSuccess(file.Id, uploadRequest.Url);
     }
 }

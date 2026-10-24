@@ -2,9 +2,7 @@ using System.Net;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Files.Application.Common.Contracts.Services;
-using Files.Contracts.Common.Enums;
 using Files.Contracts.Dtos;
-using Files.Infrastructure.ServiceInstallers;
 using Microsoft.Extensions.Options;
 
 namespace Files.Infrastructure.Storage;
@@ -68,14 +66,13 @@ public class S3ObjectStorageService(IAmazonS3 client, IOptions<S3ConnectionOptio
     public async Task<PresignedUploadResponse> CreatePresignedUploadAsync(
         string objectName,
         DateTimeOffset expiresIn,
-        FilePurpose purpose,
         long minLength,
         long maxLength)
     {
         var request = new CreatePresignedPostRequest
         {
             BucketName = options.Value.Bucket,
-            Key = $"{purpose}/{objectName}",
+            Key = objectName,
             Expires = expiresIn.DateTime,
             Fields =
             {

@@ -11,26 +11,31 @@ public class File
 
     public Guid Id { get; private set; }
 
+    public string? ObjectKey { get; private set; }
     public string? FileName { get; private set; }
     public string? ContentType { get; private set; }
     public long? Size { get; private set; }
-    public FilePurpose Purpose { get; private set; }
+    public ModuleName ModuleName { get; private set; }
     public FileStatus Status { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
     public DateTimeOffset UploadedAt { get; private set; }
     public DateTimeOffset? ReadyAt { get; private set; }
 
-    public static File CreatePending(FilePurpose purpose, DateTimeOffset createdAt)
+    public static File CreatePending(string objectKey,ModuleName moduleName, DateTimeOffset createdAt)
     {
         return new File
         {
+            ObjectKey = objectKey,
             CreatedAt = createdAt,
-            Purpose = purpose,
+            ModuleName = moduleName,
             Status = FileStatus.Pending
         };
     }
 
-    public void MarkUploaded(string fileName, string contentType, long size,
+    public void MarkUploaded(
+        string fileName,
+        string contentType,
+        long size,
         DateTimeOffset uploadedAt)
     {
         FileName = fileName;

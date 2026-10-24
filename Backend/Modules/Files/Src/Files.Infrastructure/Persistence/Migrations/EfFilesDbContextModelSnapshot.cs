@@ -24,7 +24,7 @@ internal class EfFilesDbContextModelSnapshot : ModelSnapshot
 
             b.Property<long?>("Size").HasColumnType("bigint");
 
-            b.Property<int>("Purpose").HasColumnType("integer");
+            b.Property<int>("ModuleName").HasColumnType("integer");
 
             b.Property<int>("Status").HasColumnType("integer");
 

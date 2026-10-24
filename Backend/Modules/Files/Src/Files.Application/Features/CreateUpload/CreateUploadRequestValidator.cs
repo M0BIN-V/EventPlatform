@@ -7,9 +7,9 @@ public class CreateUploadRequestValidator : AbstractValidator<CreateUploadReques
     public CreateUploadRequestValidator()
     {
         RuleFor(x => x.ContentType).NotEmpty().MaximumLength(256);
-        RuleFor(x => x.Purpose).NotEmpty();
+        RuleFor(x => x.ModuleName).NotEmpty();
         RuleFor(x => x.MinLength).NotNull();
         RuleFor(x => x.MaxLength).NotNull();
-        RuleFor(x => x.Purpose).IsInEnum();
+        RuleFor(x => x.ModuleName).IsInEnum();
     }
 }

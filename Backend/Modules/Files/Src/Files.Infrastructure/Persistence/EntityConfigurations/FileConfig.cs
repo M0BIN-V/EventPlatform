@@ -9,6 +9,9 @@ public class FileConfig : IEntityTypeConfiguration<File>
     {
         builder.HasKey(x => x.Id);
 
+        builder.Property(x => x.ObjectKey)
+            .HasMaxLength(500);
+
         builder.Property(x => x.FileName)
             .IsRequired()
             .HasMaxLength(256);
@@ -20,7 +23,7 @@ public class FileConfig : IEntityTypeConfiguration<File>
         builder.Property(x => x.Size)
             .HasColumnType("bigint");
 
-        builder.Property(x => x.Purpose)
+        builder.Property(x => x.ModuleName)
             .HasConversion<string>()
             .IsRequired();
 
