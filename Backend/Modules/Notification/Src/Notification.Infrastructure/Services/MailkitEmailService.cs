@@ -1,4 +1,5 @@
 using JasperFx.Core;
+using MailKit;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;

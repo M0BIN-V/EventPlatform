@@ -1,5 +1,6 @@
 using AppHost.Extensions;
 using AppHost.RustFs;
+using AppHost.SeaweedFs;
 using JasperFx.Aspire;
 using Projects;
 
@@ -18,7 +19,13 @@ var database = postgres.AddDatabase("event-platform-db");
 var mailpit = builder.AddMailPit("event-platform-mailpit")
     .WithLifetime(ContainerLifetime.Persistent);
 
-var rustFs = builder.AddRustFs("object-storage");
+var s3 = builder.AddSeaweedFs("s3")
+    .WithLifetime(ContainerLifetime.Persistent)
+    .WithDataVolume("seaweedfs-data")
+    .WithSeaweedAdmin();
+
+
+//var rustFs = builder.AddRustFs("object-storage");
 
 
 var api = builder
@@ -29,8 +36,8 @@ var api = builder
     .WithReference(mailpit)
     .WaitFor(mailpit)
     .ConfigureMailSettings(mailpit)
-    .WaitFor(rustFs)
-    .WithReference(rustFs);
+    .WaitFor(s3)
+    .WithReference(s3);
 
 
 api

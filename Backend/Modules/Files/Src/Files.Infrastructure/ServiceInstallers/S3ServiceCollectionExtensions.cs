@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace Files.Infrastructure.ServiceInstallers;
 
-public static class RustFsServiceCollectionExtensions
+public static class S3ServiceCollectionExtensions
 {
     public static IHostApplicationBuilder AddS3Storage(this IHostApplicationBuilder builder,
         string connectionStringName)

@@ -24,7 +24,7 @@ public static class InfrastructureServiceInstaller
             .AddScoped<IFilesRepository, FilesRepository>()
             .AddScoped<IFilesUnitOfWork, FilesUnitOfWork>();
 
-        builder.AddS3Storage("object-storage");
+        builder.AddS3Storage("s3");
 
         builder.Services.AddScoped<IObjectStorageService, S3ObjectStorageService>();
 
