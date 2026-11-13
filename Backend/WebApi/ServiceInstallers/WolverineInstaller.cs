@@ -11,6 +11,7 @@ using WebApi.Extensions;
 using Wolverine;
 using Wolverine.EntityFrameworkCore;
 using Wolverine.ErrorHandling;
+using Wolverine.Persistence;
 using Wolverine.Postgresql;
 
 namespace WebApi.ServiceInstallers;
@@ -38,7 +39,7 @@ public class WolverineInstaller : IServiceInstaller
                     connectionString ?? throw new NullReferenceException("Connection string is not configured"),
                     "wolverine");
 
-            opts.UseEntityFrameworkCoreTransactions();
+            opts.UseEntityFrameworkCoreTransactions(TransactionMiddlewareMode.Lightweight);
             opts.Policies.UseDurableLocalQueues();
             opts.Policies.AutoApplyTransactions();
 
