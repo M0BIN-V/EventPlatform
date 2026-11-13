@@ -3,6 +3,11 @@ using Identity.Application.Common.Contracts.Persistence;
 
 namespace Identity.Application.Features.Logout;
 
+public record LogoutSuccessResponse(string Message);
+
+public union LogoutResponse(LogoutSuccessResponse, InvalidRefreshTokenError, List<ValidationFailure>);
+
+
 public class LogoutHandler(
     IRefreshTokenManager refreshTokenManager,
     IValidator<LogoutRequest> validator,

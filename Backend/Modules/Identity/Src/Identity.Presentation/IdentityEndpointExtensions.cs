@@ -3,26 +3,27 @@ using Identity.Application.Features.Login;
 using Identity.Application.Features.Logout;
 using Identity.Application.Features.Refresh;
 using Identity.Application.Features.Register;
+using ValidationProblem = Microsoft.AspNetCore.Http.HttpResults.ValidationProblem;
 
 namespace Identity.Presentation;
 
 public static class IdentityEndpointExtensions
 {
-    private static async Task<IResult>
-        ConfirmEmail(
-            [FromServices] ConfirmEmailHandler handler,
-            [FromQuery] string email,
-            [FromQuery] string token)
+    private static async Task<Results<Ok, BadRequest, ValidationProblem>> ConfirmEmail(
+        [FromServices] ConfirmEmailHandler handler,
+        [FromQuery] string email,
+        [FromQuery] string token)
     {
         var request = new ConfirmEmailRequest(email, token);
 
         var result = await handler.HandleAsync(request);
 
-        return result
-            .Match<IResult>(
-                Ok,
-                BadRequest,
-                validationFailure => validationFailure.ToValidationProblem());
+        return result switch
+        {
+            string => Ok(),
+            EmailOrConfirmationTokenIsNotValidError => BadRequest(),
+            List<ValidationFailure> f => f.ToValidationProblem()
+        };
     }
 
     private static async Task<Results<Created, Conflict<UserAlreadyExistsError>, ValidationProblem>> Register(
@@ -31,11 +32,12 @@ public static class IdentityEndpointExtensions
     {
         var result = await handler.HandleAsync(request);
 
-        return result.Match<Results<Created, Conflict<UserAlreadyExistsError>, ValidationProblem>>(
-            userId => Created(),
-            validationErrors => validationErrors.ToValidationProblem(),
-            userAlreadyExistsError => Conflict(userAlreadyExistsError)
-        );
+        return result switch
+        {
+            string => Created(),
+            List<ValidationFailure> v => v.ToValidationProblem(),
+            UserAlreadyExistsError error => Conflict(error)
+        };
     }
 
     private static async Task<Results<
@@ -49,15 +51,14 @@ public static class IdentityEndpointExtensions
     {
         var result = await handler.HandleAsync(request);
 
-        return result
-            .Match<Results<Ok<LoginTokenResponse>, BadRequest<InvalidPasswordError>, NotFound<UserNotFoundError>,
-                IResult, ValidationProblem>>(
-                tokens => Ok(tokens),
-                validationErrors => validationErrors.ToValidationProblem(),
-                userNotFoundError => NotFound(userNotFoundError),
-                emailNotConfirmedError => Json(emailNotConfirmedError, statusCode: StatusCodes.Status403Forbidden),
-                invalidPasswordError => BadRequest(invalidPasswordError)
-            );
+        return result switch
+        {
+            LoginTokenResponse r => Ok(r),
+            EmailNotConfirmedError e => Json(e, statusCode: StatusCodes.Status403Forbidden),
+            InvalidPasswordError e => BadRequest(e),
+            UserNotFoundError e => NotFound(e),
+            List<ValidationFailure> f => f.ToValidationProblem()
+        };
     }
 
     private static async Task<Results<Ok<RefreshTokenResponse>, UnauthorizedHttpResult, ValidationProblem>> Refresh(
@@ -66,11 +67,12 @@ public static class IdentityEndpointExtensions
     {
         var result = await handler.HandleAsync(request);
 
-        return result.Match<Results<Ok<RefreshTokenResponse>, UnauthorizedHttpResult, ValidationProblem>>(
-            tokens => Ok(tokens),
-            validationErrors => validationErrors.ToValidationProblem(),
-            invalidTokenError => Unauthorized()
-        );
+        return result switch
+        {
+            RefreshTokenResponse r => Ok(r),
+            InvalidRefreshTokenError e => Unauthorized(),
+            List<ValidationFailure> f => f.ToValidationProblem()
+        };
     }
 
     private static async Task<Results<Ok<LogoutSuccessResponse>, UnauthorizedHttpResult, ValidationProblem>> Logout(
@@ -79,11 +81,12 @@ public static class IdentityEndpointExtensions
     {
         var result = await handler.HandleAsync(request);
 
-        return result.Match<Results<Ok<LogoutSuccessResponse>, UnauthorizedHttpResult, ValidationProblem>>(
-            success => Ok(success),
-            invalidRefreshTokenError => Unauthorized(),
-            validationErrors => validationErrors.ToValidationProblem()
-        );
+        return result switch
+        {
+            LogoutSuccessResponse r => Ok(r),
+            InvalidRefreshTokenError e => Unauthorized(),
+            List<ValidationFailure> f => f.ToValidationProblem()
+        };
     }
 
     public static IEndpointRouteBuilder MapIdentityModuleEndpoints(this IEndpointRouteBuilder app)

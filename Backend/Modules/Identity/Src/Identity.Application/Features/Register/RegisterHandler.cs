@@ -1,4 +1,3 @@
-using System.Text;
 using BuildingBlocks.Application.Contracts;
 using Identity.Application.Common.Mappers;
 using Identity.Contracts;
@@ -7,10 +6,7 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace Identity.Application.Features.Register;
 
-public class EmailConfirmationOptions
-{
-    public required string ConfirmationUrl { get; init; }
-}
+public union RegisterResponse(string, List<ValidationFailure>, UserAlreadyExistsError);
 
 public class RegisterHandler(
     IMessagePublisher publisher,

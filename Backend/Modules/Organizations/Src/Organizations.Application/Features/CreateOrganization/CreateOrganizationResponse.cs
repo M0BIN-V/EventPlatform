@@ -2,9 +2,7 @@ namespace Organizations.Application.Features.CreateOrganization;
 
 public record CreateOrganizationResponseData(Guid Id, string Name, string Slug);
 
-[GenerateOneOf]
-public partial class CreateOrganizationResponse : OneOfBase<
+public union CreateOrganizationResponse(
     CreateOrganizationResponseData,
     List<ValidationFailure>,
-    OrganizationSlugAlreadyExistsError
->;
+    OrganizationSlugAlreadyExistsError);

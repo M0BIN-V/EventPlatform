@@ -1,8 +1,9 @@
-using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 
 namespace Identity.Application.Features.ConfirmEmail;
+
+public union ConfirmEmailResponse(string, EmailOrConfirmationTokenIsNotValidError, List<ValidationFailure>);
 
 public class ConfirmEmailHandler(
     IValidator<ConfirmEmailRequest> validator,

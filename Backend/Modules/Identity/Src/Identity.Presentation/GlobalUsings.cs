@@ -1,6 +1,7 @@
 // Global using directives
 
 global using BuildingBlocks.Presentation.Extensions;
+global using FluentValidation.Results;
 global using Identity.Application.Common.Errors;
 global using Microsoft.AspNetCore.Builder;
 global using Microsoft.AspNetCore.Http;

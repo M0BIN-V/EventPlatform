@@ -1,11 +1,12 @@
 namespace Identity.Application.Common.Contracts.ApplicationServices;
 
-[GenerateOneOf]
-public partial class RefreshTokenRotationResult : OneOfBase<
-    (string, RefreshToken, User),
+public record  RefreshTokenRotationSuccessResult(string RawToken, RefreshToken RefreshToken, User User);
+
+public union RefreshTokenRotationResult(
+    RefreshTokenRotationSuccessResult,
     TokenAlreadyRotatedError,
     UserNotFoundError,
-    InvalidRefreshTokenError>;
+    InvalidRefreshTokenError);
 
 public interface IRefreshTokenManager
 {

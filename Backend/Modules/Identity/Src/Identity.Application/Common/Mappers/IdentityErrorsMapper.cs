@@ -1,4 +1,3 @@
-using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Application.Common.Mappers;

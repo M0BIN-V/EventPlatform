@@ -56,7 +56,7 @@ public class RefreshTokenManager(
         repository.Update(storedToken);
         repository.Add(newRefreshToken);
 
-        return (newRawToken, newRefreshToken, user);
+        return new RefreshTokenRotationSuccessResult(newRawToken, newRefreshToken, user);
     }
 
     public async Task<InvalidRefreshTokenError?> RevokeAsync(

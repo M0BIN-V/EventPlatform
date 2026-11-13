@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using FluentValidation.Results;
 using Organizations.Application.Features.CreateOrganization;
 using Organizations.Application.Features.EditOrganization;
 using ApplicationEditOrganizationRequest = Organizations.Application.Features.EditOrganization.EditOrganizationRequest;
@@ -20,13 +21,13 @@ public static class OrganizationEndpointExtensions
 
         var result = await handler.HandleAsync(request);
 
-        return result
-            .Match<Results<Created<CreateOrganizationResponseData>, ValidationProblem,
-                Conflict<OrganizationSlugAlreadyExistsError>>>(
-                org => Created($"/api/organizations/{org.Id}", org),
-                validationErrors => validationErrors.ToValidationProblem(),
-                slugError => Conflict(slugError)
-            );
+
+        return result switch
+        {
+            CreateOrganizationResponseData d => Created($"/api/organizations/{d.Id}", d),
+            OrganizationSlugAlreadyExistsError e => Conflict(e),
+            List<ValidationFailure> f => f.ToValidationProblem()
+        };
     }
 
     private static async Task<Results<
@@ -47,15 +48,14 @@ public static class OrganizationEndpointExtensions
 
         var result = await handler.HandleAsync(request);
 
-        return result
-            .Match<Results<Ok<ViewEditedOrganization>, ValidationProblem,
-                NotFound<OrganizationNotFoundError>, ForbidHttpResult, Conflict<OrganizationSlugAlreadyExistsError>>>(
-                edited => Ok(edited),
-                validationErrors => validationErrors.ToValidationProblem(),
-                notFoundError => NotFound(notFoundError),
-                unauthorizedError => Forbid(),
-                slugError => Conflict(slugError)
-            );
+        return result switch
+        {
+            ViewEditedOrganization d => Ok(d),
+            OrganizationNotFoundError e => NotFound(e),
+            OrganizationUnauthorizedError e => Forbid(),
+            OrganizationSlugAlreadyExistsError e => Conflict(e),
+            List<ValidationFailure> f => f.ToValidationProblem()
+        };
     }
 
     public static IEndpointRouteBuilder MapOrganizationModuleEndpoints(this IEndpointRouteBuilder app)

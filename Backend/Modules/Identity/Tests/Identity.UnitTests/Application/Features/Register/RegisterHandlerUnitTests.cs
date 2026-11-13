@@ -7,8 +7,7 @@ using Shared.UnitTests.Abstractions;
 
 namespace Application.UnitTests.Application.Features.Register;
 
-public class RegisterHandlerUnitTests :
-    HandlerTest<RegisterHandler, RegisterRequest, RegisterResponse>
+public class RegisterHandlerUnitTests : HandlerTest<RegisterHandler, RegisterRequest, RegisterResponse>
 {
     private readonly IOptions<EmailConfirmationOptions> _emailConfirmationOptions =
         For<IOptions<EmailConfirmationOptions>>();

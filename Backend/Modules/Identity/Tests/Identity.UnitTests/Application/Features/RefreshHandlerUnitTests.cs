@@ -50,7 +50,7 @@ public class RefreshHandlerUnitTests
         _accessTokenService.GenerateAccessToken(Any<User>(), Any<List<string>>())
             .Returns(accessToken);
 
-        var managerResult = (
+        var managerResult = new RefreshTokenRotationSuccessResult(
             newRefreshToken,
             new RefreshToken
             {

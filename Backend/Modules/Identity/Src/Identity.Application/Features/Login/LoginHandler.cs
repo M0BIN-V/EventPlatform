@@ -5,6 +5,10 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Application.Features.Login;
 
+public record LoginTokenResponse(string AccessToken, string RefreshToken);
+
+public union LoginResponse(LoginTokenResponse, List<ValidationFailure>, UserNotFoundError, EmailNotConfirmedError, InvalidPasswordError);
+
 public class LoginHandler(
     TimeProvider timeProvider,
     IValidator<LoginRequest> validator,

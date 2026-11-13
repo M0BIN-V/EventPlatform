@@ -1,10 +1,11 @@
+using System.Runtime.CompilerServices;
 using Xunit;
 
 namespace Shared.UnitTests.Abstractions;
 
 public abstract class HandlerTest<THandler, TRequest, TResponse>
     where THandler : Handler<TRequest, TResponse>
-    where TResponse : IOneOf
+    where TResponse : IUnion
 {
     protected abstract THandler Handler { get; }
     protected abstract IValidator<TRequest> Validator { get; }

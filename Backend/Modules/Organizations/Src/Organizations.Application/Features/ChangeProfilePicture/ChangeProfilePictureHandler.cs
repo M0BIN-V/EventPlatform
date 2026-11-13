@@ -17,11 +17,10 @@ public class ChangeProfilePictureRequestValidator : AbstractValidator<ChangeProf
     }
 }
 
-[GenerateOneOf]
-public partial class ChangeProfilePictureResponse : OneOfBase<
+public union ChangeProfilePictureResponse(
     List<ValidationFailure>,
     OrganizationUnauthorizedError,
-    OrganizationNotFoundError>;
+    OrganizationNotFoundError);
 
 public class ChangeProfilePictureHandler(
     ICurrentUser currentUser,
