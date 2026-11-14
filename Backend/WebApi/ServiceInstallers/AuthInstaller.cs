@@ -42,35 +42,6 @@ public class AuthInstaller : IServiceInstaller
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = validationParameters;
-
-                if (!builder.Environment.IsDevelopment()) return;
-
-                options.Events = new JwtBearerEvents
-                {
-                    OnMessageReceived = context =>
-                    {
-                        Console.WriteLine("JWT OnMessageReceived");
-                        Console.WriteLine(
-                            $"Token: {context.Request.Headers.Authorization}");
-
-                        return Task.CompletedTask;
-                    },
-
-                    OnAuthenticationFailed = context =>
-                    {
-                        Console.WriteLine("JWT AuthenticationFailed");
-                        Console.WriteLine(context.Exception);
-
-                        return Task.CompletedTask;
-                    },
-
-                    OnTokenValidated = context =>
-                    {
-                        Console.WriteLine("JWT TokenValidated");
-
-                        return Task.CompletedTask;
-                    }
-                };
             });
     }
 }
