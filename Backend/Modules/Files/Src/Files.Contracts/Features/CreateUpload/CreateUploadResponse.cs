@@ -1,9 +1,10 @@
-using Files.Application.Common.Errors;
+using Files.Contracts.Errors;
 using FluentValidation.Results;
 
-namespace Files.Application.Features.CreateUpload;
+namespace Files.Contracts.Features.CreateUpload;
 
 public record SuccessCreateUploadResponse(
+    Guid Id,
     string Url,
     DateTime ExpiresAtUtc,
     IReadOnlyDictionary<string, string> RequiredHeaders);

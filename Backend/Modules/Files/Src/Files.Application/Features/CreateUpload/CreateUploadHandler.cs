@@ -1,5 +1,6 @@
 using Files.Application.Common.Contracts.Services;
-using Files.Application.Common.Errors;
+using Files.Contracts.Errors;
+using Files.Contracts.Features.CreateUpload;
 using Files.Domain.Entities;
 using Files.Domain.Enums;
 
@@ -39,6 +40,7 @@ public class CreateUploadHandler(
             ContentType = request.ContentType,
             FileName = request.FileName,
             Size = request.Size,
+            IsPrivate = purpose.Policy.IsPrivate,
             OwnerId = request.OwnerId,
             PurposeId = request.PurposeId,
             Status = FileStatus.Pending,
@@ -53,7 +55,7 @@ public class CreateUploadHandler(
         await repo.AddAsync(file, ct);
         await unitOfWork.SaveChangesAsync(ct);
 
-        return new SuccessCreateUploadResponse(target.Url, target.ExpiresAtUtc, target.RequiredHeaders);
+        return new SuccessCreateUploadResponse(file.Id, target.Url, target.ExpiresAtUtc, target.RequiredHeaders);
     }
 
     private static List<PolicyValidationError> ValidatePolicies(FilePolicy policy, CreateUploadRequest request)

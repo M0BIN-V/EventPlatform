@@ -1,11 +1,6 @@
-namespace Files.Application.Features.CreateUpload;
+using FluentValidation;
 
-public record CreateUploadRequest(
-    string OwnerId,
-    string PurposeId,
-    string FileName,
-    string ContentType,
-    long Size);
+namespace Files.Contracts.Features.CreateUpload;
 
 public class CreateUploadRequestValidator : AbstractValidator<CreateUploadRequest>
 {

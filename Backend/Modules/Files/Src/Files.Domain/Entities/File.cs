@@ -16,4 +16,5 @@ public class File
     public DateTimeOffset CreatedAt { get; init; }
     public DateTimeOffset UploadedAt { get; set; }
     public DateTimeOffset? ReadyAt { get; set; }
+    public bool IsPrivate { get; init; }
 }
