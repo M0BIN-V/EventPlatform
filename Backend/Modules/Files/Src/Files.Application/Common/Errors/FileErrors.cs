@@ -9,3 +9,6 @@ public record InvalidOwnerError() : Error(nameof(InvalidOwnerError), "The owner 
 
 public record InvalidPurposeError()
     : Error(nameof(InvalidPurposeError), "The purpose is not valid for this operation.");
+
+public record PolicyValidationError(string Message) : Error(nameof(PolicyValidationError),
+    "The file does not meet the validation policies for this operation.");

@@ -20,11 +20,11 @@ public class FileConfig : IEntityTypeConfiguration<File>
             .IsRequired()
             .HasMaxLength(256);
 
-        builder.Property(x => x.Owner)
+        builder.Property(x => x.OwnerId)
             .IsRequired()
             .HasMaxLength(256);
 
-        builder.Property(x => x.Purpose)
+        builder.Property(x => x.PurposeId)
             .IsRequired()
             .HasMaxLength(256);
 

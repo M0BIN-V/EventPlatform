@@ -1,6 +1,6 @@
 ﻿using System.Data.Common;
 
-namespace Files.Infrastructure.Storage;
+namespace Files.Infrastructure.Services;
 
 public class S3ConnectionOptions
 {

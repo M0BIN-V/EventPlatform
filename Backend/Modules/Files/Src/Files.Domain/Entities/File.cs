@@ -10,8 +10,8 @@ public class File
     public required string ContentType { get; init; }
     public required string FileName { get; init; }
     public required long Size { get; init; }
-    public required string Owner { get; init; }
-    public required string Purpose { get; init; }
+    public required string OwnerId { get; init; }
+    public required string PurposeId { get; init; }
     public FileStatus Status { get; set; }
     public DateTimeOffset CreatedAt { get; init; }
     public DateTimeOffset UploadedAt { get; set; }

@@ -1,5 +1,5 @@
 ﻿using Amazon.S3;
-using Files.Infrastructure.Storage;
+using Files.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
