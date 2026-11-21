@@ -1,38 +1,31 @@
+using Files.Application.Common.Contracts.Services;
+using Files.Application.Common.Errors;
+using FluentValidation.Results;
+
 namespace Files.Application.Features.CreateUpload;
 
-public class CreateUploadHandler(
-    IFilesRepository filesRepo,
-    TimeProvider timeProvider,
-    IFilesUnitOfWork unitOfWork,
-    IObjectStorageService objectStorage,
-    IValidator<CreateUploadRequest> validator)
-    : Handler<CreateUploadRequest, CreateUploadResponse>
-{
-    private static readonly TimeSpan PresignExpiry = TimeSpan.FromMinutes(15);
+public record SuccessCreateUploadResponse;
 
+public union CreateUploadResponse(
+    SuccessCreateUploadResponse,
+    List<ValidationFailure>,
+    InvalidOwnerError,
+    InvalidPurposeError);
+
+public class CreateUploadHandler(
+    IOwnerService ownerService,
+    IValidator<CreateUploadRequest> validator) : Handler<CreateUploadRequest, CreateUploadResponse>
+{
     public override async Task<CreateUploadResponse> HandleAsync(CreateUploadRequest request,
         CancellationToken ct = default)
     {
         var validationResult = await validator.ValidateAsync(request, ct);
         if (!validationResult.IsValid) return validationResult.Errors;
 
-        var now = timeProvider.GetUtcNow();
+        var owner = ownerService.GetOwner(request.OwnerId);
+        if (owner is null) return new InvalidOwnerError();
 
-        throw new NotImplementedException();
-        // var file = File.CreatePending(request.ModuleName, now);
-        //
-        // await filesRepo.AddAsync(file, ct);
-        // await unitOfWork.SaveChangesAsync(ct);
-        //
-        // var objectKey = $"{request.ModuleName}/{string.Join('/', request.PathSegments)}/{file.Id}_{request.FileName}";
-        //
-        // var uploadRequest = await objectStorage.CreatePresignedUploadAsync(
-        //     objectKey,
-        //     now.Add(PresignExpiry),
-        //     request.MinLength,
-        //     request.MaxLength);
-        //
-        //
-        // return new CreateUploadSuccess(file.Id, uploadRequest.Url);
+        var purpose = owner.Purposes.SingleOrDefault(p => p.Id == request.PurposeId);
+        if (purpose is null) return new InvalidPurposeError();
     }
 }

@@ -4,3 +4,8 @@ public record InvalidFileStatusError()
     : Error(nameof(InvalidFileStatusError), "The file is not in a valid status for this operation.");
 
 public record FileNotFoundError() : Error(nameof(FileNotFoundError), "The file was not found in the object storage.");
+
+public record InvalidOwnerError() : Error(nameof(InvalidOwnerError), "The owner is not valid for this operation.");
+
+public record InvalidPurposeError()
+    : Error(nameof(InvalidPurposeError), "The purpose is not valid for this operation.");

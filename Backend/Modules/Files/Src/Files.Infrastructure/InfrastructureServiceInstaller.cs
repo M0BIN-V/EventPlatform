@@ -1,9 +1,7 @@
 using Files.Application.Common.Contracts.Persistence;
-using Files.Application.Common.Contracts.Services;
 using Files.Infrastructure.Persistence;
 using Files.Infrastructure.Persistence.Repositories;
 using Files.Infrastructure.ServiceInstallers;
-using Files.Infrastructure.Storage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,7 +24,6 @@ public static class InfrastructureServiceInstaller
 
         builder.AddS3Storage("event-platform-s3");
 
-        builder.Services.AddScoped<IObjectStorageService, S3ObjectStorageService>();
 
         return builder;
     }

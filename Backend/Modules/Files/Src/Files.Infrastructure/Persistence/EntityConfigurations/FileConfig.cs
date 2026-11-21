@@ -20,12 +20,16 @@ public class FileConfig : IEntityTypeConfiguration<File>
             .IsRequired()
             .HasMaxLength(256);
 
+        builder.Property(x => x.Owner)
+            .IsRequired()
+            .HasMaxLength(256);
+
+        builder.Property(x => x.Purpose)
+            .IsRequired()
+            .HasMaxLength(256);
+
         builder.Property(x => x.Size)
             .HasColumnType("bigint");
-
-        builder.Property(x => x.ModuleName)
-            .HasConversion<string>()
-            .IsRequired();
 
         builder.Property(x => x.Status)
             .HasConversion<string>()
